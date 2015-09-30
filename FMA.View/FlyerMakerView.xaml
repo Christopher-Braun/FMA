@@ -1,0 +1,190 @@
+﻿<UserControl x:Class="FMA.View.FlyerMakerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:contracts="clr-namespace:FMA.Contracts;assembly=FMA.Contracts"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:si="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
+             xmlns:view="clr-namespace:FMA.View"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <view:FlyerMakerViewModel />
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid x:Name="Selector">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Margin="8,8,0,0" VerticalAlignment="Center">Layout</TextBlock>
+                <ComboBox Grid.Column="1"
+                          Margin="8,8,8,0"
+                          HorizontalAlignment="Stretch"
+                          ItemsSource="{Binding Materials}"
+                          SelectedItem="{Binding SelectedMaterial}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate DataType="contracts:Material">
+                            <TextBlock Text="{Binding Title, Mode=OneWay}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </Grid>
+        </Grid>
+
+        <Grid x:Name="InputAndPreview" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Border x:Name="Input"
+                    Margin="8,8,0,8"
+                    BorderBrush="CadetBlue"
+                    BorderThickness="1">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl Margin="8"
+                                  Grid.IsSharedSizeScope="True"
+                                  ItemsSource="{Binding SelectedMaterial.MaterialFields}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="view:MaterialFieldModel">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" SharedSizeGroup="A" />
+                                        <ColumnDefinition Width="*" SharedSizeGroup="B" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Margin="4" Text="{Binding FieldName}" />
+                                    <TextBox Grid.Column="1"
+                                             Margin="4,4,16,4"
+                                             AcceptsReturn="True"
+                                             Style="{StaticResource TextBoxWithValidation}"
+                                             Text="{Binding Value,
+                                                            UpdateSourceTrigger=PropertyChanged,
+                                                            NotifyOnValidationError=True,
+                                                            ValidatesOnDataErrors=True}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding PreviewVisible}" Value="True" />
+                                    <Condition Binding="{Binding BothVisible}" Value="False" />
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.ExitActions>
+                                    <BeginStoryboard Storyboard="{StaticResource FadeIn}" />
+                                </MultiDataTrigger.ExitActions>
+                                <MultiDataTrigger.EnterActions>
+                                    <BeginStoryboard Storyboard="{StaticResource FadeOut}" />
+                                </MultiDataTrigger.EnterActions>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+            </Border>
+
+            <GridSplitter Grid.Column="1"
+                          Width="8"
+                          HorizontalAlignment="Stretch"
+                          Background="Transparent" />
+
+            <Border x:Name="Preview"
+                    Grid.Column="2"
+                    Margin="0,8,8,8"
+                    HorizontalAlignment="Left"
+                    BorderBrush="CadetBlue"
+                    BorderThickness="1">
+
+                <Image x:Name="Image1"
+                       Margin="8"
+                       HorizontalAlignment="Left"
+                       Source="{Binding FlyerPreview}" />
+
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding InputVisible}" Value="True" />
+                                    <Condition Binding="{Binding BothVisible}" Value="False" />
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.ExitActions>
+                                    <BeginStoryboard Storyboard="{StaticResource FadeIn}" />
+                                </MultiDataTrigger.ExitActions>
+                                <MultiDataTrigger.EnterActions>
+                                    <BeginStoryboard Storyboard="{StaticResource FadeOut}" />
+                                </MultiDataTrigger.EnterActions>
+                            </MultiDataTrigger>
+
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+            </Border>
+
+        </Grid>
+
+        <StackPanel Grid.Row="2"
+                    Grid.ColumnSpan="3"
+                    Margin="8"
+                    Orientation="Horizontal">
+
+            <RadioButton Content="Input" IsChecked="{Binding InputVisible}" />
+            <RadioButton Margin="8,0,0,0"
+                         Content="Preview"
+                         IsChecked="{Binding PreviewVisible}" />
+            <RadioButton Margin="8,0,0,0"
+                         Content="Both"
+                         IsChecked="{Binding BothVisible}" />
+        </StackPanel>
+        <StackPanel Grid.Row="3"
+                    Grid.ColumnSpan="3"
+                    Orientation="Horizontal">
+            <Button Margin="8"
+                    HorizontalAlignment="Stretch"
+                    Content="Reset"
+                    IsEnabled="{Binding CanCreate}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <si:CallMethodAction MethodName="Reset" TargetObject="{Binding}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+            <Button Margin="8"
+                    HorizontalAlignment="Stretch"
+                    Content="Save"
+                    IsEnabled="{Binding CanCreate}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <si:CallMethodAction MethodName="Save" TargetObject="{Binding}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>
