@@ -55,8 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="DummyData.cs" />
-    <Compile Include="FlyerMakerViewModel.cs" />
+    <Compile Include="FlyerMakerViewViewModel.cs" />
     <Compile Include="FlyerMakerView.xaml.cs">
       <DependentUpon>FlyerMakerView.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -67,7 +66,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MaterialExtensions.cs" />
+    <Compile Include="MaterialConverions.cs" />
     <Compile Include="MaterialModel.cs" />
     <Compile Include="MaterialFieldModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
@@ -102,6 +101,10 @@
     <ProjectReference Include="..\FMA.Core\FMA.Core.csproj">
       <Project>{06e4f4dc-2035-487c-9206-80a11a8cbd89}</Project>
       <Name>FMA.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMA.TestData\FMA.TestData.csproj">
+      <Project>{71A6B3C3-228D-41D0-BA24-AB8E31547263}</Project>
+      <Name>FMA.TestData</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

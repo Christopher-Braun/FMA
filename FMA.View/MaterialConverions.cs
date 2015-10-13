@@ -3,21 +3,21 @@ using FMA.Contracts;
 
 namespace FMA.View
 {
-   public static class MaterialExtensions
+   public static class MaterialConverions
     {
        public static MaterialModel ToMaterialModel(this Material material)
        {
-           return new MaterialModel(material.Id, material.Title, material.Description, material.MaterialFields.Select(f => f.ToMaterialFieldModel()));
+           return new MaterialModel(material.Id, material.Title, material.Description, material.MaterialFields.Select(f => f.ToMaterialFieldModel()), material.FlyerFrontSide, material.FlyerBackside);
        }
 
        public static CustomMaterial ToCustomMaterial(this MaterialModel material)
        {
-           return new CustomMaterial(material.Id, material.Title, material.Description, material.MaterialFields.Select(f => f.ToMaterialField()));
+           return new CustomMaterial(material.Id, material.Title, material.Description, material.MaterialFields.Select(f => f.ToMaterialField()), material.FlyerFrontSide, material.FlyerBackside);
        }   
        
        public static MaterialModel Clone(this MaterialModel material)
        {
-           return new MaterialModel(material.Id, material.Title, material.Description, material.MaterialFields.Select(f => f.Clone()));
+           return new MaterialModel(material.Id, material.Title, material.Description, material.MaterialFields.Select(f => f.Clone()), material.FlyerFrontSide, material.FlyerBackside);
        } 
        
        public static MaterialFieldModel ToMaterialFieldModel(this MaterialField field)

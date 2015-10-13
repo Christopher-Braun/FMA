@@ -6,13 +6,16 @@ namespace FMA.Contracts
 {
     public class Material
     {
-        public Material(int id, string title, string description, IEnumerable<MaterialField> materialFields)
+        public Material(int id, string title, string description, IEnumerable<MaterialField> materialFields, byte[] flyerFrontSide, byte[] flyerBackside)
         {
             Id = id;
             Title = title;
             Description = description;
 
             this.MaterialFields = materialFields.ToList();
+
+            FlyerFrontSide = flyerFrontSide;
+            FlyerBackside = flyerBackside;
         }
 
         public Int32 Id { get; private set; }
@@ -24,8 +27,8 @@ namespace FMA.Contracts
         public IEnumerable<MaterialField> MaterialFields { get; private set; }
 
 
-        public Byte[] FlyerFrontSide { get; set; }
+        public Byte[] FlyerFrontSide { get; private set; }
 
-        public Byte[] FlyerBackside    { get; set; }
+        public Byte[] FlyerBackside    { get; private set; }
     }
 }

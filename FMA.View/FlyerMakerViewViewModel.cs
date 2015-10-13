@@ -1,40 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
 using FMA.Contracts;
 using FMA.Core;
+using FMA.TestData;
 using FMA.View.Properties;
 
 namespace FMA.View
 {
-    public class FlyerMakerViewModel : INotifyPropertyChanged, IFlyerMaker
+    public class FlyerMakerViewViewModel : INotifyPropertyChanged, IFlyerMakerView
     {
 
         public event Action<CustomMaterial> FlyerCreated = m => { };
 
-        public FlyerMakerViewModel()
+        public FlyerMakerViewViewModel()
         {
             // TODO: Remove when going productive
             var dummyMaterials = DummyData.GetDummyMaterials();
-            SetMaterials(dummyMaterials);
-            SetSelectedMaterial(dummyMaterials.First());
+            SetMaterials(dummyMaterials, dummyMaterials.First());
 
             this.BothVisible = true;
         }
 
-        public void SetMaterials(IEnumerable<Material> materials)
+        public void SetMaterials(IEnumerable<Material> materials, Material selectedMaterial = null)
         {         
             this.Materials = materials.Select(m => m.ToMaterialModel()).ToList();
+            if (selectedMaterial != null)
+            {
+                this.SelectedMaterial = selectedMaterial.ToMaterialModel();
+            }
         }
 
-        public void SetSelectedMaterial(Material material)
-        {
-            this.SelectedMaterial = material.ToMaterialModel();
-        }
 
         public List<MaterialModel> Materials
         {
@@ -52,10 +51,6 @@ namespace FMA.View
             get { return selectedMaterial; }
             set
             {
-                //if (Equals(value, selectedMaterial))
-                //{
-                //    return;
-                //}
                 if (selectedMaterial != null)
                 {
                     this.selectedMaterial.PropertyChanged -= selectedMaterial_PropertyChanged;
@@ -107,16 +102,13 @@ namespace FMA.View
                 {
                     return null;
                 }
-                return ImageCreator.CreateImagePreview(SelectedMaterial.ToCustomMaterial());
+                return FlyerCreator.CreateImage(SelectedMaterial.ToCustomMaterial());
             }
         }
 
 
         public void Save()
         {
-            //TODO Remove when going productive
-            ImageSaver.SaveDrawingImage(FlyerPreview, "ImageWithText.jpg");
-
             FlyerCreated(SelectedMaterial.ToCustomMaterial());
         }
 

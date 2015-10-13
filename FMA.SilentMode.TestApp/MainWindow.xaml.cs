@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Windows;
 using FMA.Core;
+using FMA.TestData;
 
 namespace FMA.SilentMode.TestApp
 {
@@ -13,10 +15,15 @@ namespace FMA.SilentMode.TestApp
         {
             InitializeComponent();
 
-            var material = DummyData.GetDummyMaterials().First();
+            var material = DummyData.GetCustomMaterial();
 
+            var flyer = FlyerCreator.CreateFlyer(material);
 
-            FlyerMaker.CreateFlyer(material, "SilentFlyer.jpg");
+            using (var fileStream = new FileStream("SilentFlyer.jpg", FileMode.Create))
+            {
+                flyer.WriteTo(fileStream);
+            }
+
         }
     }
 }

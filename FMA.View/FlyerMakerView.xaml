@@ -18,7 +18,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.DataContext>
-        <view:FlyerMakerViewModel />
+        <view:FlyerMakerViewViewModel />
     </UserControl.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
