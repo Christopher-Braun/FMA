@@ -7,6 +7,7 @@
 *.userosscache
 *.sln.docstates
 *.tmp
+*.DS_Store
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -20,7 +21,7 @@ x64/
 x86/
 build/
 bld/
-[Bb]in/
+[Bb]in/d
 [Oo]bj/
 
 # Visual Studio 2015 cache/options directory
@@ -211,3 +212,4 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+
