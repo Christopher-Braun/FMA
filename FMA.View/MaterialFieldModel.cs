@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using FMA.Contracts.Properties;
 
 namespace FMA.View
@@ -10,6 +11,19 @@ namespace FMA.View
     [DebuggerDisplay("Name: {FieldName} Valu:e {Value}")]
     public class MaterialFieldModel : INotifyPropertyChanged, IDataErrorInfo
     {
+        private string value;
+        private string error;
+        private int topMargin;
+        private int leftMargin;
+        private int maxRows;
+        private int maxLength;
+        private bool uppper;
+        private bool italic;
+        private bool bold;
+        private int fontSize;
+        private string fontName;
+        private string fieldName;
+
         public MaterialFieldModel(string fieldName, string fontName, int fontSize, bool bold, bool italic, bool uppper, int maxLength, int maxRows, int leftMargin, int topMargin, string value)
         {
             FieldName = fieldName;
@@ -25,24 +39,112 @@ namespace FMA.View
             Value = value;
         }
 
-        public string FieldName { get; set; }
-        public string FontName { get; set; }
-        public int FontSize { get; set; }
-        public bool Bold { get; set; }
-        public bool Italic { get; set; }
-        public bool Uppper { get; set; }
-        public int MaxLength { get; set; }
-        public int MaxRows { get; set; }
-        public int LeftMargin { get; set; }
-        public int TopMargin { get; set; }
+        public string FieldName
+        {
+            get { return fieldName; }
+            set
+            {
+                fieldName = value;
+                OnPropertyChanged();
+            }
+        }
 
-        private string value;
+        public string FontName
+        {
+            get { return fontName; }
+            set
+            {
+                fontName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int FontSize
+        {
+            get { return fontSize; }
+            set
+            {
+                fontSize = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool Bold
+        {
+            get { return bold; }
+            set
+            {
+                bold = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool Italic
+        {
+            get { return italic; }
+            set
+            {
+                italic = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool Uppper
+        {
+            get { return uppper; }
+            set
+            {
+                uppper = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int MaxLength
+        {
+            get { return maxLength; }
+            set
+            {
+                maxLength = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int MaxRows
+        {
+            get { return maxRows; }
+            set
+            {
+                maxRows = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int LeftMargin
+        {
+            get { return leftMargin; }
+            set
+            {
+                leftMargin = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int TopMargin
+        {
+            get { return topMargin; }
+            set
+            {
+                topMargin = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         public string Value
         {
             get { return value; }
             set
             {
-                if (value == this.value) return;
                 this.value = value;
                 OnPropertyChanged();
             }
@@ -85,7 +187,8 @@ namespace FMA.View
             }
         }
 
-        private string error;
+      
+
         public string Error
         {
             get { return error; }
@@ -93,6 +196,17 @@ namespace FMA.View
             {
                 error = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public static Action<MaterialFieldModel> EditLayoutMode;
+       
+
+        public void MouseDoubleClick()
+        {
+            if (Keyboard.Modifiers == ModifierKeys.Shift)
+            {
+                EditLayoutMode(this);
             }
         }
     }

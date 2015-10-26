@@ -11,19 +11,36 @@ using FMA.View.Properties;
 
 namespace FMA.View
 {
-    public class FlyerMakerViewViewModel : INotifyPropertyChanged, IFlyerMakerView
+    public class FlyerMakerViewModel : INotifyPropertyChanged, IFlyerMakerView
     {
 
         public event Action<CustomMaterial> FlyerCreated = m => { };
 
-        public FlyerMakerViewViewModel()
+        public FlyerMakerViewModel()
         {
             // TODO: Remove when going productive
             var dummyMaterials = DummyData.GetDummyMaterials();
             SetMaterials(dummyMaterials, dummyMaterials.First());
 
             this.BothVisible = true;
+            MaterialFieldModel.EditLayoutMode = f=> FieldToEditLayout = f; 
         }
+
+        public MaterialFieldModel FieldToEditLayout
+        {
+            get { return fieldToEditLayout; }
+            set
+            {
+                fieldToEditLayout = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public void ExitLayoutMode()
+        {
+            this.FieldToEditLayout = null;
+        }
+
 
         public void SetMaterials(IEnumerable<Material> materials, Material selectedMaterial = null)
         {         
@@ -94,7 +111,7 @@ namespace FMA.View
         }
 
 
-        public DrawingImage FlyerPreview
+        public ImageSource FlyerPreview
         {
             get
             {
@@ -143,6 +160,7 @@ namespace FMA.View
 
         private bool bothVisible;
         private List<MaterialModel> materials;
+        private MaterialFieldModel fieldToEditLayout;
 
         public bool BothVisible
         {

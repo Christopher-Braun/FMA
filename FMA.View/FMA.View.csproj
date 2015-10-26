@@ -51,11 +51,18 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="FieldLayouter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FlyerMakerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="FlyerMakerViewViewModel.cs" />
+    <Compile Include="FieldLayouter.xaml.cs">
+      <DependentUpon>FieldLayouter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FlyerMakerViewModel.cs" />
     <Compile Include="FlyerMakerView.xaml.cs">
       <DependentUpon>FlyerMakerView.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -69,6 +76,7 @@
     <Compile Include="MaterialConverions.cs" />
     <Compile Include="MaterialModel.cs" />
     <Compile Include="MaterialFieldModel.cs" />
+    <Compile Include="NotNullToVisibleConverter.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

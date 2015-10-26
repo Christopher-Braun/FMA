@@ -15,10 +15,13 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <view:NotNullToVisibleConverter x:Key="NotNullToVisibleConverter" />
+            <view:NullToVisibleConverter x:Key="NullToVisibleConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.DataContext>
-        <view:FlyerMakerViewViewModel />
+        <view:FlyerMakerViewModel />
     </UserControl.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -62,32 +65,57 @@
                     Margin="8,8,0,8"
                     BorderBrush="CadetBlue"
                     BorderThickness="1">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <ItemsControl Margin="8"
-                                  Grid.IsSharedSizeScope="True"
-                                  ItemsSource="{Binding SelectedMaterial.MaterialFields}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="view:MaterialFieldModel">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" SharedSizeGroup="A" />
-                                        <ColumnDefinition Width="*" SharedSizeGroup="B" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Margin="4" Text="{Binding FieldName}" />
-                                    <TextBox Grid.Column="1"
-                                             Margin="4,4,16,4"
-                                             AcceptsReturn="True"
-                                             Style="{StaticResource TextBoxWithValidation}"
-                                             Text="{Binding Value,
-                                                            UpdateSourceTrigger=PropertyChanged,
-                                                            NotifyOnValidationError=True,
-                                                            ValidatesOnDataErrors=True}" />
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </ScrollViewer>
+                <Grid>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Visibility="{Binding FieldToEditLayout, Converter={StaticResource NotNullToVisibleConverter}}">
+                        <ItemsControl Margin="8"
+                                      Grid.IsSharedSizeScope="True"
+                                      ItemsSource="{Binding SelectedMaterial.MaterialFields}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="view:MaterialFieldModel">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" SharedSizeGroup="A" />
+                                            <ColumnDefinition Width="*" SharedSizeGroup="B" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Margin="4" Text="{Binding FieldName}" />
+                                        <TextBox Grid.Column="1"
+                                                 Margin="4,4,16,4"
+                                                 AcceptsReturn="True"
+                                                 Style="{StaticResource TextBoxWithValidation}"
+                                                 Text="{Binding Value,
+                                                                UpdateSourceTrigger=PropertyChanged,
+                                                                NotifyOnValidationError=True,
+                                                                ValidatesOnDataErrors=True}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="MouseDoubleClick">
+                                                    <si:CallMethodAction MethodName="MouseDoubleClick" TargetObject="{Binding}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </TextBox>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
 
+                    <Grid Name="FieldLayouter" Visibility="{Binding FieldToEditLayout, Converter={StaticResource NullToVisibleConverter}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <view:FieldLayouter MaterialFieldModel="{Binding FieldToEditLayout}" />
+                        <Button Grid.Row="1"
+                                Margin="4"
+                                Content="Back">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <si:CallMethodAction MethodName="ExitLayoutMode" TargetObject="{Binding}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </Grid>
+
+                </Grid>
                 <Border.Style>
                     <Style TargetType="Border">
                         <Style.Triggers>
