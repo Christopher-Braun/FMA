@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Windows;
 using FMA.Contracts;
+using FMA.Core;
+using FMA.TestData;
 using FMA.View;
 
 namespace FMA
@@ -14,29 +17,20 @@ namespace FMA
         {
             InitializeComponent();
 
-            var viewModel = (this.FlyerMakerView.DataContext as IFlyerMaker);
+            var viewModel = this.FlyerMakerView.ViewModel;
 
             var dummyMaterials = DummyData.GetDummyMaterials();
-            viewModel.SetMaterials(dummyMaterials);
-            viewModel.SetSelectedMaterial(dummyMaterials.First());
+            viewModel.SetMaterials(dummyMaterials, dummyMaterials.Last());
 
-           //var materials = new List<Material>();
+            viewModel.FlyerCreated += (cm) =>
+            {
+                var flyer = FlyerCreator.CreateFlyer(cm);
 
-            //var material1Fields = new List<MaterialField>
-            //{
-            //    new MaterialField("Referent", "Arial", 10, false, false, false, 50, 1, 7, 71, "Paulus von Tarsus"), 
-            //    new MaterialField("Titel", "Arial", 21, true, false, true, 50, 3, 7, 20, "Aleppo")
-            //};
-
-            //var material1 = new Material(1, "Gefährlicher Glaube", "ZumThema Gefährlicher Glaube (Islamische Welt)", material1Fields);
-
-            //materials.Add(material1);
-
-            //viewModel.Materials = materials;
-            //viewModel.SelectedMaterial = material1;
+                using (var fileStream = new FileStream("TestAppFlyer.jpg", FileMode.Create))
+                {
+                    flyer.WriteTo(fileStream);
+                }
+            };
         }
-
-
-
     }
 }
