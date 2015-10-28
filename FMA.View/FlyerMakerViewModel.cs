@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
 using FMA.Contracts;
 using FMA.Core;
-using FMA.TestData;
 using FMA.View.Properties;
 
 namespace FMA.View
 {
-    public class FlyerMakerViewModel : INotifyPropertyChanged, IFlyerMakerView
+    public class FlyerMakerViewModel : INotifyPropertyChanged, IFlyerMaker
     {
 
         public event Action<CustomMaterial> FlyerCreated = m => { };
@@ -20,37 +20,21 @@ namespace FMA.View
         {
             // TODO: Remove when going productive
             var dummyMaterials = DummyData.GetDummyMaterials();
-            SetMaterials(dummyMaterials, dummyMaterials.First());
+            SetMaterials(dummyMaterials);
+            SetSelectedMaterial(dummyMaterials.First());
 
             this.BothVisible = true;
-            MaterialFieldModel.EditLayoutMode = f=> FieldToEditLayout = f; 
         }
 
-        public MaterialFieldModel FieldToEditLayout
-        {
-            get { return fieldToEditLayout; }
-            set
-            {
-                fieldToEditLayout = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public void ExitLayoutMode()
-        {
-            this.FieldToEditLayout = null;
-        }
-
-
-        public void SetMaterials(IEnumerable<Material> materials, Material selectedMaterial = null)
+        public void SetMaterials(IEnumerable<Material> materials)
         {         
             this.Materials = materials.Select(m => m.ToMaterialModel()).ToList();
-            if (selectedMaterial != null)
-            {
-                this.SelectedMaterial = selectedMaterial.ToMaterialModel();
-            }
         }
 
+        public void SetSelectedMaterial(Material material)
+        {
+            this.SelectedMaterial = material.ToMaterialModel();
+        }
 
         public List<MaterialModel> Materials
         {
@@ -68,6 +52,10 @@ namespace FMA.View
             get { return selectedMaterial; }
             set
             {
+                //if (Equals(value, selectedMaterial))
+                //{
+                //    return;
+                //}
                 if (selectedMaterial != null)
                 {
                     this.selectedMaterial.PropertyChanged -= selectedMaterial_PropertyChanged;
@@ -111,7 +99,7 @@ namespace FMA.View
         }
 
 
-        public ImageSource FlyerPreview
+        public DrawingImage FlyerPreview
         {
             get
             {
@@ -119,13 +107,16 @@ namespace FMA.View
                 {
                     return null;
                 }
-                return FlyerCreator.CreateImage(SelectedMaterial.ToCustomMaterial());
+                return ImageCreator.CreateImagePreview(SelectedMaterial.ToCustomMaterial());
             }
         }
 
 
         public void Save()
         {
+            //TODO Remove when going productive
+            ImageSaver.SaveDrawingImage(FlyerPreview, "ImageWithText.jpg");
+
             FlyerCreated(SelectedMaterial.ToCustomMaterial());
         }
 
@@ -160,7 +151,6 @@ namespace FMA.View
 
         private bool bothVisible;
         private List<MaterialModel> materials;
-        private MaterialFieldModel fieldToEditLayout;
 
         public bool BothVisible
         {

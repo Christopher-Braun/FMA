@@ -47,7 +47,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IFlyerMakerView.cs" />
+    <Compile Include="IFlyerMaker.cs" />
     <Compile Include="CustomMaterial.cs" />
     <Compile Include="Material.cs" />
     <Compile Include="MaterialField.cs" />

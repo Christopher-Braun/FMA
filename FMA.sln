@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMA.View", "FMA.View\FMA.View.csproj", "{ACB5A086-ECE7-4373-9FD8-0BF400A29E21}"
 EndProject
@@ -12,8 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMA.SilentMode.TestApp", "FMA.SilentMode.TestApp\FMA.SilentMode.TestApp.csproj", "{957CDCCA-DD4D-4C30-B4C5-365E067B78A9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMA.Core", "FMA.Core\FMA.Core.csproj", "{06E4F4DC-2035-487C-9206-80A11A8CBD89}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMA.TestData", "FMA.TestData\FMA.TestData.csproj", "{71A6B3C3-228D-41D0-BA24-AB8E31547263}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +39,6 @@ Global
 		{06E4F4DC-2035-487C-9206-80A11A8CBD89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06E4F4DC-2035-487C-9206-80A11A8CBD89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06E4F4DC-2035-487C-9206-80A11A8CBD89}.Release|Any CPU.Build.0 = Release|Any CPU
-		{71A6B3C3-228D-41D0-BA24-AB8E31547263}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{71A6B3C3-228D-41D0-BA24-AB8E31547263}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{71A6B3C3-228D-41D0-BA24-AB8E31547263}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{71A6B3C3-228D-41D0-BA24-AB8E31547263}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

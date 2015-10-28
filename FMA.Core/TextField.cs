@@ -11,8 +11,8 @@ namespace FMA.Core
             Origin = origin;
         }
 
-        public FormattedText FormattedText { get; private set; }
+        public FormattedText FormattedText { get; set; }
 
-        public Point Origin { get; private set; }
+        public Point Origin { get; set; }
     }
 }

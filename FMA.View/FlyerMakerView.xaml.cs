@@ -1,4 +1,4 @@
-﻿using UserControl = System.Windows.Controls.UserControl;
+﻿using System.Windows.Controls;
 
 namespace FMA.View
 {
@@ -10,12 +10,6 @@ namespace FMA.View
         public FlyerMakerView()
         {
             InitializeComponent();
-        }
-       
-
-        public FlyerMakerViewModel ViewModel
-        {
-            get { return (FlyerMakerViewModel)this.DataContext; }
         }
     }
 }

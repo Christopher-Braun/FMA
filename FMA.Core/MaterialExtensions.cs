@@ -15,26 +15,29 @@ namespace FMA.Core
     {
         public static BitmapSource GetFlyerBackground(this CustomMaterial material)
         {
-            var imageSource = new BitmapImage();
-
-            using (var stream = new MemoryStream(material.FlyerFrontSide))
+            if (material == null)
             {
-                stream.Seek(0, SeekOrigin.Begin);
-                imageSource.BeginInit();
-                imageSource.StreamSource = stream;
-                imageSource.CacheOption = BitmapCacheOption.OnLoad;
-                imageSource.EndInit();
+                return null;
             }
 
-            return imageSource;
+            var location = Assembly.GetExecutingAssembly().Location;
+            var dir = Path.GetDirectoryName(location);
+            var flyerFileName = String.Format("Flyer_{0}.jpg", material.Id.ToString("00"));
+            var imagePath = Path.Combine(dir, flyerFileName);
+            if (File.Exists(imagePath) == false)
+            {
+                return null;
+            }
+
+            return new BitmapImage(new Uri(imagePath));
         }
 
         public static IEnumerable<TextField> GetTextFields(this CustomMaterial material)
         {
-            return material.MaterialFields.Select(ToTextField);
+            return material.MaterialFields.Select(GetTextField);
         }
 
-        private static TextField ToTextField(MaterialField materialField)
+        private static TextField GetTextField(MaterialField materialField)
         {
             //TODO Offset weg
             var origin = new Point(materialField.LeftMargin, materialField.TopMargin + 300);

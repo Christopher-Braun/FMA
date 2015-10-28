@@ -11,7 +11,7 @@ namespace FMA.View
     {
         private readonly List<MaterialFieldModel> materialFields;
 
-        public MaterialModel(int id, string title, string description, IEnumerable<MaterialFieldModel> materialFields, byte[] flyerFrontSide, byte[] flyerBackside)
+        public MaterialModel(int id, string title, string description, IEnumerable<MaterialFieldModel> materialFields)
         {
             Id = id;
             Title = title;
@@ -23,9 +23,6 @@ namespace FMA.View
                 this.materialFields.Add(m);
                 m.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
             });
-
-            FlyerFrontSide = flyerFrontSide;
-            FlyerBackside = flyerBackside;
         }
 
         public Int32 Id { get; private set; }
@@ -41,12 +38,6 @@ namespace FMA.View
                 return materialFields;
             }
         }
-
-
-        public Byte[] FlyerFrontSide { get; private set; }
-
-        public Byte[] FlyerBackside { get; private set; }
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 

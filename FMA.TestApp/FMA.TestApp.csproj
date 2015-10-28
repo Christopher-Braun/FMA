@@ -63,6 +63,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DummyData.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -99,14 +100,6 @@
     <ProjectReference Include="..\FMA.Contracts\FMA.Contracts.csproj">
       <Project>{3EEE4F9D-E4BB-48BB-85DF-87F57935C843}</Project>
       <Name>FMA.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FMA.Core\FMA.Core.csproj">
-      <Project>{06E4F4DC-2035-487C-9206-80A11A8CBD89}</Project>
-      <Name>FMA.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FMA.TestData\FMA.TestData.csproj">
-      <Project>{71A6B3C3-228D-41D0-BA24-AB8E31547263}</Project>
-      <Name>FMA.TestData</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMA.View\FMA.View.csproj">
       <Project>{ACB5A086-ECE7-4373-9FD8-0BF400A29E21}</Project>
