@@ -23,15 +23,16 @@ namespace FMA.View
         public FieldLayouter()
         {
             InitializeComponent();
+           // this.DataContext = this;
         }
 
-        public static readonly DependencyProperty MaterialFieldModelProperty = DependencyProperty.Register(
-            "MaterialFieldModel", typeof (MaterialFieldModel), typeof (FieldLayouter), new PropertyMetadata(default(MaterialFieldModel)));
+        //public static readonly DependencyProperty MaterialFieldModelProperty = DependencyProperty.Register(
+        //    "MaterialFieldModel", typeof (MaterialFieldModel), typeof (FieldLayouter), new PropertyMetadata(default(MaterialFieldModel)));
 
-        public MaterialFieldModel MaterialFieldModel
-        {
-            get { return (MaterialFieldModel) GetValue(MaterialFieldModelProperty); }
-            set { SetValue(MaterialFieldModelProperty, value); }
-        }
+        //public MaterialFieldModel MaterialFieldModel
+        //{
+        //    get { return (MaterialFieldModel) GetValue(MaterialFieldModelProperty); }
+        //    set { SetValue(MaterialFieldModelProperty, value); }
+        //}
     }
 }

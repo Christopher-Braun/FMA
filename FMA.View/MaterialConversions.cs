@@ -1,9 +1,10 @@
 ﻿using System.Linq;
 using FMA.Contracts;
+using FMA.Core;
 
 namespace FMA.View
 {
-   public static class MaterialConverions
+   public static class MaterialConversions
     {
        public static MaterialModel ToMaterialModel(this Material material)
        {

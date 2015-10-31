@@ -7,8 +7,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:si="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
              xmlns:view="clr-namespace:FMA.View"
+             Width="600"
              d:DesignHeight="300"
-             d:DesignWidth="300"
+             d:DesignWidth="500"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -58,7 +59,8 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <Border x:Name="Input"
@@ -103,7 +105,7 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <view:FieldLayouter MaterialFieldModel="{Binding FieldToEditLayout}" />
+                        <view:FieldLayouter />
                         <Button Grid.Row="1"
                                 Margin="4"
                                 Content="Back">
@@ -174,6 +176,12 @@
                     </Style>
                 </Border.Style>
             </Border>
+
+            <Grid Grid.Column="3" Background="Black">
+
+                <view:LayoutCanvas MinWidth="100" MaterialModel="{Binding SelectedMaterial}" />
+                <!--<TextBlock Text="{Binding SelectedMaterial.Title}" Margin="40" />-->
+            </Grid>
 
         </Grid>
 

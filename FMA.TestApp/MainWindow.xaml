@@ -5,7 +5,7 @@
         Title="MainWindow"
         Width="600"
         Height="600">
-    <Grid>
-        <view:FlyerMakerView x:Name="FlyerMakerView" />
-    </Grid>
+
+    <view:FlyerMakerView x:Name="FlyerMakerView" HorizontalAlignment="Stretch" />
+
 </Window>

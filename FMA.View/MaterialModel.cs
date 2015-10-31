@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Media.Imaging;
 using FMA.Contracts.Properties;
+using FMA.Core;
 
 namespace FMA.View
 {
@@ -40,6 +42,11 @@ namespace FMA.View
             {
                 return materialFields;
             }
+        }
+
+        public BitmapImage FlyerFrontSideImage
+        {
+            get { return FlyerFrontSide.GetBitmapImage(); }
         }
 
 
