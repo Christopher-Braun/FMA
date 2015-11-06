@@ -8,7 +8,7 @@
              xmlns:si="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
              xmlns:view="clr-namespace:FMA.View"
              d:DesignHeight="300"
-             d:DesignWidth="300"
+             d:DesignWidth="500"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -58,6 +58,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
@@ -103,7 +104,7 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <view:FieldLayouter MaterialFieldModel="{Binding FieldToEditLayout}" />
+                        <view:FieldLayouter />
                         <Button Grid.Row="1"
                                 Margin="4"
                                 Content="Back">
@@ -173,6 +174,22 @@
                         </Style.Triggers>
                     </Style>
                 </Border.Style>
+            </Border>
+
+            <Border x:Name="Layouter"
+                    Grid.Column="3"
+                    Margin="0,8,8,8"
+                    BorderBrush="CadetBlue"
+                    BorderThickness="1">
+                <Viewbox HorizontalAlignment="Stretch"
+                         VerticalAlignment="Stretch"
+                         Stretch="Uniform">
+                    <view:LayoutCanvas Margin="8"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       ClipToBounds="True"
+                                       MaterialModel="{Binding SelectedMaterial}" />
+                </Viewbox>
             </Border>
 
         </Grid>

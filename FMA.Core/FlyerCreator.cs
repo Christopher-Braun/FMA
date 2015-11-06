@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -19,6 +20,8 @@ namespace FMA.Core
         public static DrawingImage CreateImage(CustomMaterial material)
         {
             var bitmapSourceBackground = material.GetFlyerBackground();
+                 var flyerLogo = material.GetFlyerLogo();
+
             var visual = new DrawingVisual();
             using (var drawingContext = visual.RenderOpen())
             {
@@ -27,6 +30,11 @@ namespace FMA.Core
                 foreach (var textField in material.GetTextFields())
                 {
                     drawingContext.DrawText(textField.FormattedText, textField.Origin);
+                }
+           
+                if(flyerLogo != null)
+                {
+                    drawingContext.DrawImage(flyerLogo,new Rect(material.LogoLeftMargin, material.LogoTopMargin, material.LogoWidth, material.LogoHeight));
                 }
 
             }

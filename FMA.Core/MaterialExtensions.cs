@@ -15,9 +15,24 @@ namespace FMA.Core
     {
         public static BitmapSource GetFlyerBackground(this CustomMaterial material)
         {
+            return GetBitmapImage(material.FlyerFrontSide);
+        }
+
+        public static BitmapSource GetFlyerLogo(this CustomMaterial material)
+        {
+            if (material.Logo == null)
+            {
+                return null;
+            }
+
+            return GetBitmapImage(material.Logo);
+        }
+
+        public static BitmapImage GetBitmapImage(this byte[] bytes)
+        {
             var imageSource = new BitmapImage();
 
-            using (var stream = new MemoryStream(material.FlyerFrontSide))
+            using (var stream = new MemoryStream(bytes))
             {
                 stream.Seek(0, SeekOrigin.Begin);
                 imageSource.BeginInit();
@@ -36,8 +51,7 @@ namespace FMA.Core
 
         private static TextField ToTextField(MaterialField materialField)
         {
-            //TODO Offset weg
-            var origin = new Point(materialField.LeftMargin, materialField.TopMargin + 300);
+            var origin = new Point(materialField.LeftMargin, materialField.TopMargin);
 
             var fontStyle = materialField.Italic ? FontStyles.Italic : FontStyles.Normal;
             var fontWeight = materialField.Bold ? FontWeights.Bold : FontWeights.Normal;

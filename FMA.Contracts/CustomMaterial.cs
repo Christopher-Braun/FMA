@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace FMA.Contracts
 {
     public class CustomMaterial
     {
-        public CustomMaterial(int id, string title, string description, IEnumerable<MaterialField> materialFields, byte[] flyerFrontSide, byte[] flyerBackside)
+        public CustomMaterial(int id, string title, string description, IEnumerable<MaterialField> materialFields,
+            byte[] flyerFrontSide, byte[] flyerBackside)
         {
             Id = id;
             Title = title;
@@ -18,7 +18,25 @@ namespace FMA.Contracts
             FlyerBackside = flyerBackside;
         }
 
-        public Int32 Id { get; private set; }
+        public CustomMaterial(int id, string title, string description, IEnumerable<MaterialField> materialFields, byte[] flyerFrontSide, byte[] flyerBackside, byte[] logo, double logoLeftMargin, double logoTopMargin, double logoWidth, double logoHeight)
+        {
+            Id = id;
+            Title = title;
+            Description = description;
+
+            this.MaterialFields = materialFields.ToList();
+
+            FlyerFrontSide = flyerFrontSide;
+            FlyerBackside = flyerBackside;
+
+            Logo = logo;
+            LogoLeftMargin = logoLeftMargin;
+            LogoTopMargin = logoTopMargin;
+            LogoWidth = logoWidth;
+            LogoHeight = logoHeight;
+        }
+
+        public int Id { get; private set; }
 
         public string Title { get; private set; }
 
@@ -27,14 +45,16 @@ namespace FMA.Contracts
         public IEnumerable<MaterialField> MaterialFields { get; private set; }
 
 
-        public Byte[] FlyerFrontSide { get; private set; }
+        public byte[] FlyerFrontSide { get; private set; }
 
-        public Byte[] FlyerBackside    { get; private set; }
+        public byte[] FlyerBackside    { get; private set; }
 
 
-        public Byte[] Logo { get; set; }
+        public byte[] Logo { get; set; }
 
-        public int LogoLeftMargin { get; set; }
-        public int LogoTopMargin { get; set; }
+        public double LogoLeftMargin { get; set; }
+        public double LogoTopMargin { get; set; }
+        public double LogoWidth { get; set; }
+        public double LogoHeight { get; set; }
     }
 }

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Media.Imaging;
 using FMA.Contracts.Properties;
+using FMA.Core;
 
 namespace FMA.View
 {
@@ -26,6 +28,9 @@ namespace FMA.View
 
             FlyerFrontSide = flyerFrontSide;
             FlyerBackside = flyerBackside;
+            LogoModel = new LogoModel();
+            LogoModel.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
+
         }
 
         public Int32 Id { get; private set; }
@@ -42,10 +47,16 @@ namespace FMA.View
             }
         }
 
-
+        public BitmapImage FlyerFrontSideImage
+        {
+            get { return FlyerFrontSide.GetBitmapImage(); }
+        }  
+        
         public Byte[] FlyerFrontSide { get; private set; }
 
         public Byte[] FlyerBackside { get; private set; }
+
+        public LogoModel LogoModel { get; private set; }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
