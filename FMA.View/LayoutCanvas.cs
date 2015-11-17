@@ -10,28 +10,9 @@ using System.Windows.Media;
 
 namespace FMA.View
 {
-    /// <summary>
-    ///     Follow steps 1a or 1b and then 2 to use this custom control in a XAML file.
-    ///     Step 1a) Using this custom control in a XAML file that exists in the current project.
-    ///     Add this XmlNamespace attribute to the root element of the markup file where it is
-    ///     to be used:
-    ///     xmlns:MyNamespace="clr-namespace:FMA.View"
-    ///     Step 1b) Using this custom control in a XAML file that exists in a different project.
-    ///     Add this XmlNamespace attribute to the root element of the markup file where it is
-    ///     to be used:
-    ///     xmlns:MyNamespace="clr-namespace:FMA.View;assembly=FMA.View"
-    ///     You will also need to add a project reference from the project where the XAML file lives
-    ///     to this project and Rebuild to avoid compilation errors:
-    ///     Right click on the target project in the Solution Explorer and
-    ///     "Add Reference"->"Projects"->[Browse to and select this project]
-    ///     Step 2)
-    ///     Go ahead and use your control in the XAML file.
-    ///     <MyNamespace:LayoutCanvas />
-    /// </summary>
     public class LayoutCanvas : Canvas
     {
-        public static readonly DependencyProperty MaterialModelProperty = DependencyProperty.Register(
-            "MaterialModel", typeof (MaterialModel), typeof (LayoutCanvas),
+        public static readonly DependencyProperty MaterialModelProperty = DependencyProperty.Register("MaterialModel", typeof(MaterialModel), typeof(LayoutCanvas),
             new PropertyMetadata(null, PropertyChangedCallback));
 
         private bool mouseDown;
@@ -41,23 +22,23 @@ namespace FMA.View
         private UIElement selectedElement;
         private double realtiveY;
         private double relativeX;
+        private Image backgroundImage;
 
         static LayoutCanvas()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof (LayoutCanvas),
-                new FrameworkPropertyMetadata(typeof (LayoutCanvas)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(LayoutCanvas), new FrameworkPropertyMetadata(typeof(LayoutCanvas)));
         }
 
         public MaterialModel MaterialModel
         {
-            get { return (MaterialModel) GetValue(MaterialModelProperty); }
+            get { return (MaterialModel)GetValue(MaterialModelProperty); }
             set { SetValue(MaterialModelProperty, value); }
         }
 
 
         private static void PropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var me = (LayoutCanvas) d;
+            var me = (LayoutCanvas)d;
             me.MaterialModelChanged();
         }
 
@@ -74,57 +55,68 @@ namespace FMA.View
             if (MaterialModel == null) return;
 
             this.Children.Clear();
-            var backgroundImage = new Image {Source = MaterialModel.FlyerFrontSideImage};
+            backgroundImage = new Image { Source = MaterialModel.FlyerFrontSideImage };
             this.Children.Add(backgroundImage);
 
-            foreach (var materialFieldModel in MaterialModel.MaterialFields)
+            foreach (var textBlock in MaterialModel.MaterialFields.Select(CreateTextBlock))
             {
-                var fontStyle = materialFieldModel.Italic ? FontStyles.Italic : FontStyles.Normal;
-                var fontWeight = materialFieldModel.Bold ? FontWeights.Bold : FontWeights.Normal;
-                var fontFamily = new FontFamily(materialFieldModel.FontName);
-
-                var textBlock = new TextBlock
-                {
-                    Text = materialFieldModel.Value,
-                    FontSize = materialFieldModel.FontSize,
-                    FontFamily = fontFamily,
-                    FontStyle = fontStyle,
-                    FontWeight = fontWeight,
-                    Tag = materialFieldModel
-                };
-
                 this.Children.Add(textBlock);
-
-                Canvas.SetTop(textBlock, materialFieldModel.TopMargin);
-                Canvas.SetLeft(textBlock, materialFieldModel.LeftMargin);
             }
 
-            if (MaterialModel.LogoModel.HasLogo)
-            {
-                var logoImage = new Image
-                {
-                    Source = MaterialModel.LogoModel.LogoImage,
-                    Tag = MaterialModel.LogoModel
-                };
-                Canvas.SetTop(logoImage, MaterialModel.LogoModel.TopMargin);
-                Canvas.SetLeft(logoImage, MaterialModel.LogoModel.LeftMargin);
-                this.Children.Add(logoImage);
+            var logoImage = CreateLogoImage();
 
-                logoImage.SizeChanged += logoImage_SizeChanged;
-            }
+            this.Children.Add(logoImage);
         }
 
-        private void logoImage_SizeChanged(object sender, SizeChangedEventArgs e)
+        private static TextBlock CreateTextBlock(MaterialFieldModel materialFieldModel)
         {
-            var tag = ((FrameworkElement) sender).Tag;
+            var fontStyle = materialFieldModel.Italic ? FontStyles.Italic : FontStyles.Normal;
+            var fontWeight = materialFieldModel.Bold ? FontWeights.Bold : FontWeights.Normal;
+            var fontFamily = new FontFamily(materialFieldModel.FontName);
 
-            var logoModel = tag as LogoModel;
-            if (logoModel != null)
+            var textBlock = new TextBlock
             {
-                logoModel.Size = e.NewSize;
-            }
+                FontSize = materialFieldModel.FontSize,
+                FontFamily = fontFamily,
+                FontStyle = fontStyle,
+                FontWeight = fontWeight,
+                DataContext = materialFieldModel
+            };
 
+            var textBinding = new Binding("Value") { Mode = BindingMode.OneWay };
+            textBlock.SetBinding(TextBlock.TextProperty, textBinding);
+
+            var topBinding = new Binding("TopMargin") { Mode = BindingMode.TwoWay };
+
+            textBlock.SetBinding(Canvas.TopProperty, topBinding);
+
+            var leftBinding = new Binding("LeftMargin") { Mode = BindingMode.TwoWay };
+            textBlock.SetBinding(Canvas.LeftProperty, leftBinding);
+
+            return textBlock;
         }
+
+        private Image CreateLogoImage()
+        {
+            var logoImage = new Image { DataContext = MaterialModel.LogoModel, Stretch = Stretch.Fill };
+
+            var sourceBinding = new Binding("LogoImage") { Mode = BindingMode.OneWay };
+            logoImage.SetBinding(Image.SourceProperty, sourceBinding);
+
+            var heightBinding = new Binding("Height") { Mode = BindingMode.TwoWay };
+            logoImage.SetBinding(HeightProperty, heightBinding);
+
+            var widthBinding = new Binding("Width") { Mode = BindingMode.TwoWay };
+            logoImage.SetBinding(WidthProperty, widthBinding);
+
+            var topBinding = new Binding("TopMargin") { Mode = BindingMode.TwoWay };
+            logoImage.SetBinding(Canvas.TopProperty, topBinding);
+
+            var leftBinding = new Binding("LeftMargin") { Mode = BindingMode.TwoWay };
+            logoImage.SetBinding(Canvas.LeftProperty, leftBinding);
+            return logoImage;
+        }
+
 
         protected override Size MeasureOverride(Size constraint)
         {
@@ -132,60 +124,76 @@ namespace FMA.View
 
             if (InternalChildren.Count == 0)
             {
-             return new Size();   
+                return new Size();
             }
 
-           var image = MaterialModel.FlyerFrontSideImage;
-            return new Size(image.Width,image.Height);
+            var image = MaterialModel.FlyerFrontSideImage;
+            return new Size(image.Width, image.Height);
         }
 
 
         private void SetEvents()
         {
-            MouseLeftButtonDown += (s,e)=> UnselectElement();
+            MouseLeftButtonDown += (s, e) => UnselectElement();
             MouseMove += Window1_MouseMove;
 
             PreviewMouseLeftButtonDown += Canvas_PreviewMouseLeftButtonDown;
 
-            MouseLeftButtonUp += (s,e)=> DragFinished(e);
-            MouseLeave += (s,e)=> DragFinished(e);
-            PreviewMouseLeftButtonUp +=  (s,e)=> DragFinished(e);
+            MouseLeftButtonUp += (s, e) => DragFinished(e);
+            MouseLeave += (s, e) => DragFinished(e);
+            PreviewMouseLeftButtonUp += (s, e) => DragFinished(e);
 
             Drop += LayoutCanvas_Drop;
         }
 
-        void LayoutCanvas_Drop(object sender, DragEventArgs e)
+        private void LayoutCanvas_Drop(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                // Note that you can have more than one file.
-                var files = (string[]) e.Data.GetData(DataFormats.FileDrop);
-
-                // Assuming you have one file that you care about, pass it off to whatever
-                // handling code you have defined.
-
-                var logoFile = files.First();
-
-                byte[] logoData;
-
-                using (var fileStream = new FileStream(logoFile, FileMode.Open))
-                {
-                    using (var ms = new MemoryStream())
-                    {
-                        fileStream.CopyTo(ms);
-                        logoData = ms.ToArray();
-                    }
-                }
-
-                this.MaterialModel.LogoModel.Logo = logoData;
-
-                var mousePosition = e.GetPosition(this);
-                this.MaterialModel.LogoModel.LeftMargin = (int)mousePosition.X;
-                this.MaterialModel.LogoModel.TopMargin = (int)mousePosition.Y;
-
-                //TODO Weg statt dessenauf Event hören
-                this.MaterialModelChanged();
+                return;
             }
+
+            var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            var logoFile = files.First();
+
+            byte[] logoData;
+
+            using (var fileStream = new FileStream(logoFile, FileMode.Open))
+            {
+                using (var ms = new MemoryStream())
+                {
+                    fileStream.CopyTo(ms);
+                    logoData = ms.ToArray();
+                }
+            }
+
+            var logoModel = this.MaterialModel.LogoModel;
+
+            logoModel.Logo = logoData;
+
+            var width = logoModel.LogoImage.PixelWidth;
+            var height = logoModel.LogoImage.PixelHeight;
+
+            var widthRatio = (this.ActualWidth / 2) / width;
+            var heigthRatio = (this.ActualHeight / 2) / height;
+
+            var minRatio = Math.Min(widthRatio, heigthRatio);
+
+            if (minRatio > 1)
+            {
+                minRatio = 1; //Only want to scale down
+            }
+
+            logoModel.Width = width * minRatio;
+            logoModel.Height = height * minRatio;
+
+            var mousePosition = e.GetPosition(this);
+            logoModel.LeftMargin = (int)mousePosition.X;
+            logoModel.TopMargin = (int)mousePosition.Y;
+
+            //TODo Warum?
+            MaterialModelChanged();
         }
 
         private void DragFinished(MouseEventArgs e)
@@ -199,8 +207,8 @@ namespace FMA.View
             e.Handled = true;
         }
 
-      
-        // Hanler for providing drag operation with selected element
+
+        // Handler for providing drag operation with selected element
         private void Window1_MouseMove(object sender, MouseEventArgs e)
         {
             if (!mouseDown)
@@ -225,33 +233,8 @@ namespace FMA.View
             var topMargin = position.Y - realtiveY;
             var leftMargin = position.X - relativeX;
 
-            SetMargins(topMargin, leftMargin);
-        }
-
-        private void SetMargins(double topMargin, double leftMargin)
-        {
             Canvas.SetTop(selectedElement, topMargin);
             Canvas.SetLeft(selectedElement, leftMargin);
-
-            //TODO HACK
-            var tag = ((FrameworkElement) selectedElement).Tag;
-            var model = tag as MaterialFieldModel;
-            if (model != null)
-            {
-                //TODO Cast nicht gut
-                model.TopMargin = (int) topMargin;
-                model.LeftMargin = (int) leftMargin;
-            }
-            else
-            {
-                var logoModel = tag as LogoModel;
-                if (logoModel != null)
-                {
-                    //TODO Cast nicht gut
-                    logoModel.TopMargin = (int)topMargin;
-                    logoModel.LeftMargin = (int)leftMargin;
-                }
-            }
         }
 
         private void UnselectElement()
@@ -260,7 +243,9 @@ namespace FMA.View
             {
                 return;
             }
-            adornerLayer.Remove(adornerLayer.GetAdorners(selectedElement)[0]);
+            var adorners = adornerLayer.GetAdorners(selectedElement);
+
+            if (adorners != null) adornerLayer.Remove(adorners[0]);
 
             selectedElement = null;
         }
@@ -269,9 +254,15 @@ namespace FMA.View
         private void Canvas_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             // Remove selection on clicking anywhere the window
-           UnselectElement();
+            UnselectElement();
 
             if (e.Source == this)
+            {
+                return;
+            }
+
+            var source = (UIElement)e.Source;
+            if (source == backgroundImage)
             {
                 return;
             }
@@ -282,12 +273,23 @@ namespace FMA.View
             mouseDown = true;
             startPoint = e.GetPosition(this);
 
-            selectedElement = (UIElement)e.Source;
+            selectedElement = source;
+
+
             realtiveY = startPoint.Y - Canvas.GetTop(selectedElement);
             relativeX = (startPoint.X - Canvas.GetLeft(selectedElement));
 
             adornerLayer = AdornerLayer.GetAdornerLayer(selectedElement);
-            adornerLayer.Add(new ResizingAdorner(selectedElement));
+
+            if (selectedElement is TextBlock)
+            {
+                adornerLayer.Add(new SelectionAdorner(selectedElement));
+            }
+            else if (selectedElement is Image)
+            {
+                adornerLayer.Add(new ResizingAdorner(selectedElement));
+            }
+
             e.Handled = true;
         }
     }

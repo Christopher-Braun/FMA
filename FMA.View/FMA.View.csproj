@@ -51,6 +51,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SelectionAdorner.cs" />
     <Page Include="FieldLayouter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -59,7 +60,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Adorner.cs" />
+    <Compile Include="ResizingAdorner.cs" />
+    <Compile Include="ArrangeAdorner.cs" />
     <Compile Include="FieldLayouter.xaml.cs">
       <DependentUpon>FieldLayouter.xaml</DependentUpon>
     </Compile>

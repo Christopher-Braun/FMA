@@ -49,7 +49,7 @@ namespace FMA.TestData
                     "Untertitel Nordkorea"),
                 new MaterialField("Ort", "Times New Roman", 16, false, true, false, 80, 3, 7, 83, "Hamburg")
             };
-            return new CustomMaterial(2, "Nordkorea", "Zum Thema Nordkorea…", material2Fields ,GetFrontSide(2), GetFrontSide(2));
+            return new CustomMaterial(2, "Nordkorea", "Zum Thema Nordkorea…", material2Fields ,GetFrontSide(2), GetFrontSide(2), new CustomLogo());
         }
 
         public static Byte[] GetFrontSide(int id)

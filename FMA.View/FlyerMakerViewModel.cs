@@ -24,7 +24,7 @@ namespace FMA.View
             SetMaterials(dummyMaterials, dummyMaterials.First());
 
             this.BothVisible = true;
-            MaterialFieldModel.EditLayoutMode = f=> FieldToEditLayout = f; 
+            MaterialFieldModel.EditLayoutMode = f => FieldToEditLayout = f;
         }
 
         public MaterialFieldModel FieldToEditLayout
@@ -44,7 +44,7 @@ namespace FMA.View
 
 
         public void SetMaterials(IEnumerable<Material> materials, Material selectedMaterial = null)
-        {         
+        {
             this.Materials = materials.Select(m => m.ToMaterialModel()).ToList();
             if (selectedMaterial != null)
             {
@@ -58,7 +58,7 @@ namespace FMA.View
             get { return materials; }
             set
             {
-                materials = value; 
+                materials = value;
                 OnPropertyChanged();
             }
         }
@@ -80,7 +80,7 @@ namespace FMA.View
                 }
 
                 this.selectedMaterial = value.Clone();
-                
+
                 OnPropertyChanged();
                 UpdateFlyer();
                 this.selectedMaterial.PropertyChanged += selectedMaterial_PropertyChanged;
@@ -165,7 +165,7 @@ namespace FMA.View
 
         public bool BothVisible
         {
-            get { return bothVisible; } 
+            get { return bothVisible; }
             set
             {
                 if (value.Equals(bothVisible)) return;

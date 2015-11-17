@@ -8,7 +8,7 @@ using FMA.Contracts.Properties;
 
 namespace FMA.View
 {
-    [DebuggerDisplay("Name: {FieldName} Valu:e {Value}")]
+    [DebuggerDisplay("Name: {FieldName} Value {Value}")]
     public class MaterialFieldModel : INotifyPropertyChanged, IDataErrorInfo
     {
         private string value;
@@ -167,7 +167,7 @@ namespace FMA.View
 
                 if (columnName == "Value")
                 {
-                    var newLine = new[] {"\r\n"};
+                    var newLine = new[] { "\r\n" };
                     var lines = Value.Split(newLine, StringSplitOptions.None);
 
                     if (lines.Aggregate((s1, s2) => s1 + s2).Length > MaxLength)
@@ -187,7 +187,7 @@ namespace FMA.View
             }
         }
 
-      
+
 
         public string Error
         {
@@ -200,7 +200,7 @@ namespace FMA.View
         }
 
         public static Action<MaterialFieldModel> EditLayoutMode;
-       
+
 
         public void MouseDoubleClick()
         {

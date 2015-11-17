@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -20,17 +18,21 @@ namespace FMA.Core
 
         public static BitmapSource GetFlyerLogo(this CustomMaterial material)
         {
-            if (material.Logo == null)
+            if (material.CustomLogo.HasLogo == false)
             {
                 return null;
             }
 
-            return GetBitmapImage(material.Logo);
+            return GetBitmapImage(material.CustomLogo.Logo);
         }
 
         public static BitmapImage GetBitmapImage(this byte[] bytes)
         {
             var imageSource = new BitmapImage();
+            if( bytes == null)
+            {
+                return imageSource;
+            }
 
             using (var stream = new MemoryStream(bytes))
             {
@@ -61,7 +63,7 @@ namespace FMA.Core
             var formattedText = new FormattedText(materialField.DefaultValue, CultureInfo.InvariantCulture, FlowDirection.LeftToRight, typeface, materialField.FontSize, Brushes.Black);
 
 
-            return new TextField(formattedText,origin);
+            return new TextField(formattedText, origin);
         }
     }
 

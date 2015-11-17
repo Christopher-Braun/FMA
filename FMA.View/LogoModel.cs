@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using System.Windows.Media.Imaging;
 using FMA.Core;
 using FMA.View.Annotations;
@@ -11,21 +10,10 @@ namespace FMA.View
     public class LogoModel : INotifyPropertyChanged
     {
         private byte[] logo;
-        private int leftMargin;
-        private int topMargin;
-        private Size size = Size.Empty;
-
-        public LogoModel()
-        {
-            
-        }
-
-        public LogoModel(byte[] logo, int leftMargin, int topMargin)
-        {
-            this.logo = logo;
-            this.leftMargin = leftMargin;
-            this.topMargin = topMargin;
-        }
+        private double leftMargin;
+        private double topMargin;
+        private double height;
+        private double width;
 
         public bool HasLogo
         {
@@ -47,7 +35,7 @@ namespace FMA.View
             }
         }
 
-        public int LeftMargin
+        public double LeftMargin
         {
             get { return leftMargin; }
             set
@@ -57,34 +45,31 @@ namespace FMA.View
             }
         }
 
-        public int TopMargin
+        public double TopMargin
         {
             get { return topMargin; }
             set
             {
-                topMargin = value; 
+                topMargin = value;
                 OnPropertyChanged();
             }
         }
 
-        public Size Size
+        public double Width
         {
-            get
-            {
-                if (this.HasLogo == false)
-                {
-                    return Size.Empty;
-                }
-                else if (size == Size.Empty)
-                {
-                    var logoImage = this.LogoImage;
-                    return new Size(logoImage.Width, logoImage.Height);
-                }
-                return size;
-            }
+            get { return width; }
             set
             {
-                size = value;
+                width = value;
+                OnPropertyChanged();
+            }
+        }
+        public double Height
+        {
+            get { return height; }
+            set
+            {
+                height = value;
                 OnPropertyChanged();
             }
         }

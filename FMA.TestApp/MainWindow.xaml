@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:view="clr-namespace:FMA.View;assembly=FMA.View"
         Title="MainWindow"
-        Width="1024"
-        Height="700">
+        Width="860"
+        Height="530">
 
     <view:FlyerMakerView x:Name="FlyerMakerView" HorizontalAlignment="Stretch" />
 

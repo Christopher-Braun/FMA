@@ -5,20 +5,7 @@ namespace FMA.Contracts
 {
     public class CustomMaterial
     {
-        public CustomMaterial(int id, string title, string description, IEnumerable<MaterialField> materialFields,
-            byte[] flyerFrontSide, byte[] flyerBackside)
-        {
-            Id = id;
-            Title = title;
-            Description = description;
-
-            this.MaterialFields = materialFields.ToList();
-
-            FlyerFrontSide = flyerFrontSide;
-            FlyerBackside = flyerBackside;
-        }
-
-        public CustomMaterial(int id, string title, string description, IEnumerable<MaterialField> materialFields, byte[] flyerFrontSide, byte[] flyerBackside, byte[] logo, double logoLeftMargin, double logoTopMargin, double logoWidth, double logoHeight)
+        public CustomMaterial(int id, string title, string description, IEnumerable<MaterialField> materialFields, byte[] flyerFrontSide, byte[] flyerBackside, CustomLogo customLogo)
         {
             Id = id;
             Title = title;
@@ -29,11 +16,7 @@ namespace FMA.Contracts
             FlyerFrontSide = flyerFrontSide;
             FlyerBackside = flyerBackside;
 
-            Logo = logo;
-            LogoLeftMargin = logoLeftMargin;
-            LogoTopMargin = logoTopMargin;
-            LogoWidth = logoWidth;
-            LogoHeight = logoHeight;
+            this.CustomLogo = customLogo;
         }
 
         public int Id { get; private set; }
@@ -47,14 +30,8 @@ namespace FMA.Contracts
 
         public byte[] FlyerFrontSide { get; private set; }
 
-        public byte[] FlyerBackside    { get; private set; }
+        public byte[] FlyerBackside { get; private set; }
 
-
-        public byte[] Logo { get; set; }
-
-        public double LogoLeftMargin { get; set; }
-        public double LogoTopMargin { get; set; }
-        public double LogoWidth { get; set; }
-        public double LogoHeight { get; set; }
+        public CustomLogo CustomLogo { get; private set; }
     }
 }

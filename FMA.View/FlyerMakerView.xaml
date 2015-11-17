@@ -153,6 +153,7 @@
                 <Image x:Name="Image1"
                        Margin="8"
                        HorizontalAlignment="Left"
+                       ClipToBounds="True"
                        Source="{Binding FlyerPreview}" />
 
                 <Border.Style>
