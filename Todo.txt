@@ -1,0 +1,5 @@
+Numberic Updown anbindung
+External Preview schlieﬂen
+CanCreate im Layoutmode
+Multiselect
+Drag verhalten

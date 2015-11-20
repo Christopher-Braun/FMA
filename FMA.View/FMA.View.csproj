@@ -51,8 +51,18 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefaultView.xaml.cs">
+      <DependentUpon>DefaultView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ExternalPreviewView.xaml.cs">
+      <DependentUpon>ExternalPreviewView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LayoutView.xaml.cs">
+      <DependentUpon>LayoutView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SelectionAdorner.cs" />
-    <Page Include="FieldLayouter.xaml">
+    <Compile Include="Helpers\WindowAspectRatio.cs" />
+    <Page Include="DefaultView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -62,14 +72,19 @@
     </Page>
     <Compile Include="ResizingAdorner.cs" />
     <Compile Include="ArrangeAdorner.cs" />
-    <Compile Include="FieldLayouter.xaml.cs">
-      <DependentUpon>FieldLayouter.xaml</DependentUpon>
-    </Compile>
     <Compile Include="FlyerMakerViewModel.cs" />
     <Compile Include="FlyerMakerView.xaml.cs">
       <DependentUpon>FlyerMakerView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ExternalPreviewView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LayoutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="NumericUpDown.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -85,11 +100,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LayoutCanvas.cs" />
-    <Compile Include="LogoModel.cs" />
-    <Compile Include="MaterialConversions.cs" />
-    <Compile Include="MaterialModel.cs" />
-    <Compile Include="MaterialFieldModel.cs" />
-    <Compile Include="NotNullToVisibleConverter.cs" />
+    <Compile Include="Models\LogoModel.cs" />
+    <Compile Include="Models\MaterialConversions.cs" />
+    <Compile Include="Models\MaterialModel.cs" />
+    <Compile Include="Models\MaterialFieldModel.cs" />
+    <Compile Include="Helpers\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="NumericUpDown.xaml.cs">
       <DependentUpon>NumericUpDown.xaml</DependentUpon>
     </Compile>

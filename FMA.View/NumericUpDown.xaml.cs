@@ -1,15 +1,4 @@
-﻿#region Authoren-Team: Christopher Braun, Gerhard Christl, Matthias Stamm
-// ****************************************************************************
-// *
-// *    Author: Christopher Braun, DC/ETI24
-// *    Author: Gerhard Christl, DC/ETI24
-// *    Author: Matthias Stamm, DC/ETI24
-// *    Copyright 2012 Bosch Rexroth AG
-// *
-// ****************************************************************************
-#endregion
-
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
@@ -19,9 +8,6 @@ using System.Windows.Media;
 
 namespace FMA.View
 {
-    /// <summary>
-    /// Interaction logic for UserControl1.xaml
-    /// </summary>
     public partial class NumericUpDown : UserControl, INotifyPropertyChanged
     {
         private String lastValue = String.Empty;
@@ -33,7 +19,7 @@ namespace FMA.View
             DependencyProperty.Register("Minimum", typeof(int), typeof(NumericUpDown), new PropertyMetadata(-100));
 
         public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register("Value", typeof(int), typeof(NumericUpDown), new FrameworkPropertyMetadata(0, ValueChanged){BindsTwoWayByDefault = true});
+            DependencyProperty.Register("Value", typeof(int), typeof(NumericUpDown), new FrameworkPropertyMetadata(0, ValueChanged) { BindsTwoWayByDefault = true });
 
         public static readonly DependencyProperty PressedBrushProperty = DependencyProperty.Register("PressedBrush", typeof(Brush), typeof(NumericUpDown),
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
@@ -60,7 +46,7 @@ namespace FMA.View
         protected void OnPropertyChanged(string name)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
-            if ( handler != null )
+            if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(name));
             }
@@ -118,7 +104,7 @@ namespace FMA.View
         {
             var control = d as NumericUpDown;
 
-            if ( control != null && e.NewValue is int )
+            if (control != null && e.NewValue is int)
             {
                 control.SetValue((int)e.NewValue);
             }
@@ -127,20 +113,20 @@ namespace FMA.View
         private void SetValue(int value)
         {
             var textBox = textBox1;
-            if ( textBox == null )
+            if (textBox == null)
             {
                 return;
             }
 
             var lastindex = false;
             var index = textBox.CaretIndex;
-            if ( index == textBox.Text.Length )
+            if (index == textBox.Text.Length)
             {
                 lastindex = true;
             }
 
             var text = value.ToString(CultureInfo.InvariantCulture);
-            
+
             textBox.Text = text.Replace(",", ".");
 
             textBox.CaretIndex = lastindex ? textBox.Text.Length : index;
@@ -185,14 +171,14 @@ namespace FMA.View
         private void textBox1_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             var validInput = IsValidInput(e.Text);
-            if ( validInput == false )
+            if (validInput == false)
             {
                 e.Handled = true;
                 return;
             }
 
             var textBox = sender as TextBox;
-            if ( textBox == null )
+            if (textBox == null)
             {
                 e.Handled = true;
                 return;
@@ -207,7 +193,7 @@ namespace FMA.View
             switch (e.Text)
             {
                 case "-":
-                    if ( ContainsSign(textBox.Text) )
+                    if (ContainsSign(textBox.Text))
                     {
                         textBox.Text = text.Replace("-", "");
                         textBox.CaretIndex = caretIndex - 1;
@@ -220,7 +206,7 @@ namespace FMA.View
                     e.Handled = true;
                     return;
                 case "+":
-                    if ( ContainsSign(textBox.Text) )
+                    if (ContainsSign(textBox.Text))
                     {
                         textBox.Text = text.Replace("-", "");
                         textBox.CaretIndex = caretIndex - 1;
@@ -232,12 +218,12 @@ namespace FMA.View
                     break;
             }
 
-            if ( ContainsSeperator(e.Text) )
+            if (ContainsSeperator(e.Text))
             {
                 var containsSeperator = ContainsSeperator(textBox.Text);
                 {
                     e.Handled = containsSeperator;
-                    if ( containsSeperator )
+                    if (containsSeperator)
                     {
                         return;
                     }
@@ -251,34 +237,34 @@ namespace FMA.View
         {
 
             var textBox = sender as TextBox;
-            if ( textBox == null )
+            if (textBox == null)
             {
                 return;
             }
 
             try
             {
-                if ( this.lastValue == textBox.Text )
+                if (this.lastValue == textBox.Text)
                 {
                     return;
                 }
 
                 this.lastValue = textBox.Text;
 
-                if ( textBox.Text.Contains(",") )
+                if (textBox.Text.Contains(","))
                 {
                     var index = textBox.CaretIndex;
                     textBox.Text = textBox.Text.Replace(",", ".");
                     textBox.CaretIndex = index;
                 }
 
-                if ( textBox.Text.Contains("0") )
+                if (textBox.Text.Contains("0"))
                 {
                     var hasSign = false;
 
                     var actualText = textBox.Text;
 
-                    if ( ContainsSign(textBox.Text) )
+                    if (ContainsSign(textBox.Text))
                     {
                         hasSign = true;
                         actualText = actualText.Replace("-", "");
@@ -286,9 +272,9 @@ namespace FMA.View
 
                     var count = 0;
 
-                    foreach ( var nullChar in actualText )
+                    foreach (var nullChar in actualText)
                     {
-                        if ( nullChar == '0' )
+                        if (nullChar == '0')
                         {
                             count++;
                         }
@@ -298,10 +284,10 @@ namespace FMA.View
                         }
                     }
 
-                    if ( count > 1 )
+                    if (count > 1)
                     {
                         actualText = actualText.Remove(0, count - 1);
-                        if ( hasSign )
+                        if (hasSign)
                         {
                             actualText = actualText.Insert(0, "-");
                         }
@@ -313,15 +299,15 @@ namespace FMA.View
 
                 int value;
 
-                if ( TryParseint(textBox.Text, out value) )
+                if (TryParseint(textBox.Text, out value))
                 {
-                    if ( value < Minimum )
+                    if (value < Minimum)
                     {
                         value = Minimum;
                         SetValue(value);
                     }
 
-                    if ( value > Maximum )
+                    if (value > Maximum)
                     {
                         value = Maximum;
                         SetValue(value);
@@ -333,7 +319,7 @@ namespace FMA.View
 
                 this.lastValue = textBox.Text;
             }
-            catch ( Exception )
+            catch (Exception)
             {
                 this.lastValue = "0";
                 textBox.Text = "0";
@@ -347,7 +333,7 @@ namespace FMA.View
 
         private void textBox1_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if ( e.Delta > 0 )
+            if (e.Delta > 0)
             {
                 IncreaseValue(-1);
             }
@@ -371,19 +357,19 @@ namespace FMA.View
         {
             var firstLetter = input[0];
 
-            if ( firstLetter.Equals('-') )
+            if (firstLetter.Equals('-'))
             {
                 return true;
             }
-            if ( firstLetter.Equals('.') )
+            if (firstLetter.Equals('.'))
             {
                 return true;
             }
-            if ( firstLetter.Equals(',') )
+            if (firstLetter.Equals(','))
             {
                 return true;
             }
-            if ( Char.IsNumber(firstLetter) )
+            if (Char.IsNumber(firstLetter))
             {
                 return true;
             }
@@ -394,14 +380,14 @@ namespace FMA.View
         private void IncreaseValue(int delta)
         {
             var textBox = textBox1;
-            if ( textBox == null )
+            if (textBox == null)
             {
                 return;
             }
 
             int value;
 
-            if (!TryParseint(textBox.Text, out value)){ return;}
+            if (!TryParseint(textBox.Text, out value)) { return; }
             var index = textBox.CaretIndex;
             value += delta;
             SetValue(value);

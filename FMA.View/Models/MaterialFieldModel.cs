@@ -187,8 +187,6 @@ namespace FMA.View
             }
         }
 
-
-
         public string Error
         {
             get { return error; }
@@ -196,17 +194,6 @@ namespace FMA.View
             {
                 error = value;
                 OnPropertyChanged();
-            }
-        }
-
-        public static Action<MaterialFieldModel> EditLayoutMode;
-
-
-        public void MouseDoubleClick()
-        {
-            if (Keyboard.Modifiers == ModifierKeys.Shift)
-            {
-                EditLayoutMode(this);
             }
         }
     }

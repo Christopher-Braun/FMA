@@ -15,9 +15,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <view:NotNullToVisibleConverter x:Key="NotNullToVisibleConverter" />
-            <view:NullToVisibleConverter x:Key="NullToVisibleConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.DataContext>
@@ -54,146 +51,8 @@
             </Grid>
         </Grid>
 
-        <Grid x:Name="InputAndPreview" Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <Border x:Name="Input"
-                    Margin="8,8,0,8"
-                    BorderBrush="CadetBlue"
-                    BorderThickness="1">
-                <Grid>
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" Visibility="{Binding FieldToEditLayout, Converter={StaticResource NotNullToVisibleConverter}}">
-                        <ItemsControl Margin="8"
-                                      Grid.IsSharedSizeScope="True"
-                                      ItemsSource="{Binding SelectedMaterial.MaterialFields}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate DataType="view:MaterialFieldModel">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" SharedSizeGroup="A" />
-                                            <ColumnDefinition Width="*" SharedSizeGroup="B" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Margin="4" Text="{Binding FieldName}" />
-                                        <TextBox Grid.Column="1"
-                                                 Margin="4,4,16,4"
-                                                 AcceptsReturn="True"
-                                                 Style="{StaticResource TextBoxWithValidation}"
-                                                 Text="{Binding Value,
-                                                                UpdateSourceTrigger=PropertyChanged,
-                                                                NotifyOnValidationError=True,
-                                                                ValidatesOnDataErrors=True}">
-                                            <i:Interaction.Triggers>
-                                                <i:EventTrigger EventName="MouseDoubleClick">
-                                                    <si:CallMethodAction MethodName="MouseDoubleClick" TargetObject="{Binding}" />
-                                                </i:EventTrigger>
-                                            </i:Interaction.Triggers>
-                                        </TextBox>
-                                    </Grid>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
-
-                    <Grid Name="FieldLayouter" Visibility="{Binding FieldToEditLayout, Converter={StaticResource NullToVisibleConverter}}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <view:FieldLayouter />
-                        <Button Grid.Row="1"
-                                Margin="4"
-                                Content="Back">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Click">
-                                    <si:CallMethodAction MethodName="ExitLayoutMode" TargetObject="{Binding}" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </Button>
-                    </Grid>
-
-                </Grid>
-                <Border.Style>
-                    <Style TargetType="Border">
-                        <Style.Triggers>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding PreviewVisible}" Value="True" />
-                                    <Condition Binding="{Binding BothVisible}" Value="False" />
-                                </MultiDataTrigger.Conditions>
-                                <MultiDataTrigger.ExitActions>
-                                    <BeginStoryboard Storyboard="{StaticResource FadeIn}" />
-                                </MultiDataTrigger.ExitActions>
-                                <MultiDataTrigger.EnterActions>
-                                    <BeginStoryboard Storyboard="{StaticResource FadeOut}" />
-                                </MultiDataTrigger.EnterActions>
-                            </MultiDataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>
-
-            </Border>
-
-            <GridSplitter Grid.Column="1"
-                          Width="8"
-                          HorizontalAlignment="Stretch"
-                          Background="Transparent" />
-
-            <Border x:Name="Preview"
-                    Grid.Column="2"
-                    Margin="0,8,8,8"
-                    HorizontalAlignment="Left"
-                    BorderBrush="CadetBlue"
-                    BorderThickness="1">
-
-                <Image x:Name="Image1"
-                       Margin="8"
-                       HorizontalAlignment="Left"
-                       ClipToBounds="True"
-                       Source="{Binding FlyerPreview}" />
-
-                <Border.Style>
-                    <Style TargetType="Border">
-                        <Style.Triggers>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding InputVisible}" Value="True" />
-                                    <Condition Binding="{Binding BothVisible}" Value="False" />
-                                </MultiDataTrigger.Conditions>
-                                <MultiDataTrigger.ExitActions>
-                                    <BeginStoryboard Storyboard="{StaticResource FadeIn}" />
-                                </MultiDataTrigger.ExitActions>
-                                <MultiDataTrigger.EnterActions>
-                                    <BeginStoryboard Storyboard="{StaticResource FadeOut}" />
-                                </MultiDataTrigger.EnterActions>
-                            </MultiDataTrigger>
-
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>
-            </Border>
-
-            <Border x:Name="Layouter"
-                    Grid.Column="3"
-                    Margin="0,8,8,8"
-                    BorderBrush="CadetBlue"
-                    BorderThickness="1">
-                <Viewbox HorizontalAlignment="Stretch"
-                         VerticalAlignment="Stretch"
-                         Stretch="Uniform">
-                    <view:LayoutCanvas Margin="8"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Top"
-                                       ClipToBounds="True"
-                                       MaterialModel="{Binding SelectedMaterial}" />
-                </Viewbox>
-            </Border>
-
-        </Grid>
+        <view:DefaultView Grid.Row="1" Visibility="{Binding LayoutMode, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+        <view:LayoutView Grid.Row="1" Visibility="{Binding LayoutMode, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
         <StackPanel Grid.Row="2"
                     Grid.ColumnSpan="3"
@@ -231,6 +90,14 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>
+            <ToggleButton Margin="8"
+                          HorizontalAlignment="Stretch"
+                          Content="External Preview"
+                          IsChecked="{Binding ExternalPreviewVisible}" />
+            <ToggleButton Margin="8"
+                          HorizontalAlignment="Stretch"
+                          Content="Layout Mode"
+                          IsChecked="{Binding LayoutMode}" />
         </StackPanel>
     </Grid>
 </UserControl>

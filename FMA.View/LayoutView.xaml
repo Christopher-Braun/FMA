@@ -1,0 +1,137 @@
+﻿<UserControl x:Class="FMA.View.LayoutView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:view="clr-namespace:FMA.View"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid x:Name="InputAndPreview">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Border x:Name="Input"
+                Margin="8,8,0,8"
+                BorderBrush="CadetBlue"
+                BorderThickness="1">
+            <Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl Margin="8"
+                                  Grid.IsSharedSizeScope="True"
+                                  ItemsSource="{Binding SelectedMaterial.MaterialFields}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="view:MaterialFieldModel">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" SharedSizeGroup="A" />
+                                        <ColumnDefinition Width="*" SharedSizeGroup="B" />
+                                        <ColumnDefinition Width="*" SharedSizeGroup="C" />
+                                        <ColumnDefinition Width="*" SharedSizeGroup="D" />
+                                        <ColumnDefinition Width="*" SharedSizeGroup="E" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Margin="4" Text="{Binding FieldName}" />
+                                    <TextBox Grid.Column="1"
+                                             Margin="4,4,16,4"
+                                             AcceptsReturn="True"
+                                             Style="{StaticResource TextBoxWithValidation}"
+                                             Text="{Binding Value,
+                                                            UpdateSourceTrigger=PropertyChanged}" />
+
+                                    <TextBox Grid.Column="2"
+                                             MinWidth="40"
+                                             Margin="4,4,16,4"
+                                             Text="{Binding TopMargin}" />
+
+                                    <TextBox Grid.Column="3"
+                                             MinWidth="40"
+                                             Margin="4,4,16,4"
+                                             Text="{Binding LeftMargin}" />
+
+                                    <view:NumericUpDown Grid.Column="4"
+                                                        MinWidth="40"
+                                                        Margin="4,4,16,4"
+                                                        Minimum="1"
+                                                        Value="{Binding FontSize}" />
+
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+            </Grid>
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding PreviewVisible}" Value="True" />
+                                <Condition Binding="{Binding BothVisible}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.ExitActions>
+                                <BeginStoryboard Storyboard="{StaticResource FadeIn}" />
+                            </MultiDataTrigger.ExitActions>
+                            <MultiDataTrigger.EnterActions>
+                                <BeginStoryboard Storyboard="{StaticResource FadeOut}" />
+                            </MultiDataTrigger.EnterActions>
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+        </Border>
+
+        <GridSplitter Grid.Column="1"
+                      Width="8"
+                      HorizontalAlignment="Stretch"
+                      Background="Transparent" />
+
+
+        <Border x:Name="Layouter"
+                Grid.Column="2"
+                Margin="0,8,8,8"
+                BorderBrush="CadetBlue"
+                BorderThickness="1">
+            <Viewbox HorizontalAlignment="Stretch"
+                     VerticalAlignment="Stretch"
+                     Stretch="Uniform">
+                <view:LayoutCanvas Margin="8"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   ClipToBounds="True"
+                                   MaterialModel="{Binding SelectedMaterial}" />
+            </Viewbox>
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding InputVisible}" Value="True" />
+                                <Condition Binding="{Binding BothVisible}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.ExitActions>
+                                <BeginStoryboard Storyboard="{StaticResource FadeIn}" />
+                            </MultiDataTrigger.ExitActions>
+                            <MultiDataTrigger.EnterActions>
+                                <BeginStoryboard Storyboard="{StaticResource FadeOut}" />
+                            </MultiDataTrigger.EnterActions>
+                        </MultiDataTrigger>
+
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        </Border>
+
+    </Grid>
+</UserControl>

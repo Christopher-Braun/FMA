@@ -3,43 +3,65 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows.Controls;
 using System.Windows.Media;
 using FMA.Contracts;
 using FMA.Core;
-using FMA.TestData;
 using FMA.View.Properties;
 
 namespace FMA.View
 {
     public class FlyerMakerViewModel : INotifyPropertyChanged, IFlyerMakerView
     {
-
         public event Action<CustomMaterial> FlyerCreated = m => { };
+
+        private bool bothVisible;
+        private List<MaterialModel> materials;
+        private readonly ExternalPreviewView externalPreviewView;
+        private bool previewVisible;
+        private bool externalPreviewVisible;
+        private bool inputVisible;
 
         public FlyerMakerViewModel()
         {
-            // TODO: Remove when going productive
-            var dummyMaterials = DummyData.GetDummyMaterials();
-            SetMaterials(dummyMaterials, dummyMaterials.First());
-
             this.BothVisible = true;
-            MaterialFieldModel.EditLayoutMode = f => FieldToEditLayout = f;
+            externalPreviewView = new ExternalPreviewView(() => this.FlyerPreview);
+            this.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == "FlyerPreview")
+                {
+                    externalPreviewView.FlyerChanged();
+                }
+            };
         }
 
-        public MaterialFieldModel FieldToEditLayout
+        public bool ExternalPreviewVisible
         {
-            get { return fieldToEditLayout; }
+            get { return externalPreviewVisible; }
             set
             {
-                fieldToEditLayout = value;
+                externalPreviewVisible = value;
+
+                if (value)
+                {
+                    externalPreviewView.Show();
+                }
+                else
+                {
+                    externalPreviewView.Hide();
+                }
+
                 OnPropertyChanged();
             }
         }
 
-        public void ExitLayoutMode()
+        public bool LayoutMode
         {
-            this.FieldToEditLayout = null;
+            get { return layoutMode; }
+            set
+            {
+                layoutMode = value;
+                OnPropertyChanged();
+            }
         }
 
 
@@ -64,6 +86,8 @@ namespace FMA.View
         }
 
         private MaterialModel selectedMaterial;
+        private bool layoutMode;
+
         public MaterialModel SelectedMaterial
         {
             get { return selectedMaterial; }
@@ -82,21 +106,18 @@ namespace FMA.View
                 this.selectedMaterial = value.Clone();
 
                 OnPropertyChanged();
-                UpdateFlyer();
+
                 this.selectedMaterial.PropertyChanged += selectedMaterial_PropertyChanged;
+                selectedMaterial_PropertyChanged(null, null);
             }
         }
 
         private void selectedMaterial_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            UpdateFlyer();
             OnPropertyChanged("CanCreate");
-        }
-
-        private void UpdateFlyer()
-        {
             OnPropertyChanged("FlyerPreview");
         }
+
 
         public bool CanCreate
         {
@@ -135,7 +156,7 @@ namespace FMA.View
             this.SelectedMaterial = this.Materials.Single(m => m.Id.Equals(this.SelectedMaterial.Id));
         }
 
-        private bool previewVisible;
+
         public bool PreviewVisible
         {
             get { return previewVisible; }
@@ -147,7 +168,7 @@ namespace FMA.View
             }
         }
 
-        private bool inputVisible;
+
         public bool InputVisible
         {
             get { return inputVisible; }
@@ -158,10 +179,6 @@ namespace FMA.View
                 OnPropertyChanged();
             }
         }
-
-        private bool bothVisible;
-        private List<MaterialModel> materials;
-        private MaterialFieldModel fieldToEditLayout;
 
         public bool BothVisible
         {
