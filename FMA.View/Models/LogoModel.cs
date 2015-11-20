@@ -11,6 +11,7 @@ namespace FMA.View
         private double topMargin;
         private double height;
         private double width;
+        private BitmapImage logoImage;
 
         public bool HasLogo
         {
@@ -19,7 +20,12 @@ namespace FMA.View
 
         public BitmapImage LogoImage
         {
-            get { return this.Logo.GetBitmapImage(); }
+            get { return logoImage; }
+            private set
+            {
+                logoImage = value;
+                OnPropertyChanged();
+            }
         }
 
         public Byte[] Logo
@@ -28,6 +34,7 @@ namespace FMA.View
             set
             {
                 logo = value;
+                this.LogoImage = this.Logo.GetBitmapImage();
                 OnPropertyChanged();
             }
         }

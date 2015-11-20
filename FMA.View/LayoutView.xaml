@@ -29,7 +29,7 @@
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <ItemsControl Margin="8"
                                   Grid.IsSharedSizeScope="True"
-                                  ItemsSource="{Binding SelectedMaterial.MaterialFields}">
+                                  ItemsSource="{Binding SelectedMaterialProvider.SelectedMaterial.MaterialFields}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="view:MaterialFieldModel">
                                 <Grid>
@@ -110,7 +110,7 @@
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Top"
                                    ClipToBounds="True"
-                                   MaterialModel="{Binding SelectedMaterial}" />
+                                   MaterialModel="{Binding SelectedMaterialProvider.SelectedMaterial}" />
             </Viewbox>
             <Border.Style>
                 <Style TargetType="Border">

@@ -54,16 +54,20 @@
     <Compile Include="DefaultView.xaml.cs">
       <DependentUpon>DefaultView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DefaultViewModel.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="ExternalPreviewView.xaml.cs">
       <DependentUpon>ExternalPreviewView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FlyerViewModelBase.cs" />
     <Compile Include="LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LayoutViewModel.cs" />
+    <Compile Include="SelectedMaterialProvider.cs" />
     <Compile Include="Models\MaterialModelExtensions.cs" />
     <Compile Include="Models\NotifyPropertyChangedBase.cs" />
-    <Compile Include="SelectionAdorner.cs" />
+    <Compile Include="Helpers\SelectionAdorner.cs" />
     <Compile Include="Helpers\WindowAspectRatio.cs" />
     <Page Include="DefaultView.xaml">
       <SubType>Designer</SubType>
@@ -73,8 +77,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="ResizingAdorner.cs" />
-    <Compile Include="ArrangeAdorner.cs" />
+    <Compile Include="Helpers\ResizingAdorner.cs" />
+    <Compile Include="Helpers\ArrangeAdorner.cs" />
     <Compile Include="FlyerMakerViewModel.cs" />
     <Compile Include="FlyerMakerView.xaml.cs">
       <DependentUpon>FlyerMakerView.xaml</DependentUpon>
@@ -95,10 +99,6 @@
     <Page Include="Resources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

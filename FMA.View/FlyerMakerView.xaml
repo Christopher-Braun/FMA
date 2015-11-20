@@ -15,6 +15,15 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <DataTemplate DataType="{x:Type view:DefaultViewModel}">
+               <view:DefaultView></view:DefaultView>
+            </DataTemplate>  
+            
+            <DataTemplate DataType="{x:Type view:LayoutViewModel}">
+               <view:LayoutView></view:LayoutView>
+            </DataTemplate>
+            
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.DataContext>
@@ -51,9 +60,8 @@
             </Grid>
         </Grid>
 
-        <view:DefaultView Grid.Row="1" Visibility="{Binding LayoutMode, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
-        <view:LayoutView Grid.Row="1" Visibility="{Binding LayoutMode, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
+        <ContentControl Grid.Row="1" Content="{Binding SubView}"></ContentControl>
+  
         <StackPanel Grid.Row="2"
                     Grid.ColumnSpan="3"
                     Margin="8"

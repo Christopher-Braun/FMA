@@ -11,42 +11,20 @@ namespace FMA.View
     /// <summary>
     /// Interaction logic for ExternalPreviewView.xaml
     /// </summary>
-    public partial class ExternalPreviewView : Window, INotifyPropertyChanged
+    public partial class ExternalPreviewView : Window
     {
-        private readonly Func<ImageSource> getPreview;
+        public SelectedMaterialProvider SelectedMaterialProvider { get; private set; }
 
-        public ExternalPreviewView(Func<ImageSource> getPreview)
+        public ExternalPreviewView(SelectedMaterialProvider selectedMaterialProvider)
         {
-
-            this.getPreview = getPreview;
+            this.SelectedMaterialProvider = selectedMaterialProvider;
+           
             InitializeComponent();
             this.DataContext = this;
 
             const int margin = 40;
             this.Top = margin;
             this.Height = SystemParameters.PrimaryScreenHeight - 2 * margin;
-        }
-
-        public ImageSource FlyerPreview
-        {
-            get
-            {
-                return getPreview();
-            }
-        }
-
-        public void FlyerChanged()
-        {
-            this.OnPropertyChanged("FlyerPreview");
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void FlyerPreviewView_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

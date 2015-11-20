@@ -31,7 +31,7 @@
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <ItemsControl Margin="8"
                                   Grid.IsSharedSizeScope="True"
-                                  ItemsSource="{Binding SelectedMaterial.MaterialFields}">
+                                  ItemsSource="{Binding SelectedMaterialProvider.SelectedMaterial.MaterialFields}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="view:MaterialFieldModel">
                                 <Grid>
@@ -98,7 +98,17 @@
                    Margin="8"
                    HorizontalAlignment="Left"
                    ClipToBounds="True"
-                   Source="{Binding FlyerPreview}" />
+                   AllowDrop="True"
+                   
+                   Source="{Binding SelectedMaterialProvider.FlyerPreview}" >
+              
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Drop">
+                        <ei:CallMethodAction MethodName="OnDrop" TargetObject="{Binding}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+               
+            </Image>
 
             <Border.Style>
                 <Style TargetType="Border">

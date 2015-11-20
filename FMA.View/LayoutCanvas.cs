@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -44,6 +43,7 @@ namespace FMA.View
         public LayoutCanvas()
         {
             SetEvents();
+            this.ClipToBounds = true;
             this.AllowDrop = true;
         }
 
@@ -149,7 +149,7 @@ namespace FMA.View
         {
             if (this.DropLogo(this.MaterialModel,e))
             {
-                //TODo Warum?
+                //TODO Warum?
                 MaterialModelChanged();
             }
         }

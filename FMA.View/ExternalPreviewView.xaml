@@ -11,5 +11,5 @@
         WindowStyle="None">
     <Image x:Name="Image1"
            ClipToBounds="True"
-           Source="{Binding FlyerPreview}" />
+           Source="{Binding SelectedMaterialProvider.FlyerPreview}" />
 </Window>
