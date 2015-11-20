@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Media.Imaging;
 using FMA.Contracts.Properties;
 using FMA.Core;
@@ -57,7 +59,6 @@ namespace FMA.View
         public Byte[] FlyerBackside { get; private set; }
 
         public LogoModel LogoModel { get; private set; }
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 

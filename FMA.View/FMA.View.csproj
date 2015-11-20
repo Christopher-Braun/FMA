@@ -54,12 +54,15 @@
     <Compile Include="DefaultView.xaml.cs">
       <DependentUpon>DefaultView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Extensions.cs" />
     <Compile Include="ExternalPreviewView.xaml.cs">
       <DependentUpon>ExternalPreviewView.xaml</DependentUpon>
     </Compile>
     <Compile Include="LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\MaterialModelExtensions.cs" />
+    <Compile Include="Models\NotifyPropertyChangedBase.cs" />
     <Compile Include="SelectionAdorner.cs" />
     <Compile Include="Helpers\WindowAspectRatio.cs" />
     <Page Include="DefaultView.xaml">

@@ -12,7 +12,7 @@ namespace FMA.View
     public class MaterialFieldModel : INotifyPropertyChanged, IDataErrorInfo
     {
         private string value;
-        private string error;
+        private string error= string.Empty;
         private int topMargin;
         private int leftMargin;
         private int maxRows;
@@ -192,8 +192,13 @@ namespace FMA.View
             get { return error; }
             private set
             {
+                if( string.CompareOrdinal(error, value) == 0)
+                {
+                    return;
+                }
                 error = value;
                 OnPropertyChanged();
+
             }
         }
     }

@@ -35,7 +35,6 @@ namespace FMA.View
             set { SetValue(MaterialModelProperty, value); }
         }
 
-
         private static void PropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var me = (LayoutCanvas)d;
@@ -148,52 +147,11 @@ namespace FMA.View
 
         private void LayoutCanvas_Drop(object sender, DragEventArgs e)
         {
-            if (!e.Data.GetDataPresent(DataFormats.FileDrop))
+            if (this.DropLogo(this.MaterialModel,e))
             {
-                return;
+                //TODo Warum?
+                MaterialModelChanged();
             }
-
-            var files = (string[])e.Data.GetData(DataFormats.FileDrop);
-
-            var logoFile = files.First();
-
-            byte[] logoData;
-
-            using (var fileStream = new FileStream(logoFile, FileMode.Open))
-            {
-                using (var ms = new MemoryStream())
-                {
-                    fileStream.CopyTo(ms);
-                    logoData = ms.ToArray();
-                }
-            }
-
-            var logoModel = this.MaterialModel.LogoModel;
-
-            logoModel.Logo = logoData;
-
-            var width = logoModel.LogoImage.PixelWidth;
-            var height = logoModel.LogoImage.PixelHeight;
-
-            var widthRatio = (this.ActualWidth / 2) / width;
-            var heigthRatio = (this.ActualHeight / 2) / height;
-
-            var minRatio = Math.Min(widthRatio, heigthRatio);
-
-            if (minRatio > 1)
-            {
-                minRatio = 1; //Only want to scale down
-            }
-
-            logoModel.Width = width * minRatio;
-            logoModel.Height = height * minRatio;
-
-            var mousePosition = e.GetPosition(this);
-            logoModel.LeftMargin = (int)mousePosition.X;
-            logoModel.TopMargin = (int)mousePosition.Y;
-
-            //TODo Warum?
-            MaterialModelChanged();
         }
 
         private void DragFinished(MouseEventArgs e)

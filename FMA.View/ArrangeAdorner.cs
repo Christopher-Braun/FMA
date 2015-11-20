@@ -10,7 +10,10 @@ namespace FMA.View
     {
         // Resizing adorner uses Thumbs for visual elements.  
         // The Thumbs have built-in mouse input handling.
-        Thumb topLeft, topRight, bottomLeft, bottomRight;
+        readonly Thumb topLeft;
+        readonly Thumb topRight;
+        readonly Thumb bottomLeft;
+        readonly Thumb bottomRight;
 
         // To store and manage the adorner's visual children.
         VisualCollection visualChildren;

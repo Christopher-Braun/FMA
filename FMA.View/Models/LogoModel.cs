@@ -1,13 +1,10 @@
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Media.Imaging;
 using FMA.Core;
-using FMA.View.Annotations;
 
 namespace FMA.View
 {
-    public class LogoModel : INotifyPropertyChanged
+    public class LogoModel : NotifyPropertyChangedBase
     {
         private byte[] logo;
         private double leftMargin;
@@ -74,13 +71,8 @@ namespace FMA.View
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+     
 
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
+     
     }
 }

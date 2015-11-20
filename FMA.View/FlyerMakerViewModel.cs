@@ -25,13 +25,6 @@ namespace FMA.View
         {
             this.BothVisible = true;
             externalPreviewView = new ExternalPreviewView(() => this.FlyerPreview);
-            this.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == "FlyerPreview")
-                {
-                    externalPreviewView.FlyerChanged();
-                }
-            };
         }
 
         public bool ExternalPreviewVisible
@@ -43,6 +36,7 @@ namespace FMA.View
 
                 if (value)
                 {
+                    externalPreviewView.FlyerChanged();
                     externalPreviewView.Show();
                 }
                 else
@@ -73,7 +67,6 @@ namespace FMA.View
                 this.SelectedMaterial = selectedMaterial.ToMaterialModel();
             }
         }
-
 
         public List<MaterialModel> Materials
         {
@@ -114,8 +107,14 @@ namespace FMA.View
 
         private void selectedMaterial_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            this.flyerPreview = null;
             OnPropertyChanged("CanCreate");
             OnPropertyChanged("FlyerPreview");
+
+            if (ExternalPreviewVisible)
+            {
+                externalPreviewView.FlyerChanged();
+            }
         }
 
 
@@ -128,11 +127,11 @@ namespace FMA.View
                     return false;
                 }
 
-                return SelectedMaterial.MaterialFields.All(f => String.IsNullOrEmpty(f.Error));
+                return SelectedMaterial.MaterialFields.All(f => string.IsNullOrEmpty(f.Error));
             }
         }
 
-
+        private ImageSource flyerPreview;
         public ImageSource FlyerPreview
         {
             get
@@ -141,10 +140,15 @@ namespace FMA.View
                 {
                     return null;
                 }
-                return FlyerCreator.CreateImage(SelectedMaterial.ToCustomMaterial());
+
+                if (flyerPreview == null)
+                {
+                    this.flyerPreview = FlyerCreator.CreateImage(SelectedMaterial.ToCustomMaterial());
+                }
+
+                return flyerPreview;
             }
         }
-
 
         public void Save()
         {
