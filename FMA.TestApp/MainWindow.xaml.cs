@@ -22,6 +22,9 @@ namespace FMA
             var dummyMaterials = DummyData.GetDummyMaterials();
             viewModel.SetMaterials(dummyMaterials, dummyMaterials.Last());
 
+            WindowService ws = new WindowService(this);
+            viewModel.WindowService = ws;
+
             viewModel.FlyerCreated += (cm) =>
             {
                 var flyer = FlyerCreator.CreateFlyer(cm);

@@ -12,13 +12,12 @@ namespace FMA.View
     {
         public event Action<CustomMaterial> FlyerCreated = m => { };
 
-        private bool bothVisible;
+        public WindowService WindowService { get; set; }
+       
         private List<MaterialModel> materials;
-        private ExternalPreviewView externalPreviewView;
-        private bool previewVisible;
         private bool externalPreviewVisible;
-        private bool inputVisible;
-
+        private bool layoutMode;
+        private FlyerViewModelBase flyerViewModel;
         private readonly SelectedMaterialProvider selectedMaterialProvider;
 
         public FlyerMakerViewModel()
@@ -30,12 +29,21 @@ namespace FMA.View
             this.BothVisible = true;
         }
 
-        public FlyerViewModelBase SubView
+        public void SetMaterials(IEnumerable<Material> materials, Material selectedMaterial = null)
         {
-            get { return subView; }
+            this.Materials = materials.Select(m => m.ToMaterialModel()).ToList();
+            if (selectedMaterial != null)
+            {
+                this.SelectedMaterial = selectedMaterial.ToMaterialModel();
+            }
+        }
+
+        public FlyerViewModelBase FlyerViewModel
+        {
+            get { return flyerViewModel; }
             private set
             {
-                subView = value;
+                flyerViewModel = value;
                 OnPropertyChanged();
             }
         }
@@ -49,13 +57,11 @@ namespace FMA.View
 
                 if (value)
                 {
-                    externalPreviewView = new ExternalPreviewView(this.selectedMaterialProvider);
-                    externalPreviewView.Show();
+                    WindowService.OpenExternalPreviewWindow(this.selectedMaterialProvider);
                 }
                 else
                 {
-                    externalPreviewView.Close();
-                    externalPreviewView = null;
+                    WindowService.CloseExternalPreviewWindow();
                 }
             }
         }
@@ -67,26 +73,25 @@ namespace FMA.View
             {
                 layoutMode = value;
 
+                bool previewVisible= false;
+                bool inputVisible= false;
+                bool bothVisible = true;
+
+                if (flyerViewModel != null)
+                {
+                    previewVisible = flyerViewModel.PreviewVisible;
+                    inputVisible = flyerViewModel.InputVisible;
+                    bothVisible = flyerViewModel.BothVisible;
+                }
+
                 if (layoutMode)
                 {
-                    this.SubView = new LayoutViewModel(this.selectedMaterialProvider, previewVisible, inputVisible,bothVisible);
+                    this.FlyerViewModel = new LayoutViewModel(this.selectedMaterialProvider, previewVisible,inputVisible, bothVisible);
                 }
                 else
                 {
-                    SubView = new DefaultViewModel(this.selectedMaterialProvider, previewVisible, inputVisible, bothVisible);
+                    this.FlyerViewModel = new DefaultViewModel(this.selectedMaterialProvider, previewVisible,inputVisible, bothVisible);
                 }
-
-                OnPropertyChanged();
-            }
-        }
-
-
-        public void SetMaterials(IEnumerable<Material> materials, Material selectedMaterial = null)
-        {
-            this.Materials = materials.Select(m => m.ToMaterialModel()).ToList();
-            if (selectedMaterial != null)
-            {
-                this.SelectedMaterial = selectedMaterial.ToMaterialModel();
             }
         }
 
@@ -100,17 +105,10 @@ namespace FMA.View
             }
         }
 
-        private bool layoutMode;
-        private FlyerViewModelBase subView;
-
         public MaterialModel SelectedMaterial
         {
             get { return selectedMaterialProvider.SelectedMaterial; }
-            set
-            {
-                this.selectedMaterialProvider.SelectedMaterial = value;
-                OnPropertyChanged();
-            }
+            set{this.selectedMaterialProvider.SelectedMaterial = value;}
         }
 
         public void Save()
@@ -125,45 +123,24 @@ namespace FMA.View
 
         public bool CanCreate
         {
-            get { return this.SubView.CanCreate; }
+            get { return this.FlyerViewModel.CanCreate; }
         }
-
 
         public bool PreviewVisible
         {
-            get { return previewVisible; }
-            set
-            {
-                if (value.Equals(previewVisible)) return;
-                previewVisible = value;
-                this.SubView.PreviewVisible = value;
-                OnPropertyChanged();
-            }
-        }
-
+            get { return this.FlyerViewModel.PreviewVisible; }
+            set{this.FlyerViewModel.PreviewVisible = value;}}
 
         public bool InputVisible
         {
-            get { return inputVisible; }
-            set
-            {
-                if (value.Equals(inputVisible)) return;
-                inputVisible = value;
-                this.SubView.InputVisible = value;
-                OnPropertyChanged();
-            }
+            get { return this.FlyerViewModel.InputVisible; }
+            set{this.FlyerViewModel.InputVisible = value;}
         }
 
         public bool BothVisible
         {
-            get { return bothVisible; }
-            set
-            {
-                if (value.Equals(bothVisible)) return;
-                bothVisible = value;
-                this.SubView.BothVisible = value;
-                OnPropertyChanged();
-            }
+            get { return this.FlyerViewModel.BothVisible; }
+            set{this.FlyerViewModel.BothVisible = value;}
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -1,4 +1,5 @@
-﻿using UserControl = System.Windows.Controls.UserControl;
+﻿using System.Windows;
+using UserControl = System.Windows.Controls.UserControl;
 
 namespace FMA.View
 {

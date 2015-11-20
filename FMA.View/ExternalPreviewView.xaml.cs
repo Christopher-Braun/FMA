@@ -13,14 +13,9 @@ namespace FMA.View
     /// </summary>
     public partial class ExternalPreviewView : Window
     {
-        public SelectedMaterialProvider SelectedMaterialProvider { get; private set; }
-
-        public ExternalPreviewView(SelectedMaterialProvider selectedMaterialProvider)
+        public ExternalPreviewView()
         {
-            this.SelectedMaterialProvider = selectedMaterialProvider;
-           
             InitializeComponent();
-            this.DataContext = this;
 
             const int margin = 40;
             this.Top = margin;
