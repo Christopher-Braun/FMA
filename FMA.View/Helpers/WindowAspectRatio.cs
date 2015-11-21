@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 
-namespace FMA.View
+namespace FMA.View.Helpers
 {
     internal class WindowAspectRatio
     {

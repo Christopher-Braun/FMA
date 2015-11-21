@@ -2,7 +2,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using FMA.View.Annotations;
 
-namespace FMA.View
+namespace FMA.View.Models
 {
     public class NotifyPropertyChangedBase : INotifyPropertyChanged
     {

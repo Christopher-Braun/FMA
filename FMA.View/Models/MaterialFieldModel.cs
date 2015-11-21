@@ -3,10 +3,9 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows.Input;
 using FMA.Contracts.Properties;
 
-namespace FMA.View
+namespace FMA.View.Models
 {
     [DebuggerDisplay("Name: {FieldName} Value {Value}")]
     public class MaterialFieldModel : INotifyPropertyChanged, IDataErrorInfo
@@ -170,13 +169,17 @@ namespace FMA.View
                     var newLine = new[] { "\r\n" };
                     var lines = Value.Split(newLine, StringSplitOptions.None);
 
-                    if (lines.Aggregate((s1, s2) => s1 + s2).Length > MaxLength)
+                    //if (lines.Aggregate((s1, s2) => s1 + s2).Length > MaxLength)
+                    //{
+                    //    errorText = String.Format("Der Text darf maximal '{0}' Zeichen enthalten", MaxLength);
+                    //} 
+                    if (lines.Any( t=> t.Length > MaxLength))
                     {
-                        errorText = String.Format("Der Text darf maximal '{0}' Zeichen enthalten", MaxLength);
+                        errorText = string.Format("Der Text darf maximal '{0}' Zeichen pro Zeile enthalten", MaxLength);
                     }
                     else if (lines.Count() > this.MaxRows)
                     {
-                        errorText = String.Format("Der Text darf maximal '{0}' Zeilen enthalten", MaxRows);
+                        errorText = string.Format("Der Text darf maximal '{0}' Zeilen enthalten", MaxRows);
                     }
 
                 }

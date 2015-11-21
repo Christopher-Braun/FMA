@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using FMA.Contracts;
+using FMA.View.Models;
 using FMA.View.Properties;
 
 namespace FMA.View
@@ -11,7 +12,6 @@ namespace FMA.View
     public class FlyerMakerViewModel : INotifyPropertyChanged, IFlyerMakerView
     {
         public event Action<CustomMaterial> FlyerCreated = m => { };
-
         public WindowService WindowService { get; set; }
        
         private List<MaterialModel> materials;
@@ -20,21 +20,23 @@ namespace FMA.View
         private FlyerViewModelBase flyerViewModel;
         private readonly SelectedMaterialProvider selectedMaterialProvider;
 
-        public FlyerMakerViewModel()
+        public FlyerMakerViewModel(IEnumerable<Material> materials, int selectedMateriaId = -1)
         {
             this.selectedMaterialProvider = new SelectedMaterialProvider();
             this.selectedMaterialProvider.MaterialChanged += () => { OnPropertyChanged("CanCreate"); };
+
+            this.SetMaterials(materials, selectedMateriaId);
 
             this.LayoutMode = false;
             this.BothVisible = true;
         }
 
-        public void SetMaterials(IEnumerable<Material> materials, Material selectedMaterial = null)
+        private void SetMaterials(IEnumerable<Material> materials, int selectedMateriaId = -1)
         {
             this.Materials = materials.Select(m => m.ToMaterialModel()).ToList();
-            if (selectedMaterial != null)
+            if (selectedMateriaId != -1)
             {
-                this.SelectedMaterial = selectedMaterial.ToMaterialModel();
+                this.SelectedMaterial = this.Materials.Single(m=> m.Id.Equals(selectedMateriaId));
             }
         }
 
@@ -92,6 +94,8 @@ namespace FMA.View
                 {
                     this.FlyerViewModel = new DefaultViewModel(this.selectedMaterialProvider, previewVisible,inputVisible, bothVisible);
                 }
+
+                OnPropertyChanged("CanCreate");
             }
         }
 
@@ -108,10 +112,10 @@ namespace FMA.View
         public MaterialModel SelectedMaterial
         {
             get { return selectedMaterialProvider.SelectedMaterial; }
-            set{this.selectedMaterialProvider.SelectedMaterial = value;}
+            set{this.selectedMaterialProvider.SelectedMaterial = value.Clone();}
         }
 
-        public void Save()
+        public void Create()
         {
             FlyerCreated(SelectedMaterial.ToCustomMaterial());
         }

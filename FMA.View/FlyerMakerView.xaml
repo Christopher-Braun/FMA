@@ -26,9 +26,6 @@
             
         </ResourceDictionary>
     </UserControl.Resources>
-    <UserControl.DataContext>
-        <view:FlyerMakerViewModel />
-    </UserControl.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -90,11 +87,11 @@
             </Button>
             <Button Margin="8"
                     HorizontalAlignment="Stretch"
-                    Content="Save"
+                    Content="Create"
                     IsEnabled="{Binding CanCreate}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
-                        <si:CallMethodAction MethodName="Save" TargetObject="{Binding}" />
+                        <si:CallMethodAction MethodName="Create" TargetObject="{Binding}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>

@@ -1,29 +1,32 @@
-﻿using System.IO;
+﻿using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using FMA.Contracts;
 using FMA.Core;
 using FMA.TestData;
 using FMA.View;
+using FMA.View.Annotations;
 
 namespace FMA
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        private FlyerMakerViewModel flyerMakerViewModel;
+
         public MainWindow()
         {
             InitializeComponent();
-
-            var viewModel = this.FlyerMakerView.ViewModel;
+            this.DataContext = this;
 
             var dummyMaterials = DummyData.GetDummyMaterials();
-            viewModel.SetMaterials(dummyMaterials, dummyMaterials.Last());
+            var viewModel = new FlyerMakerViewModel(dummyMaterials, 2);
 
-            WindowService ws = new WindowService(this);
-            viewModel.WindowService = ws;
+            viewModel.WindowService = new WindowService(this);
 
             viewModel.FlyerCreated += (cm) =>
             {
@@ -34,6 +37,28 @@ namespace FMA
                     flyer.WriteTo(fileStream);
                 }
             };
+
+            FlyerMakerViewModel = viewModel;
+        }
+
+        public FlyerMakerViewModel FlyerMakerViewModel
+        {
+            get { return flyerMakerViewModel; }
+            set
+            {
+                if (Equals(value, flyerMakerViewModel)) return;
+                flyerMakerViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

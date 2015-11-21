@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 
-namespace FMA.View
+namespace FMA.View.Helpers
 {
     public class SelectionAdorner : Adorner
     {

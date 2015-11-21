@@ -6,7 +6,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace FMA.View
+namespace FMA.View.Helpers
 {
     public class ResizingAdorner : Adorner
     {

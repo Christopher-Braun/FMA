@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Media;
 using FMA.Core;
+using FMA.View.Models;
 
 namespace FMA.View
 {
@@ -29,6 +30,7 @@ namespace FMA.View
                 //TODO Warum geht das nicht beim ErrorState
                 this.selectedMaterial.PropertyChanged += selectedMaterial_PropertyChanged;
                 selectedMaterial_PropertyChanged(null,null);
+                OnPropertyChanged();
             }
         }
 

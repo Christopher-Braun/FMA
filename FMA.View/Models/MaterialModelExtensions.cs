@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Windows;
 
-namespace FMA.View
+namespace FMA.View.Models
 {
     public static class MaterialModelExtensions
     {

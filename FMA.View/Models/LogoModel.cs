@@ -2,7 +2,7 @@ using System;
 using System.Windows.Media.Imaging;
 using FMA.Core;
 
-namespace FMA.View
+namespace FMA.View.Models
 {
     public class LogoModel : NotifyPropertyChangedBase
     {

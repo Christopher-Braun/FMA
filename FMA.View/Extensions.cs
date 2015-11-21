@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Windows;
+using FMA.View.Models;
 
 namespace FMA.View
 {

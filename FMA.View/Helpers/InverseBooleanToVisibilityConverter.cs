@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace FMA.View
+namespace FMA.View.Helpers
 {
     class InverseBooleanToVisibilityConverter : IValueConverter
     {

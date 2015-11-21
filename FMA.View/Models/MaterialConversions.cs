@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using FMA.Contracts;
 
-namespace FMA.View
+namespace FMA.View.Models
 {
     public static class MaterialConversions
     {

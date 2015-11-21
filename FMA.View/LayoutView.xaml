@@ -4,6 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:view="clr-namespace:FMA.View"
+             xmlns:models="clr-namespace:FMA.View.Models"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
@@ -31,7 +32,7 @@
                                   Grid.IsSharedSizeScope="True"
                                   ItemsSource="{Binding SelectedMaterialProvider.SelectedMaterial.MaterialFields}">
                         <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="view:MaterialFieldModel">
+                            <DataTemplate DataType="models:MaterialFieldModel">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" SharedSizeGroup="A" />
@@ -44,9 +45,7 @@
                                     <TextBox Grid.Column="1"
                                              Margin="4,4,16,4"
                                              AcceptsReturn="True"
-                                             Style="{StaticResource TextBoxWithValidation}"
-                                             Text="{Binding Value,
-                                                            UpdateSourceTrigger=PropertyChanged}" />
+                                             Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
 
                                     <TextBox Grid.Column="2"
                                              MinWidth="40"
@@ -62,7 +61,7 @@
                                                         MinWidth="40"
                                                         Margin="4,4,16,4"
                                                         Minimum="1"
-                                                        Value="{Binding FontSize}" />
+                                                        Value="{Binding LeftMargin}" />
 
                                 </Grid>
                             </DataTemplate>

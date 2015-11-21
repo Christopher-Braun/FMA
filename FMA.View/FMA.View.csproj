@@ -70,7 +70,7 @@
     <Compile Include="Models\NotifyPropertyChangedBase.cs" />
     <Compile Include="Helpers\SelectionAdorner.cs" />
     <Compile Include="Helpers\WindowAspectRatio.cs" />
-    <Compile Include="WindowService.cs" />
+    <Compile Include="Helpers\WindowService.cs" />
     <Page Include="DefaultView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

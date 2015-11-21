@@ -1,8 +1,7 @@
 Numberic Updown anbindung
-External Preview schließen
-CanCreate im Layoutmode
+
+
 Multiselect
 Drag verhalten
 
 Fonts
-Multiline Prüfung max ro pro Linie

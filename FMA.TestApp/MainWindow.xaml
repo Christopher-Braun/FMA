@@ -5,7 +5,14 @@
         Title="MainWindow"
         Width="860"
         Height="530">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type view:FlyerMakerViewModel}">
+            <view:FlyerMakerView></view:FlyerMakerView>
+        </DataTemplate>
+    </Window.Resources>
 
-    <view:FlyerMakerView x:Name="FlyerMakerView" HorizontalAlignment="Stretch" />
+    <ContentControl Content="{Binding FlyerMakerViewModel}"></ContentControl>
+    
+    <!--<view:FlyerMakerView x:Name="FlyerMakerView" HorizontalAlignment="Stretch" />-->
 
 </Window>

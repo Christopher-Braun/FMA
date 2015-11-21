@@ -12,11 +12,5 @@ namespace FMA.View
         {
             InitializeComponent();
         }
-       
-
-        public FlyerMakerViewModel ViewModel
-        {
-            get { return (FlyerMakerViewModel)this.DataContext; }
-        }
     }
 }

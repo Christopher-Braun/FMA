@@ -6,6 +6,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:view="clr-namespace:FMA.View"
+             xmlns:models="clr-namespace:FMA.View.Models"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
@@ -33,7 +34,7 @@
                                   Grid.IsSharedSizeScope="True"
                                   ItemsSource="{Binding SelectedMaterialProvider.SelectedMaterial.MaterialFields}">
                         <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="view:MaterialFieldModel">
+                            <DataTemplate DataType="models:MaterialFieldModel">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" SharedSizeGroup="A" />
