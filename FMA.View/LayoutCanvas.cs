@@ -77,12 +77,14 @@ namespace FMA.View
 
             var textBlock = new TextBlock
             {
-                FontSize = materialFieldModel.FontSize,
                 FontFamily = fontFamily,
                 FontStyle = fontStyle,
                 FontWeight = fontWeight,
                 DataContext = materialFieldModel
             };
+
+            var fontSizeBinding = new Binding("FontSize") { Mode = BindingMode.OneWay };
+            textBlock.SetBinding(TextBlock.FontSizeProperty, fontSizeBinding);
 
             var textBinding = new Binding("Value") { Mode = BindingMode.OneWay };
             textBlock.SetBinding(TextBlock.TextProperty, textBinding);

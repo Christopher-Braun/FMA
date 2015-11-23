@@ -26,11 +26,36 @@
                 Margin="8,8,0,8"
                 BorderBrush="CadetBlue"
                 BorderThickness="1">
-            <Grid>
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <ItemsControl Margin="8"
-                                  Grid.IsSharedSizeScope="True"
-                                  ItemsSource="{Binding SelectedMaterialProvider.SelectedMaterial.MaterialFields}">
+            <Grid IsSharedSizeScope="True">
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+
+                <Grid Margin="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" SharedSizeGroup="A" />
+                        <ColumnDefinition Width="*" SharedSizeGroup="B" />
+                        <ColumnDefinition Width="*" SharedSizeGroup="C" />
+                        <ColumnDefinition Width="*" SharedSizeGroup="D" />
+                        <ColumnDefinition Width="*" SharedSizeGroup="E" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Margin="4" Text="Feldname" />
+                    
+                    <TextBlock Grid.Column="1" Margin="4" Text="Text" />
+
+                    <TextBlock Grid.Column="2" Margin="4" Text="Top Margin" />
+
+                    <TextBlock Grid.Column="3" Margin="4" Text="Left Margin"/>
+
+                    <TextBlock Grid.Column="4" Margin="4" Text="FontSize" />
+
+                </Grid>
+
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl Margin="8" ItemsSource="{Binding SelectedMaterialProvider.SelectedMaterial.MaterialFields}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="models:MaterialFieldModel">
                                 <Grid>
@@ -47,21 +72,19 @@
                                              AcceptsReturn="True"
                                              Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
 
-                                    <TextBox Grid.Column="2"
-                                             MinWidth="40"
-                                             Margin="4,4,16,4"
-                                             Text="{Binding TopMargin}" />
+                                    <view:NumericUpDown Grid.Column="2"
+                                             Margin="4,4,4,4"
+                                             Value="{Binding TopMargin}" />
 
-                                    <TextBox Grid.Column="3"
+                                    <view:NumericUpDown Grid.Column="3"
                                              MinWidth="40"
-                                             Margin="4,4,16,4"
-                                             Text="{Binding LeftMargin}" />
+                                             Margin="4,4,4,4"
+                                             Value="{Binding LeftMargin}" />
 
                                     <view:NumericUpDown Grid.Column="4"
-                                                        MinWidth="40"
-                                                        Margin="4,4,16,4"
+                                                        Margin="4,4,4,4"
                                                         Minimum="1"
-                                                        Value="{Binding LeftMargin}" />
+                                                        Value="{Binding FontSize}" />
 
                                 </Grid>
                             </DataTemplate>

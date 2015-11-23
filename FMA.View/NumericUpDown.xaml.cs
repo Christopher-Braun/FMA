@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.TextFormatting;
 
 namespace FMA.View
 {
@@ -13,10 +14,10 @@ namespace FMA.View
         private String lastValue = String.Empty;
 
         public static readonly DependencyProperty MaximumProperty =
-            DependencyProperty.Register("Maximum", typeof(int), typeof(NumericUpDown), new PropertyMetadata(100));
+            DependencyProperty.Register("Maximum", typeof(int), typeof(NumericUpDown), new PropertyMetadata(10000));
 
         public static readonly DependencyProperty MinimumProperty =
-            DependencyProperty.Register("Minimum", typeof(int), typeof(NumericUpDown), new PropertyMetadata(-100));
+            DependencyProperty.Register("Minimum", typeof(int), typeof(NumericUpDown), new PropertyMetadata(-10000));
 
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register("Value", typeof(int), typeof(NumericUpDown), new FrameworkPropertyMetadata(0, ValueChanged) { BindsTwoWayByDefault = true });
@@ -36,11 +37,11 @@ namespace FMA.View
         {
             InitializeComponent();
 
+            this.MinWidth = 48;
+
             this.PressedBrush = Brushes.Black;
             this.HoverBrush = new SolidColorBrush(SystemColors.HighlightColor);
             this.DefaultBrush = new SolidColorBrush(SystemColors.ControlColor);
-
-            SetValue(0);
         }
 
         protected void OnPropertyChanged(string name)
