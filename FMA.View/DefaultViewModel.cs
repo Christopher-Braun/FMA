@@ -3,9 +3,9 @@ using System.Windows;
 
 namespace FMA.View
 {
-    public class DefaultViewModel: FlyerViewModelBase
+    public class DefaultViewModel : FlyerViewModelBase
     {
-        public DefaultViewModel(SelectedMaterialProvider selectedMaterialProvider, bool previewVisible, bool inputVisible, bool bothVisible) 
+        public DefaultViewModel(SelectedMaterialProvider selectedMaterialProvider, bool previewVisible, bool inputVisible, bool bothVisible)
             : base(selectedMaterialProvider, previewVisible, inputVisible, bothVisible)
         {
         }
@@ -14,19 +14,21 @@ namespace FMA.View
         {
             get
             {
-                if (this.SelectedMaterialProvider.SelectedMaterial == null)
+                if (this.SelectedMaterialProvider.MaterialModel == null)
                 {
                     return false;
                 }
 
-                return SelectedMaterialProvider.SelectedMaterial.MaterialFields.All(f => string.IsNullOrEmpty(f.Error));
+                return SelectedMaterialProvider.MaterialModel.MaterialFields.All(f => string.IsNullOrEmpty(f.Error));
             }
         }
 
         public void OnDrop(object sender, DragEventArgs e)
         {
+            this.SelectedMaterialProvider.SuspendRefreshPreview();
             var frameworkElement = sender as FrameworkElement;
-            frameworkElement.DropLogo(this.SelectedMaterialProvider.SelectedMaterial, e);
+            frameworkElement.DropLogo(this.SelectedMaterialProvider.MaterialModel, e);
+            this.SelectedMaterialProvider.ResumeRefreshPreview();
         }
 
     }

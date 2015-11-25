@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:view="clr-namespace:FMA.View"
              xmlns:models="clr-namespace:FMA.View.Models"
+             xmlns:view="clr-namespace:FMA.View"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
@@ -22,40 +22,52 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
+
         <Border x:Name="Input"
                 Margin="8,8,0,8"
                 BorderBrush="CadetBlue"
                 BorderThickness="1">
-            <Grid IsSharedSizeScope="True">
-                
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                </Grid.RowDefinitions>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+                <Grid IsSharedSizeScope="True">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock FontWeight="Bold">Textfelder</TextBlock>
+
+                    <Grid Name="Haeders"
+                          Grid.Row="1"
+                          Margin="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="A" />
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="B" />
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="C" />
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="D" />
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="E" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Feldname" />
+
+                        <TextBlock Grid.Column="1" Text="Text" />
+
+                        <TextBlock Grid.Column="2" Text="Top Margin" />
+
+                        <TextBlock Grid.Column="3" Text="Left Margin" />
+
+                        <TextBlock Grid.Column="4" Text="FontSize" />
+
+                    </Grid>
 
 
-                <Grid Margin="8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" SharedSizeGroup="A" />
-                        <ColumnDefinition Width="*" SharedSizeGroup="B" />
-                        <ColumnDefinition Width="*" SharedSizeGroup="C" />
-                        <ColumnDefinition Width="*" SharedSizeGroup="D" />
-                        <ColumnDefinition Width="*" SharedSizeGroup="E" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Margin="4" Text="Feldname" />
-                    
-                    <TextBlock Grid.Column="1" Margin="4" Text="Text" />
-
-                    <TextBlock Grid.Column="2" Margin="4" Text="Top Margin" />
-
-                    <TextBlock Grid.Column="3" Margin="4" Text="Left Margin"/>
-
-                    <TextBlock Grid.Column="4" Margin="4" Text="FontSize" />
-
-                </Grid>
-
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                    <ItemsControl Margin="8" ItemsSource="{Binding SelectedMaterialProvider.SelectedMaterial.MaterialFields}">
+                    <ItemsControl Grid.Row="2"
+                                  Margin="8"
+                                  ItemsSource="{Binding SelectedMaterialProvider.MaterialModel.MaterialFields}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="models:MaterialFieldModel">
                                 <Grid>
@@ -68,21 +80,16 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Margin="4" Text="{Binding FieldName}" />
                                     <TextBox Grid.Column="1"
-                                             Margin="4,4,16,4"
+                                             Margin="4,4,8,4"
                                              AcceptsReturn="True"
-                                             Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
+                                             Text="{Binding Value,
+                                                            UpdateSourceTrigger=PropertyChanged}" />
 
-                                    <view:NumericUpDown Grid.Column="2"
-                                             Margin="4,4,4,4"
-                                             Value="{Binding TopMargin}" />
+                                    <view:NumericUpDown Grid.Column="2" Value="{Binding TopMargin}" />
 
-                                    <view:NumericUpDown Grid.Column="3"
-                                             MinWidth="40"
-                                             Margin="4,4,4,4"
-                                             Value="{Binding LeftMargin}" />
+                                    <view:NumericUpDown Grid.Column="3" Value="{Binding LeftMargin}" />
 
                                     <view:NumericUpDown Grid.Column="4"
-                                                        Margin="4,4,4,4"
                                                         Minimum="1"
                                                         Value="{Binding FontSize}" />
 
@@ -90,9 +97,59 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                </ScrollViewer>
 
-            </Grid>
+                    <StackPanel Grid.Row="3" Visibility="{Binding SelectedMaterialProvider.MaterialModel.LogoModel.HasLogo, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <TextBlock FontWeight="Bold">Logo</TextBlock>
+                        <Grid Name="Logo"
+                              Margin="8"
+                              DataContext="{Binding SelectedMaterialProvider.MaterialModel.LogoModel}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0"
+                                       Margin="4"
+                                       Text="Top Margin" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="1"
+                                       Margin="4"
+                                       Text="Left Margin" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="2"
+                                       Margin="4"
+                                       Text="Width" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="3"
+                                       Margin="4"
+                                       Text="Height" />
+
+                            <view:NumericUpDown Grid.Row="1"
+                                                Grid.Column="0"
+                                                Value="{Binding TopMargin}" />
+                            <view:NumericUpDown Grid.Row="1"
+                                                Grid.Column="1"
+                                                Value="{Binding LeftMargin}" />
+                            <view:NumericUpDown Grid.Row="1"
+                                                Grid.Column="2"
+                                                Value="{Binding Width}" />
+                            <view:NumericUpDown Grid.Row="1"
+                                                Grid.Column="3"
+                                                Value="{Binding Height}" />
+
+                        </Grid>
+                    </StackPanel>
+
+                </Grid>
+
+            </ScrollViewer>
             <Border.Style>
                 <Style TargetType="Border">
                     <Style.Triggers>
@@ -112,7 +169,10 @@
                 </Style>
             </Border.Style>
 
+
         </Border>
+
+
 
         <GridSplitter Grid.Column="1"
                       Width="8"
@@ -132,7 +192,7 @@
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Top"
                                    ClipToBounds="True"
-                                   MaterialModel="{Binding SelectedMaterialProvider.SelectedMaterial}" />
+                                   MaterialModel="{Binding SelectedMaterialProvider.MaterialModel}" />
             </Viewbox>
             <Border.Style>
                 <Style TargetType="Border">

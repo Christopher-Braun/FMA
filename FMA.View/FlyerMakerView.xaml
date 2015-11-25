@@ -17,13 +17,13 @@
             </ResourceDictionary.MergedDictionaries>
 
             <DataTemplate DataType="{x:Type view:DefaultViewModel}">
-               <view:DefaultView></view:DefaultView>
-            </DataTemplate>  
-            
-            <DataTemplate DataType="{x:Type view:LayoutViewModel}">
-               <view:LayoutView></view:LayoutView>
+                <view:DefaultView />
             </DataTemplate>
-            
+
+            <DataTemplate DataType="{x:Type view:LayoutViewModel}">
+                <view:LayoutView />
+            </DataTemplate>
+
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -57,8 +57,8 @@
             </Grid>
         </Grid>
 
-        <ContentControl Grid.Row="1" Content="{Binding FlyerViewModel}"></ContentControl>
-  
+        <ContentControl Grid.Row="1" Content="{Binding FlyerViewModel}" />
+
         <StackPanel Grid.Row="2"
                     Grid.ColumnSpan="3"
                     Margin="8"
@@ -92,6 +92,15 @@
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <si:CallMethodAction MethodName="Create" TargetObject="{Binding}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+            <Button Margin="8"
+                    HorizontalAlignment="Stretch"
+                    Content="Add Logo">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <si:CallMethodAction MethodName="AddLogo" TargetObject="{Binding}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>

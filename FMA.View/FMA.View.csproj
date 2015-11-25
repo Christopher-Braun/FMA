@@ -109,7 +109,6 @@
     <Compile Include="Models\MaterialConversions.cs" />
     <Compile Include="Models\MaterialModel.cs" />
     <Compile Include="Models\MaterialFieldModel.cs" />
-    <Compile Include="Helpers\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="NumericUpDown.xaml.cs">
       <DependentUpon>NumericUpDown.xaml</DependentUpon>
     </Compile>

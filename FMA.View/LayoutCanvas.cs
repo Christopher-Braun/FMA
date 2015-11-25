@@ -49,11 +49,15 @@ namespace FMA.View
             this.AllowDrop = true;
         }
 
+
+
         private void MaterialModelChanged()
         {
             this.selectedElement = null;
 
             if (MaterialModel == null) return;
+
+            MaterialModel.PropertyChanged += MaterialModel_PropertyChanged;
 
             this.Children.Clear();
             backgroundImage = new Image { Source = MaterialModel.FlyerFrontSideImage };
@@ -67,6 +71,15 @@ namespace FMA.View
             var logoImage = CreateLogoImage();
 
             this.Children.Add(logoImage);
+        }
+
+        //TODO Hack nicht so gut
+        void MaterialModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName.Equals("Logo"))
+            {
+                MaterialModelChanged();
+            }
         }
 
         private static TextBlock CreateTextBlock(MaterialFieldModel materialFieldModel)
@@ -151,7 +164,7 @@ namespace FMA.View
 
         private void LayoutCanvas_Drop(object sender, DragEventArgs e)
         {
-            if (this.DropLogo(this.MaterialModel,e))
+            if (this.DropLogo(this.MaterialModel, e))
             {
                 //TODO Warum?
                 MaterialModelChanged();

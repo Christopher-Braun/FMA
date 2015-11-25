@@ -5,8 +5,8 @@
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:view="clr-namespace:FMA.View"
              xmlns:models="clr-namespace:FMA.View.Models"
+             xmlns:view="clr-namespace:FMA.View"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
@@ -30,35 +30,86 @@
                 BorderThickness="1">
             <Grid>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <ItemsControl Margin="8"
-                                  Grid.IsSharedSizeScope="True"
-                                  ItemsSource="{Binding SelectedMaterialProvider.SelectedMaterial.MaterialFields}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="models:MaterialFieldModel">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" SharedSizeGroup="A" />
-                                        <ColumnDefinition Width="*" SharedSizeGroup="B" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Margin="4" Text="{Binding FieldName}" />
-                                    <TextBox Grid.Column="1"
-                                             Margin="4,4,16,4"
-                                             AcceptsReturn="True"
-                                             Style="{StaticResource TextBoxWithValidation}"
-                                             Text="{Binding Value,
-                                                            UpdateSourceTrigger=PropertyChanged,
-                                                            NotifyOnValidationError=True,
-                                                            ValidatesOnDataErrors=True}">
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="MouseDoubleClick">
-                                                <ei:CallMethodAction MethodName="MouseDoubleClick" TargetObject="{Binding}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </TextBox>
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                    <StackPanel>
+                        <ItemsControl Margin="8"
+                                      Grid.IsSharedSizeScope="True"
+                                      ItemsSource="{Binding SelectedMaterialProvider.MaterialModel.MaterialFields}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="models:MaterialFieldModel">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" SharedSizeGroup="A" />
+                                            <ColumnDefinition Width="*" SharedSizeGroup="B" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Margin="4" Text="{Binding FieldName}" />
+                                        <TextBox Grid.Column="1"
+                                                 AcceptsReturn="True"
+                                                 Style="{StaticResource TextBoxWithValidation}"
+                                                 Text="{Binding Value,
+                                                                UpdateSourceTrigger=PropertyChanged,
+                                                                NotifyOnValidationError=True,
+                                                                ValidatesOnDataErrors=True}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="MouseDoubleClick">
+                                                    <ei:CallMethodAction MethodName="MouseDoubleClick" TargetObject="{Binding}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </TextBox>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <StackPanel Grid.Row="3" Visibility="{Binding SelectedMaterialProvider.MaterialModel.LogoModel.HasLogo, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock FontWeight="Bold">Logo</TextBlock>
+                            <Grid Name="Logo"
+                                  Margin="8"
+                                  DataContext="{Binding SelectedMaterialProvider.MaterialModel.LogoModel}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0"
+                                           Margin="4"
+                                           Text="Top Margin" />
+
+                                <view:NumericUpDown Grid.Row="0"
+                                                    Grid.Column="1"
+                                                    Value="{Binding TopMargin}" />
+                                <TextBlock Grid.Row="1"
+                                           Grid.Column="0"
+                                           Margin="4"
+                                           Text="Left Margin" />
+                                <view:NumericUpDown Grid.Row="1"
+                                                    Grid.Column="1"
+                                                    Value="{Binding LeftMargin}" />
+                                <TextBlock Grid.Row="2"
+                                           Grid.Column="0"
+                                           Margin="4"
+                                           Text="Width" />
+                                <view:NumericUpDown Grid.Row="2"
+                                                    Grid.Column="1"
+                                                    Value="{Binding Width}" />
+                                <TextBlock Grid.Row="3"
+                                           Grid.Column="0"
+                                           Margin="4"
+                                           Text="Height" />
+                                <view:NumericUpDown Grid.Row="3                                              "
+                                                    Grid.Column="1"
+                                                    Value="{Binding Height}" />
+
+                            </Grid>
+                        </StackPanel>
+                    </StackPanel>
                 </ScrollViewer>
 
             </Grid>
@@ -98,17 +149,16 @@
             <Image x:Name="Image1"
                    Margin="8"
                    HorizontalAlignment="Left"
-                   ClipToBounds="True"
                    AllowDrop="True"
-                   
-                   Source="{Binding SelectedMaterialProvider.FlyerPreview}" >
-              
+                   ClipToBounds="True"
+                   Source="{Binding SelectedMaterialProvider.FlyerPreview}">
+
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Drop">
                         <ei:CallMethodAction MethodName="OnDrop" TargetObject="{Binding}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
-               
+
             </Image>
 
             <Border.Style>

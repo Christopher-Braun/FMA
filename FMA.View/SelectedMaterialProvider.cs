@@ -1,5 +1,6 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using FMA.Core;
 using FMA.View.Models;
@@ -8,58 +9,90 @@ namespace FMA.View
 {
     public class SelectedMaterialProvider : NotifyPropertyChangedBase
     {
-        private MaterialModel selectedMaterial;
+        private MaterialModel materialModel;
 
-        public MaterialModel SelectedMaterial
+        public MaterialModel MaterialModel
         {
-            get { return selectedMaterial; }
+            get { return materialModel; }
             set
             {
-                if (selectedMaterial != null)
+                if (materialModel != null)
                 {
-                    this.selectedMaterial.PropertyChanged -= selectedMaterial_PropertyChanged;
+                    this.materialModel.PropertyChanged -= MaterialModelPropertyChanged;
                 }
                 if (value == null)
                 {
-                    this.selectedMaterial = null;
+                    this.materialModel = null;
                     return;
                 }
 
-                this.selectedMaterial = value;
+                this.materialModel = value;
 
-                //TODO Warum geht das nicht beim ErrorState
-                this.selectedMaterial.PropertyChanged += selectedMaterial_PropertyChanged;
-                selectedMaterial_PropertyChanged(null,null);
+                this.materialModel.PropertyChanged += MaterialModelPropertyChanged;
+                MaterialModelPropertyChanged(null, null);
                 OnPropertyChanged();
             }
         }
 
-        private void selectedMaterial_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void MaterialModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            MaterialChanged();
-            flyerPreview = null;
+            if (suspendRefreshPreview)
+            {
+                return;
+            }
+
+            UpdatePreview();
+        }
+
+        private CancellationTokenSource tokenSource;
+
+
+        private async Task UpdatePreview()
+        {
+            if (tokenSource != null)
+            {
+                tokenSource.Cancel();
+            }
+
+            tokenSource = new CancellationTokenSource();
+
+            var preview = await Task.Run(() => FlyerCreator.CreateImage(MaterialModel.ToCustomMaterial(), tokenSource.Token), tokenSource.Token);
+            tokenSource = null;
+            FlyerPreview = preview;
+
+            //Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+            //{
+            //    FlyerPreview = preview;
+            //}));
+
             base.OnPropertyChanged("FlyerPreview");
         }
 
-        public event Action MaterialChanged = () => { };
 
         private ImageSource flyerPreview;
+
         public ImageSource FlyerPreview
         {
-            get
+            get { return flyerPreview; }
+            private set
             {
-                if (SelectedMaterial == null)
-                {
-                    return null;
-                }
-
-                if (flyerPreview == null)
-                {
-                    this.flyerPreview = FlyerCreator.CreateImage(SelectedMaterial.ToCustomMaterial());
-                }
-
-                return flyerPreview;
+                if (Equals(value, flyerPreview)) return;
+                flyerPreview = value;
+                OnPropertyChanged();
             }
+        }
+
+        private bool suspendRefreshPreview;
+
+        public void SuspendRefreshPreview()
+        {
+            this.suspendRefreshPreview = true;
+        }
+
+        public void ResumeRefreshPreview()
+        {
+            this.suspendRefreshPreview = false;
+            UpdatePreview();
         }
     }
 }

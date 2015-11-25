@@ -36,6 +36,7 @@ namespace FMA.View.Models
                 logo = value;
                 this.LogoImage = this.Logo.GetBitmapImage();
                 OnPropertyChanged();
+                OnPropertyChanged("HasLogo");
             }
         }
 
