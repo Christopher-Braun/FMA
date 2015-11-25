@@ -1,7 +1,5 @@
 
-Drag drop Posi Scale factor
-
-
+OK Drag drop Posi Scale factor
 OK Bildd generierung Async und abbrechen wen neuer Request kommt
 
 OK Logo Layout setzen in Layout View

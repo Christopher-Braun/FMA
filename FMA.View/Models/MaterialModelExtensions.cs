@@ -21,9 +21,9 @@ namespace FMA.View.Models
 
             var logoModel = materialModel.LogoModel;
 
-            //  logoModel.SuspendNotifyPropertyChanged();
-            //try
-            //{
+            logoModel.SuspendNotifyPropertyChanged();
+            try
+            {
             logoModel.Logo = logoData;
 
             if (logoModel.LogoImage == null)
@@ -52,11 +52,11 @@ namespace FMA.View.Models
 
             logoModel.LeftMargin = (int)position.X;
             logoModel.TopMargin = (int)position.Y;
-            //}
-            //finally
-            //{
-            //    logoModel.ResumeNotifyPropertyChanged(true);
-            //}
+            }
+            finally
+            {
+                logoModel.ResumeNotifyPropertyChanged(true,"Logo");
+            }
         }
     }
 }

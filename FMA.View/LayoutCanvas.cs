@@ -16,18 +16,22 @@ namespace FMA.View
         public static readonly DependencyProperty MaterialModelProperty = DependencyProperty.Register("MaterialModel", typeof(MaterialModel), typeof(LayoutCanvas),
             new PropertyMetadata(null, PropertyChangedCallback));
 
-        private bool mouseDown;
-        private bool isDragging;
-        private Point startPoint;
-        private AdornerLayer adornerLayer;
-        private UIElement selectedElement;
-        private double realtiveY;
-        private double relativeX;
-        private Image backgroundImage;
+        public static readonly DependencyProperty CanManipulateTextsAndLogosProperty = DependencyProperty.Register(
+            "CanManipulateTextsAndLogos", typeof (bool), typeof (LayoutCanvas), new PropertyMetadata(default(bool)));
 
-        static LayoutCanvas()
+        public bool CanManipulateTextsAndLogos
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(LayoutCanvas), new FrameworkPropertyMetadata(typeof(LayoutCanvas)));
+            get { return (bool) GetValue(CanManipulateTextsAndLogosProperty); }
+            set { SetValue(CanManipulateTextsAndLogosProperty, value); }
+        }
+
+        public static readonly DependencyProperty CanManipulateLogosProperty = DependencyProperty.Register(
+            "CanManipulateLogos", typeof (bool), typeof (LayoutCanvas), new PropertyMetadata(default(bool)));
+
+        public bool CanManipulateLogos
+        {
+            get { return (bool) GetValue(CanManipulateLogosProperty); }
+            set { SetValue(CanManipulateLogosProperty, value); }
         }
 
         public MaterialModel MaterialModel
@@ -36,11 +40,27 @@ namespace FMA.View
             set { SetValue(MaterialModelProperty, value); }
         }
 
+        static LayoutCanvas()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(LayoutCanvas), new FrameworkPropertyMetadata(typeof(LayoutCanvas)));
+        }
+
+
         private static void PropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var me = (LayoutCanvas)d;
             me.MaterialModelChanged();
         }
+
+        private bool mouseDown;
+        private bool isDragging;
+        private Point startPoint;
+        private AdornerLayer adornerLayer;
+        private UIElement selectedElement;
+        private double realtiveY;
+        private double relativeX;
+        private Image backgroundImage;
+        private Image logoImage;
 
         public LayoutCanvas()
         {
@@ -48,8 +68,6 @@ namespace FMA.View
             this.ClipToBounds = true;
             this.AllowDrop = true;
         }
-
-
 
         private void MaterialModelChanged()
         {
@@ -68,17 +86,29 @@ namespace FMA.View
                 this.Children.Add(textBlock);
             }
 
-            var logoImage = CreateLogoImage();
+            logoImage = CreateLogoImage();
 
             this.Children.Add(logoImage);
         }
 
+  
         //TODO Hack nicht so gut
-        void MaterialModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void MaterialModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName.Equals("Logo"))
             {
-                MaterialModelChanged();
+                if (MaterialModel == null)
+                {
+                    return;
+                }
+
+                if (this.Children.Contains(logoImage))
+                {
+                    this.Children.Remove(logoImage);
+                }
+
+                logoImage = CreateLogoImage();
+                this.Children.Add(logoImage);
             }
         }
 
@@ -151,9 +181,9 @@ namespace FMA.View
         private void SetEvents()
         {
             MouseLeftButtonDown += (s, e) => UnselectElement();
-            MouseMove += Window1_MouseMove;
+            MouseMove += LayoutCanvas_MouseMove;
 
-            PreviewMouseLeftButtonDown += Canvas_PreviewMouseLeftButtonDown;
+            PreviewMouseLeftButtonDown += LayoutCanvas_PreviewMouseLeftButtonDown;
 
             MouseLeftButtonUp += (s, e) => DragFinished(e);
             MouseLeave += (s, e) => DragFinished(e);
@@ -164,11 +194,7 @@ namespace FMA.View
 
         private void LayoutCanvas_Drop(object sender, DragEventArgs e)
         {
-            if (this.DropLogo(this.MaterialModel, e))
-            {
-                //TODO Warum?
-                MaterialModelChanged();
-            }
+            this.DropLogo(this.MaterialModel, e);
         }
 
         private void DragFinished(MouseEventArgs e)
@@ -184,7 +210,7 @@ namespace FMA.View
 
 
         // Handler for providing drag operation with selected element
-        private void Window1_MouseMove(object sender, MouseEventArgs e)
+        private void LayoutCanvas_MouseMove(object sender, MouseEventArgs e)
         {
             if (!mouseDown)
             {
@@ -226,7 +252,7 @@ namespace FMA.View
         }
 
         // Handler for element selection on the canvas providing resizing adorner
-        private void Canvas_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void LayoutCanvas_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             // Remove selection on clicking anywhere the window
             UnselectElement();
@@ -242,14 +268,25 @@ namespace FMA.View
                 return;
             }
 
+            var logoClicked = source == logoImage;
+            if (this.CanManipulateTextsAndLogos == false &&  this.CanManipulateLogos == false )
+            {
+                //In PreviewMode Nothing can be selected
+                return;
+            }
+
+            if (this.CanManipulateTextsAndLogos == false && logoClicked == false)
+            {
+                //Is DefaultMode only Logo can be manipulated
+                return;
+            }
+
             // If any element except canvas is clicked, 
             // assign the selected element and add the adorner
-
             mouseDown = true;
             startPoint = e.GetPosition(this);
 
             selectedElement = source;
-
 
             realtiveY = startPoint.Y - Canvas.GetTop(selectedElement);
             relativeX = (startPoint.X - Canvas.GetLeft(selectedElement));

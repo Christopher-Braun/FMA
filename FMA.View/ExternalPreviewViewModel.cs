@@ -1,6 +1,8 @@
+using FMA.View.Models;
+
 namespace FMA.View
 {
-    public class ExternalPreviewViewModel
+    public class ExternalPreviewViewModel : NotifyPropertyChangedBase
     {
         public SelectedMaterialProvider SelectedMaterialProvider { get; private set; }
 

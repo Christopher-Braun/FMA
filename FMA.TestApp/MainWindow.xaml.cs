@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using FMA.Contracts;
 using FMA.Core;
 using FMA.TestData;
 using FMA.View;
@@ -32,9 +31,11 @@ namespace FMA
             {
                 var flyer = FlyerCreator.CreateFlyer(cm);
 
-                using (var fileStream = new FileStream("TestAppFlyer.jpg", FileMode.Create))
+                var flyerJpg = "TestAppFlyer.jpg";
+                using (var fileStream = new FileStream(flyerJpg, FileMode.Create))
                 {
                     flyer.WriteTo(fileStream);
+                    Process.Start(flyerJpg);
                 }
             };
 

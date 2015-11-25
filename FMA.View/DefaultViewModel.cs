@@ -22,14 +22,5 @@ namespace FMA.View
                 return SelectedMaterialProvider.MaterialModel.MaterialFields.All(f => string.IsNullOrEmpty(f.Error));
             }
         }
-
-        public void OnDrop(object sender, DragEventArgs e)
-        {
-            this.SelectedMaterialProvider.SuspendRefreshPreview();
-            var frameworkElement = sender as FrameworkElement;
-            frameworkElement.DropLogo(this.SelectedMaterialProvider.MaterialModel, e);
-            this.SelectedMaterialProvider.ResumeRefreshPreview();
-        }
-
     }
 }

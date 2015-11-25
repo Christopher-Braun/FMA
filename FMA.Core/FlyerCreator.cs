@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -14,43 +11,30 @@ namespace FMA.Core
     {
         public static MemoryStream CreateFlyer(CustomMaterial material)
         {
-            var image = CreateImage(material, CancellationToken.None);
+            var image = CreateImage(material);
 
             return SaveDrawingImage(image);
         }
 
-        public static ImageSource CreateImage(CustomMaterial material, CancellationToken ct)
+        public static ImageSource CreateImage(CustomMaterial material)
         {
-            ct.ThrowIfCancellationRequested();
-
             var bitmapSourceBackground = material.GetFlyerBackground();
-
-            ct.ThrowIfCancellationRequested();
 
             var visual = new DrawingVisual();
             using (var drawingContext = visual.RenderOpen())
             {
-                ct.ThrowIfCancellationRequested();
-
                 drawingContext.DrawImage(bitmapSourceBackground, new Rect(0, 0, bitmapSourceBackground.Width, bitmapSourceBackground.Height));
-
-                ct.ThrowIfCancellationRequested();
 
                 foreach (var textField in material.GetTextFields())
                 {
-                    ct.ThrowIfCancellationRequested();
                     drawingContext.DrawText(textField.FormattedText, textField.Origin);
                 }
 
                 if (material.CustomLogo.HasLogo)
                 {
-                    ct.ThrowIfCancellationRequested();
                     var flyerLogo = material.GetFlyerLogo();
                     drawingContext.DrawImage(flyerLogo, new Rect(material.CustomLogo.LogoLeftMargin, material.CustomLogo.LogoTopMargin, material.CustomLogo.LogoWidth, material.CustomLogo.LogoHeight));
                 }
-
-                ct.ThrowIfCancellationRequested();
-
             }
             var image = new DrawingImage(visual.Drawing);
             image.Freeze();

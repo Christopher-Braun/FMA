@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using FMA.Contracts;
@@ -130,17 +132,17 @@ namespace FMA.View
         public void AddLogo()
         {
             var dialog = new OpenFileDialog();
+            //TODO Remove when going productive
+            dialog.InitialDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            dialog.Filter = "Warum muss ich das immer wieder von Hand machen?|*.png";
+
             var result = dialog.ShowDialog();
             if (result != true)
             {
                 return;
             }
 
-            this.selectedMaterialProvider.SuspendRefreshPreview();
-
             this.selectedMaterialProvider.MaterialModel.SetLogo(dialog.FileName, new Point(20, 20));
-
-           this.selectedMaterialProvider.ResumeRefreshPreview();
         }
 
         public bool CanCreate

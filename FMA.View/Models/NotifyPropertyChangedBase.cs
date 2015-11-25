@@ -1,34 +1,30 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows.Documents;
 using FMA.View.Annotations;
 
 namespace FMA.View.Models
 {
     public class NotifyPropertyChangedBase : INotifyPropertyChanged
     {
-        //private bool suspendRefreshPreview;
-        //private List<string> changedProperties = new List<string>();
+        private bool suspendRefreshPreview;
+        private bool missedEvents;
 
-        //public void SuspendNotifyPropertyChanged()
-        //{
-        //    this.suspendRefreshPreview = true;
-        //}
+        public void SuspendNotifyPropertyChanged()
+        {
+            this.suspendRefreshPreview = true;
+        }
 
-        //public void ResumeNotifyPropertyChanged(bool notifyMissedEvents = true)
-        //{
-        //    this.suspendRefreshPreview = false;
-        //    if (notifyMissedEvents)
-        //    {
-        //        foreach (var propertyName in changedProperties)
-        //        {
-        //            this.OnPropertyChanged(propertyName);
-        //        }
-        //    }
+        public void ResumeNotifyPropertyChanged(bool notifyMissedEvents = true,string propertyName = "")
+        {
+            this.suspendRefreshPreview = false;
+            if (notifyMissedEvents && missedEvents)
+            {
+                    this.OnPropertyChanged(propertyName);
+            }
 
-        //    this.changedProperties.Clear();
-        //}
+            missedEvents = false;
+        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -36,11 +32,11 @@ namespace FMA.View.Models
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            //if (suspendRefreshPreview)
-            //{
-            //    changedProperties.Add(propertyName);
-            //    return;
-            //}
+            if (suspendRefreshPreview)
+            {
+                missedEvents = true;
+                return;
+            }
 
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));

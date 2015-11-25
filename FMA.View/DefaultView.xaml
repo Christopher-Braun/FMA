@@ -31,6 +31,7 @@
             <Grid>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel>
+                        <TextBlock FontWeight="Bold">Textfelder</TextBlock>
                         <ItemsControl Margin="8"
                                       Grid.IsSharedSizeScope="True"
                                       ItemsSource="{Binding SelectedMaterialProvider.MaterialModel.MaterialFields}">
@@ -60,7 +61,7 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
 
-                        <StackPanel Grid.Row="3" Visibility="{Binding SelectedMaterialProvider.MaterialModel.LogoModel.HasLogo, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <StackPanel Visibility="{Binding SelectedMaterialProvider.MaterialModel.LogoModel.HasLogo, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <TextBlock FontWeight="Bold">Logo</TextBlock>
                             <Grid Name="Logo"
                                   Margin="8"
@@ -145,22 +146,15 @@
                 HorizontalAlignment="Left"
                 BorderBrush="CadetBlue"
                 BorderThickness="1">
-
-            <Image x:Name="Image1"
-                   Margin="8"
-                   HorizontalAlignment="Left"
-                   AllowDrop="True"
-                   ClipToBounds="True"
-                   Source="{Binding SelectedMaterialProvider.FlyerPreview}">
-
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Drop">
-                        <ei:CallMethodAction MethodName="OnDrop" TargetObject="{Binding}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-
-            </Image>
-
+            <Viewbox HorizontalAlignment="Stretch"
+                     VerticalAlignment="Stretch"
+                     Stretch="Uniform">
+                <view:LayoutCanvas Margin="8"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   CanManipulateLogos="True"
+                                   MaterialModel="{Binding SelectedMaterialProvider.MaterialModel}" />
+                </Viewbox>
             <Border.Style>
                 <Style TargetType="Border">
                     <Style.Triggers>

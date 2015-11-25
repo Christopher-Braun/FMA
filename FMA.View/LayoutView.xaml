@@ -191,7 +191,7 @@
                 <view:LayoutCanvas Margin="8"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Top"
-                                   ClipToBounds="True"
+                                   CanManipulateTextsAndLogos="True"
                                    MaterialModel="{Binding SelectedMaterialProvider.MaterialModel}" />
             </Viewbox>
             <Border.Style>
