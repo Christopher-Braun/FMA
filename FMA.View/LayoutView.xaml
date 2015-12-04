@@ -28,7 +28,7 @@
                 BorderBrush="CadetBlue"
                 BorderThickness="1">
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
 
                 <Grid IsSharedSizeScope="True">
 

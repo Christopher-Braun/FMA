@@ -7,6 +7,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:si="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
              xmlns:view="clr-namespace:FMA.View"
+             d:DataContext="{d:DesignInstance Type=view:FlyerMakerViewModel,
+                                              IsDesignTimeCreatable=True}"
              d:DesignHeight="300"
              d:DesignWidth="500"
              mc:Ignorable="d">
@@ -108,6 +110,10 @@
                           HorizontalAlignment="Stretch"
                           Content="External Preview"
                           IsChecked="{Binding ExternalPreviewVisible}" />
+            <ToggleButton Margin="8"
+                          HorizontalAlignment="Stretch"
+                          Content="External Edit"
+                          IsChecked="{Binding ExternalEditVisible}" />
             <ToggleButton Margin="8"
                           HorizontalAlignment="Stretch"
                           Content="Layout Mode"

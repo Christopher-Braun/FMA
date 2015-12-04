@@ -29,7 +29,7 @@ namespace FMA.Core
         public static BitmapImage GetBitmapImage(this byte[] bytes)
         {
             var imageSource = new BitmapImage();
-            if( bytes == null)
+            if (bytes == null)
             {
                 return imageSource;
             }

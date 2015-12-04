@@ -24,11 +24,10 @@ namespace FMA.TestData
 
             var material2Fields = new List<MaterialField>
             {
-                new MaterialField("Referent", "Arial", 10, false, false, false, 50, 1, 7, 371, "Petrus"),
+                new MaterialField("Referent", "Arial", 10, false, false, false, 50, 1, 7, 490, "Petrus"),
                 new MaterialField("Titel", "Arial", 21, true, false, true, 50, 3, 7, 320, "Nordkorea - Gestern und Heute"),
-                new MaterialField("Untertitel", "Times New Roman", 12, true, false, true, 80, 3, 7, 315,
-                    "Untertitel Nordkorea"),
-                new MaterialField("Ort", "Times New Roman", 16, false, true, false, 80, 3, 7, 383, "Hamburg")
+                new MaterialField("Untertitel", "Times New Roman", 12, true, false, true, 80, 3, 27, 350,"Untertitel Nordkorea"),
+                new MaterialField("Ort", "Times New Roman", 16, false, true, false, 80, 3, 7, 520, "Hamburg")
             };
 
             var material2 = new Material(2, "Nordkorea", "Zum Thema Nordkorea…", material2Fields, GetFrontSide(2), GetFrontSide(2));

@@ -12,6 +12,7 @@ namespace FMA.View.Models
     public class MaterialModel : INotifyPropertyChanged
     {
         private readonly List<MaterialFieldModel> materialFields;
+        private byte[] flyerFrontSide;
 
         public MaterialModel(int id, string title, string description, IEnumerable<MaterialFieldModel> materialFields, byte[] flyerFrontSide, byte[] flyerBackside)
         {
@@ -28,6 +29,7 @@ namespace FMA.View.Models
 
             FlyerFrontSide = flyerFrontSide;
             FlyerBackside = flyerBackside;
+
             LogoModel = new LogoModel();
             LogoModel.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
 
@@ -47,12 +49,17 @@ namespace FMA.View.Models
             }
         }
 
-        public BitmapImage FlyerFrontSideImage
+        public BitmapImage FlyerFrontSideImage { get; private set; }
+
+        public Byte[] FlyerFrontSide
         {
-            get { return FlyerFrontSide.GetBitmapImage(); }
-        }  
-        
-        public Byte[] FlyerFrontSide { get; private set; }
+            get { return flyerFrontSide; }
+            private set
+            {
+                flyerFrontSide = value;
+                FlyerFrontSideImage = FlyerFrontSide.GetBitmapImage();
+            }
+        }
 
         public Byte[] FlyerBackside { get; private set; }
 
@@ -77,7 +84,7 @@ namespace FMA.View.Models
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((MaterialModel) obj);
+            return Equals((MaterialModel)obj);
         }
 
         public override int GetHashCode()

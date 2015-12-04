@@ -1,0 +1,9 @@
+MultiSelect mit Aufziehrahmen
+Unterstützung von Ctrl + Selekt
+
+Markierung von Kollisionen
+
+Logo legt sich hinter die Texte
+
+External Edit implementiert
+

@@ -4,15 +4,16 @@
         xmlns:view="clr-namespace:FMA.View;assembly=FMA.View"
         Title="MainWindow"
         Width="860"
-        Height="530">
+        Height="530"
+        WindowState="Maximized">
     <Window.Resources>
         <DataTemplate DataType="{x:Type view:FlyerMakerViewModel}">
-            <view:FlyerMakerView></view:FlyerMakerView>
+            <view:FlyerMakerView />
         </DataTemplate>
     </Window.Resources>
 
-    <ContentControl Content="{Binding FlyerMakerViewModel}"></ContentControl>
-    
+    <ContentControl Content="{Binding FlyerMakerViewModel}" />
+
     <!--<view:FlyerMakerView x:Name="FlyerMakerView" HorizontalAlignment="Stretch" />-->
 
 </Window>

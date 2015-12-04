@@ -4,18 +4,43 @@
         xmlns:view="clr-namespace:FMA.View"
         Height="800"
         AllowsTransparency="True"
+        BorderThickness="1"
         MouseLeftButtonDown="FlyerPreviewView_OnMouseLeftButtonDown"
         ResizeMode="CanResizeWithGrip"
         SizeToContent="Width"
         SourceInitialized="FlyerPreviewView_OnSourceInitialized"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None">
+    <Window.Style>
+        <Style TargetType="Window">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding CanEdit}" Value="True">
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="BorderBrush" Value="CadetBlue" />
+                    <Setter Property="WindowStyle" Value="SingleBorderWindow" />
+                    <Setter Property="ResizeMode" Value="CanResize" />
+                    <Setter Property="AllowsTransparency" Value="False" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Style>
 
     <Viewbox HorizontalAlignment="Stretch"
-                     VerticalAlignment="Stretch"
-                     Stretch="Uniform">
+             VerticalAlignment="Stretch"
+             Stretch="Uniform">
         <view:LayoutCanvas HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"
-                                   MaterialModel="{Binding SelectedMaterialProvider.MaterialModel}" />
+                           VerticalAlignment="Top"
+                           CanManipulateTextsAndLogos="{Binding CanEdit}"
+                           MaterialModel="{Binding SelectedMaterialProvider.MaterialModel}">
+            <view:LayoutCanvas.Style>
+                <Style TargetType="view:LayoutCanvas">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CanEdit}" Value="True">
+                            <Setter Property="Margin" Value="20" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </view:LayoutCanvas.Style>
+        </view:LayoutCanvas>
     </Viewbox>
 </Window>

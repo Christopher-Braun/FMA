@@ -4,10 +4,34 @@ namespace FMA.View
 {
     public class ExternalPreviewViewModel : NotifyPropertyChangedBase
     {
-        public SelectedMaterialProvider SelectedMaterialProvider { get; private set; }
+        private bool canEdit;
+        private SelectedMaterialProvider selectedMaterialProvider;
 
-        public ExternalPreviewViewModel(SelectedMaterialProvider selectedMaterialProvider)
+        public SelectedMaterialProvider SelectedMaterialProvider
         {
+            get { return selectedMaterialProvider; }
+            private set
+            {
+                if (Equals(value, selectedMaterialProvider)) return;
+                selectedMaterialProvider = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool CanEdit
+        {
+            get { return canEdit; }
+            private set
+            {
+                if (value.Equals(canEdit)) return;
+                canEdit = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ExternalPreviewViewModel(SelectedMaterialProvider selectedMaterialProvider, bool canEdit)
+        {
+            CanEdit = canEdit;
             this.SelectedMaterialProvider = selectedMaterialProvider;
         }
     }

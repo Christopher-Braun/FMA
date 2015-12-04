@@ -12,16 +12,27 @@ namespace FMA.View
             this.mainWindow = mainWindow;
         }
 
-        public void OpenExternalPreviewWindow(SelectedMaterialProvider selectedMaterialProvider)
+        public void OpenExternalPreviewWindow(SelectedMaterialProvider selectedMaterialProvider, bool canEdit)
         {
-            externalPreviewView = new ExternalPreviewView();
-            externalPreviewView.DataContext = new ExternalPreviewViewModel(selectedMaterialProvider);
-            externalPreviewView.Owner = mainWindow;
+            if (externalPreviewView != null)
+            {
+                CloseExternalPreviewWindow();
+            }
+
+            externalPreviewView = new ExternalPreviewView
+            {
+                DataContext = new ExternalPreviewViewModel(selectedMaterialProvider, canEdit),
+                Owner = mainWindow
+            };
             externalPreviewView.Show();
         }
 
         public void CloseExternalPreviewWindow()
         {
+            if (externalPreviewView == null)
+            {
+                return;
+            }
             externalPreviewView.Close();
             externalPreviewView = null;
         }

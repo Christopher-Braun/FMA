@@ -42,7 +42,7 @@ namespace FMA.View.Helpers
             selectionBorder = new Border
             {
                 Opacity = 0.60,
-                BorderBrush = new SolidColorBrush(Colors.Gray),
+                BorderBrush = new SolidColorBrush(Colors.LightSteelBlue),
                 BorderThickness = new Thickness(1)
             };
 

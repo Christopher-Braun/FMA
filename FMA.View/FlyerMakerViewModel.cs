@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using FMA.Contracts;
+using FMA.TestData;
 using FMA.View.Models;
 using FMA.View.Properties;
 using Microsoft.Win32;
@@ -20,9 +21,24 @@ namespace FMA.View
 
         private List<MaterialModel> materials;
         private bool externalPreviewVisible;
+        private bool externalEditVisible;
         private bool layoutMode;
         private FlyerViewModelBase flyerViewModel;
         private readonly SelectedMaterialProvider selectedMaterialProvider;
+
+        /// <summary>
+        /// TODO only for Debug
+        /// </summary>
+        public FlyerMakerViewModel()
+        {
+            this.selectedMaterialProvider = new SelectedMaterialProvider();
+            this.selectedMaterialProvider.PropertyChanged += (s, e) => OnPropertyChanged("CanCreate");
+
+            this.SetMaterials(DummyData.GetDummyMaterials(), 1);
+
+            this.LayoutMode = true;
+            this.BothVisible = true;
+        }
 
         public FlyerMakerViewModel(IEnumerable<Material> materials, int selectedMateriaId = -1)
         {
@@ -31,7 +47,7 @@ namespace FMA.View
 
             this.SetMaterials(materials, selectedMateriaId);
 
-            this.LayoutMode = false;
+            this.LayoutMode = true;
             this.BothVisible = true;
         }
 
@@ -63,7 +79,27 @@ namespace FMA.View
 
                 if (value)
                 {
-                    WindowService.OpenExternalPreviewWindow(this.selectedMaterialProvider);
+                    ExternalEditVisible = false;
+                    WindowService.OpenExternalPreviewWindow(this.selectedMaterialProvider, false);
+                }
+                else
+                {
+                    WindowService.CloseExternalPreviewWindow();
+                }
+            }
+        }
+
+        public bool ExternalEditVisible
+        {
+            get { return externalEditVisible; }
+            set
+            {
+                externalEditVisible = value;
+
+                if (value)
+                {
+                    ExternalPreviewVisible = false;
+                    WindowService.OpenExternalPreviewWindow(this.selectedMaterialProvider, true);
                 }
                 else
                 {
@@ -134,6 +170,7 @@ namespace FMA.View
             var dialog = new OpenFileDialog();
             //TODO Remove when going productive
             dialog.InitialDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            //TODO Filder ;(
             dialog.Filter = "Warum muss ich das immer wieder von Hand machen?|*.png";
 
             var result = dialog.ShowDialog();

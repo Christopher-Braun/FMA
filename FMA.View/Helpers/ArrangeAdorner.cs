@@ -16,7 +16,7 @@ namespace FMA.View.Helpers
         readonly Thumb bottomRight;
 
         // To store and manage the adorner's visual children.
-        VisualCollection visualChildren;
+        readonly VisualCollection visualChildren;
 
         // Initialize the ResizingAdorner.
         public ArrangeAdorner(UIElement adornedElement)

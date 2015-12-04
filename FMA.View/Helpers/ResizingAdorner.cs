@@ -150,10 +150,10 @@ namespace FMA.View.Helpers
             var adornerWidth = DesiredSize.Width;
             var adornerHeight = DesiredSize.Height;
 
-            topLeft.Arrange(new Rect(-adornerWidth/2, -adornerHeight/2, adornerWidth, adornerHeight));
-            topRight.Arrange(new Rect(desiredWidth - adornerWidth/2, -adornerHeight/2, adornerWidth, adornerHeight));
-            bottomLeft.Arrange(new Rect(-adornerWidth/2, desiredHeight - adornerHeight/2, adornerWidth, adornerHeight));
-            bottomRight.Arrange(new Rect(desiredWidth - adornerWidth/2, desiredHeight - adornerHeight/2, adornerWidth,
+            topLeft.Arrange(new Rect(-adornerWidth / 2, -adornerHeight / 2, adornerWidth, adornerHeight));
+            topRight.Arrange(new Rect(desiredWidth - adornerWidth / 2, -adornerHeight / 2, adornerWidth, adornerHeight));
+            bottomLeft.Arrange(new Rect(-adornerWidth / 2, desiredHeight - adornerHeight / 2, adornerWidth, adornerHeight));
+            bottomRight.Arrange(new Rect(desiredWidth - adornerWidth / 2, desiredHeight - adornerHeight / 2, adornerWidth,
                 adornerHeight));
 
             // Return the final size.
@@ -164,17 +164,16 @@ namespace FMA.View.Helpers
         // set some appearance properties, and add the elements to the visual tree.
         private void BuildAdornerCorner(ref Thumb cornerThumb, Cursor customizedCursor)
         {
-            if (cornerThumb != null) return;
-
-            cornerThumb = new Thumb();
-
-            // Set some arbitrary visual characteristics.
-            cornerThumb.Cursor = customizedCursor;
-            cornerThumb.Height = cornerThumb.Width = 15;
-            cornerThumb.Opacity = 0.60;
-            cornerThumb.Background = new SolidColorBrush(Colors.DodgerBlue);
-            cornerThumb.BorderThickness = new Thickness(1);
-            cornerThumb.BorderBrush = Brushes.White;
+            cornerThumb = new Thumb
+            {
+                Cursor = customizedCursor,
+                Height = 15,
+                Width = 15,
+                Opacity = 0.50,
+                Background = new SolidColorBrush(Colors.Blue),
+                BorderThickness = new Thickness(1),
+                BorderBrush = Brushes.White
+            };
 
             visualChildren.Add(cornerThumb);
         }

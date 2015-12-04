@@ -61,6 +61,7 @@
     </Compile>
     <Compile Include="ExternalPreviewViewModel.cs" />
     <Compile Include="FlyerViewModelBase.cs" />
+    <Compile Include="LayoutCanvasBase.cs" />
     <Compile Include="LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
@@ -80,7 +81,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Helpers\ResizingAdorner.cs" />
-    <Compile Include="Helpers\ArrangeAdorner.cs" />
     <Compile Include="FlyerMakerViewModel.cs" />
     <Compile Include="FlyerMakerView.xaml.cs">
       <DependentUpon>FlyerMakerView.xaml</DependentUpon>
