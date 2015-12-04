@@ -1,12 +1,15 @@
+Resize oben links?
 
-OK Drag drop Posi Scale factor
-OK Bildd generierung Async und abbrechen wen neuer Request kommt
-
-OK Logo Layout setzen in Layout View
-OK Logo Layout setzen in Default view
+Modelle Size und Position oder besser noch Rect nehmen statt doubles.
 
 
-Multiselect
-Drag verhalten
+#Multiselect
+-Drag verhalten
+-Gemeinsam ausrichten
 
-Fonts
+#Fonts
+
+#Collision Detection 
+-2 stufig 
+-Measure
+- Text zu Path wandeln
