@@ -29,9 +29,8 @@ namespace FMA.View
             }
         }
 
-        public ExternalPreviewViewModel(SelectedMaterialProvider selectedMaterialProvider, bool canEdit)
+        public ExternalPreviewViewModel(SelectedMaterialProvider selectedMaterialProvider)
         {
-            CanEdit = canEdit;
             this.SelectedMaterialProvider = selectedMaterialProvider;
         }
     }

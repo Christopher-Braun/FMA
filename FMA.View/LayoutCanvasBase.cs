@@ -23,7 +23,13 @@ namespace FMA.View
 
         private State state = State.None;
 
-        private AdornerLayer adornerLayer;
+        private AdornerLayer adornerLayer
+        {
+            get
+            {
+                return AdornerLayer.GetAdornerLayer(this);
+            }
+        }
         private Border dragSelectionBorder;
 
         private Point origMouseDownPoint;
@@ -62,9 +68,6 @@ namespace FMA.View
             };
 
             this.Children.Add(dragSelectionBorder);
-
-            //TODO andere Stelle dafür suchen
-            adornerLayer = AdornerLayer.GetAdornerLayer(this);
         }
 
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)

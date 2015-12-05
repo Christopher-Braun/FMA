@@ -79,8 +79,7 @@ namespace FMA.View
 
                 if (value)
                 {
-                    ExternalEditVisible = false;
-                    WindowService.OpenExternalPreviewWindow(this.selectedMaterialProvider, false);
+                    WindowService.OpenExternalPreviewWindow(this.selectedMaterialProvider);
                 }
                 else
                 {
@@ -98,12 +97,11 @@ namespace FMA.View
 
                 if (value)
                 {
-                    ExternalPreviewVisible = false;
-                    WindowService.OpenExternalPreviewWindow(this.selectedMaterialProvider, true);
+                    WindowService.OpenExternalEditWindow(this.selectedMaterialProvider);
                 }
                 else
                 {
-                    WindowService.CloseExternalPreviewWindow();
+                    WindowService.CloseExternalEditWindow();
                 }
             }
         }

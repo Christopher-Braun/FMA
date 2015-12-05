@@ -59,6 +59,9 @@
     <Compile Include="ExternalPreviewView.xaml.cs">
       <DependentUpon>ExternalPreviewView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ExternalEditView.xaml.cs">
+      <DependentUpon>ExternalEditView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ExternalPreviewViewModel.cs" />
     <Compile Include="FlyerViewModelBase.cs" />
     <Compile Include="LayoutCanvasBase.cs" />
@@ -76,6 +79,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ExternalPreviewView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="FlyerMakerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -86,7 +93,7 @@
       <DependentUpon>FlyerMakerView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ExternalPreviewView.xaml">
+    <Page Include="ExternalEditView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

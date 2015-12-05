@@ -1,10 +1,7 @@
-Resize oben links?
 
 Modelle Size und Position oder besser noch Rect nehmen statt doubles.
-
-
+s
 #Multiselect
--Drag verhalten
 -Gemeinsam ausrichten
 
 #Fonts
