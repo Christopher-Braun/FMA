@@ -106,6 +106,7 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>
+            
             <ToggleButton Margin="8"
                           HorizontalAlignment="Stretch"
                           Content="External Preview"
