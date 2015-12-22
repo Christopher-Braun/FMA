@@ -18,11 +18,6 @@ namespace FMA.View.Helpers
             BuildAdornerCorner();
         }
 
-        protected override int VisualChildrenCount
-        {
-            get { return visualChildren.Count; }
-        }
-
         protected override Size ArrangeOverride(Size finalSize)
         {
             var desiredWidth = AdornedElement.DesiredSize.Width;
@@ -36,17 +31,21 @@ namespace FMA.View.Helpers
             return finalSize;
         }
 
-
         private void BuildAdornerCorner()
         {
             selectionBorder = new Border
             {
                 Opacity = 0.60,
-                BorderBrush = new SolidColorBrush(Colors.LightSteelBlue),
-                BorderThickness = new Thickness(1)
+                BorderBrush = new SolidColorBrush(Colors.Blue),
+                BorderThickness = new Thickness(1.5)
             };
 
             visualChildren.Add(selectionBorder);
+        }
+
+        protected override int VisualChildrenCount
+        {
+            get { return visualChildren.Count; }
         }
 
         protected override Visual GetVisualChild(int index)

@@ -1,15 +1,23 @@
-﻿namespace FMA.View
+﻿using FMA.Contracts;
+using FMA.View.Models;
+
+namespace FMA.View
 {
     public class LayoutViewModel : FlyerViewModelBase
     {
-        public LayoutViewModel(SelectedMaterialProvider selectedMaterialProvider, bool previewVisible, bool inputVisible, bool bothVisible) 
-            : base(selectedMaterialProvider, previewVisible, inputVisible, bothVisible)
+        public LayoutViewModel(SelectedMaterialProvider selectedMaterialProvider, FontService fontService, ViewStates viewState)
+            : base(selectedMaterialProvider, fontService, viewState)
         {
         }
 
         public override bool CanCreate
         {
             get { return true; }
+        }
+
+        public void AddField()
+        {
+            this.SelectedMaterialProvider.MaterialModel.AddMaterialField(new MaterialFieldModel("CustomField", "Custom Field"));
         }
     }
 }

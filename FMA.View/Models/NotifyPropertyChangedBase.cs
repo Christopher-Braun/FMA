@@ -1,7 +1,6 @@
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using FMA.View.Annotations;
+using FMA.View.Properties;
 
 namespace FMA.View.Models
 {

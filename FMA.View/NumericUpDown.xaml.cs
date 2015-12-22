@@ -5,13 +5,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.TextFormatting;
 
 namespace FMA.View
 {
     public partial class NumericUpDown : UserControl, INotifyPropertyChanged
     {
-        private String lastValue = String.Empty;
+
 
         public static readonly DependencyProperty MaximumProperty =
             DependencyProperty.Register("Maximum", typeof(int), typeof(NumericUpDown), new PropertyMetadata(10000));
@@ -33,11 +32,13 @@ namespace FMA.View
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private string lastValue = string.Empty;
+
         public NumericUpDown()
         {
             InitializeComponent();
 
-            this.MinWidth = 48;
+            this.MinWidth = 52;
 
             this.PressedBrush = Brushes.Black;
             this.HoverBrush = new SolidColorBrush(SystemColors.HighlightColor);
@@ -46,7 +47,7 @@ namespace FMA.View
 
         protected void OnPropertyChanged(string name)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            var handler = PropertyChanged;
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(name));
@@ -113,7 +114,7 @@ namespace FMA.View
 
         private void SetValue(int value)
         {
-            var textBox = textBox1;
+            var textBox = TextBox;
             if (textBox == null)
             {
                 return;
@@ -380,7 +381,7 @@ namespace FMA.View
 
         private void IncreaseValue(int delta)
         {
-            var textBox = textBox1;
+            var textBox = TextBox;
             if (textBox == null)
             {
                 return;

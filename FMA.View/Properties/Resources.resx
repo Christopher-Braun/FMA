@@ -114,4 +114,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Logo" xml:space="preserve">
+    <value>Logo</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Position (Top/Left)</value>
+  </data>
+  <data name="Size" xml:space="preserve">
+    <value>Size (Width/Height)</value>
+  </data>
+  <data name="TextFields" xml:space="preserve">
+    <value>Textfelder</value>
+  </data>
 </root>

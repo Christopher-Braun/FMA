@@ -21,9 +21,6 @@ namespace FMA.View.Models
 
             var logoModel = materialModel.LogoModel;
 
-            logoModel.SuspendNotifyPropertyChanged();
-            try
-            {
             logoModel.Logo = logoData;
 
             if (logoModel.LogoImage == null)
@@ -36,8 +33,8 @@ namespace FMA.View.Models
             var logoWidth = logoModel.LogoImage.PixelWidth;
             var logoHeight = logoModel.LogoImage.PixelHeight;
 
-            var widthRatio = (materialModel.FlyerFrontSideImage.Width / 2) / logoWidth;
-            var heigthRatio = (materialModel.FlyerFrontSideImage.Height / 2) / logoHeight;
+            var widthRatio = (materialModel.FlyerFrontSideImage.Width/2)/logoWidth;
+            var heigthRatio = (materialModel.FlyerFrontSideImage.Height/2)/logoHeight;
 
             var minRatio = Math.Min(widthRatio, heigthRatio);
 
@@ -46,17 +43,12 @@ namespace FMA.View.Models
                 minRatio = 1; //Only want to scale down
             }
 
-            logoModel.Width = logoWidth * minRatio;
-            logoModel.Height = logoHeight * minRatio;
+            logoModel.Width = logoWidth*minRatio;
+            logoModel.Height = logoHeight*minRatio;
 
 
-            logoModel.LeftMargin = (int)position.X;
-            logoModel.TopMargin = (int)position.Y;
-            }
-            finally
-            {
-                logoModel.ResumeNotifyPropertyChanged(true,"Logo");
-            }
+            logoModel.LeftMargin = (int) position.X;
+            logoModel.TopMargin = (int) position.Y;
         }
     }
 }

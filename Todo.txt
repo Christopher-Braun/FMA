@@ -1,8 +1,15 @@
 
-Modelle Size und Position oder besser noch Rect nehmen statt doubles.
-s
+Ja in Reousrcen ! Lokalisierung?
+
+Colors und Borderwidht rausziehen 
+
+
+#Deployment 
+-System.Windows.Interarctivity -> Sollten eh schon da sein wegen Markus
+
+
 #Multiselect
--Gemeinsam ausrichten
+
 
 #Fonts
 
@@ -10,3 +17,5 @@ s
 -2 stufig 
 -Measure
 - Text zu Path wandeln
+
+

@@ -1,12 +1,14 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using FMA.Core;
 using FMA.TestData;
 using FMA.View;
-using FMA.View.Annotations;
+using FMA.View.Helpers;
 
 namespace FMA
 {
@@ -23,13 +25,32 @@ namespace FMA
             this.DataContext = this;
 
             var dummyMaterials = DummyData.GetDummyMaterials();
-            var viewModel = new FlyerMakerViewModel(dummyMaterials, 2);
+
+            //Dummy wird später ersetzt durch WCF Connection
+            Func<string, FontInfo> getFont = name =>
+            {
+                if (name == "Signarita Anne")
+                {
+                    return new FontInfo("SignaritaAnneDemo.ttf", Helper.GetByteArrayFromFile("SignaritaAnneDemo.ttf"));
+                }    
+                if (name == "Bakery")
+                {
+                    return new FontInfo("bakery.ttf", Helper.GetByteArrayFromFile("bakery.ttf"));
+                }
+
+                return null;
+            };
+
+            var exeDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            var customFontsDir = string.Format(@"{0}\CustomFonts\", exeDir);
+            var viewModel = new FlyerMakerViewModel(dummyMaterials, 1, getFont,customFontsDir);
+            var flyerCreator = new FlyerCreator(customFontsDir);
 
             viewModel.WindowService = new WindowService(this);
 
-            viewModel.FlyerCreated += (cm) =>
+            viewModel.FlyerCreated += cm =>
             {
-                var flyer = FlyerCreator.CreateFlyer(cm);
+                var flyer = flyerCreator.CreateFlyer(cm);
 
                 var flyerJpg = "TestAppFlyer.jpg";
                 using (var fileStream = new FileStream(flyerJpg, FileMode.Create))
@@ -55,7 +76,6 @@ namespace FMA
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;

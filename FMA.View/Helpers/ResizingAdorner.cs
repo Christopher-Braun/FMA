@@ -15,128 +15,177 @@ namespace FMA.View.Helpers
         private readonly Thumb topLeft;
         private readonly Thumb topRight;
         private readonly Thumb bottomLeft;
-        private readonly Thumb bottomRight;
+        private readonly Thumb bottomRight;       
+        
+        private readonly Thumb left;
+        private readonly Thumb right;
+        private readonly Thumb bottom;
+        private readonly Thumb top;
 
-        // To store and manage the adorner's visual children.
         private readonly VisualCollection visualChildren;
 
-        // Initialize the ResizingAdorner.
         public ResizingAdorner(UIElement adornedElement)
             : base(adornedElement)
         {
             visualChildren = new VisualCollection(this);
 
-            // Call a helper method to initialize the Thumbs
-            // with a customized cursors.
-            BuildAdornerCorner(ref topLeft, Cursors.SizeNWSE);
-            BuildAdornerCorner(ref topRight, Cursors.SizeNESW);
-            BuildAdornerCorner(ref bottomLeft, Cursors.SizeNESW);
-            BuildAdornerCorner(ref bottomRight, Cursors.SizeNWSE);
+            topLeft = CreateAdornerCorner(Cursors.SizeNWSE);
+            topRight = CreateAdornerCorner(Cursors.SizeNESW);
+            bottomLeft = CreateAdornerCorner(Cursors.SizeNESW);
+            bottomRight = CreateAdornerCorner(Cursors.SizeNWSE);
 
-            // Add handlers for resizing.
-            bottomLeft.DragDelta += HandleBottomLeft;
-            bottomRight.DragDelta += HandleBottomRight;
-            topLeft.DragDelta += HandleTopLeft;
-            topRight.DragDelta += HandleTopRight;
+            left = CreateAdornerCorner(Cursors.SizeWE);
+            right = CreateAdornerCorner(Cursors.SizeWE);
+            top = CreateAdornerCorner(Cursors.SizeNS);
+            bottom = CreateAdornerCorner(Cursors.SizeNS);
+
+            bottomLeft.DragDelta += HandleDrag;
+            bottomRight.DragDelta += HandleDrag;
+            topLeft.DragDelta += HandleDrag;
+            topRight.DragDelta += HandleDrag;
+
+            left.DragDelta += HandleDrag;
+            right.DragDelta += HandleDrag;
+            top.DragDelta += HandleDrag;
+            bottom.DragDelta += HandleDrag;
         }
 
-        // Override the VisualChildrenCount and GetVisualChild properties to interface with 
-        // the adorner's visual collection.
-        protected override int VisualChildrenCount
+        private void HandleDrag(object sender, DragDeltaEventArgs args)
         {
-            get { return visualChildren.Count; }
-        }
-
-        // Handler for resizing from the bottom-right.
-        private void HandleBottomRight(object sender, DragDeltaEventArgs args)
-        {
-            var adornedElement = AdornedElement as FrameworkElement;
             var hitThumb = sender as Thumb;
+            if (hitThumb == null) return;
 
-            if (adornedElement == null || hitThumb == null) return;
+            EnforceSize();
 
-            // Ensure that the Width and Height are properly initialized after the resize.
-            EnforceSize(adornedElement);
-
-            // Change the size by the amount the user drags the mouse, as long as it's larger 
-            // than the width or height of an adorner, respectively.
-            adornedElement.Width = Math.Max(adornedElement.Width + args.HorizontalChange, hitThumb.DesiredSize.Width);
-            adornedElement.Height = Math.Max(args.VerticalChange + adornedElement.Height, hitThumb.DesiredSize.Height);
+            if (ReferenceEquals(hitThumb, bottomRight))
+            {
+                HandleBottomRight(hitThumb,args);
+            }
+            else if (ReferenceEquals(hitThumb, bottomLeft))
+            {
+                HandleBottomLeft(hitThumb, args);
+            }     
+            else if (ReferenceEquals(hitThumb, topLeft))
+            {
+                HandleTopLeft(hitThumb, args);
+            }     
+            else if (ReferenceEquals(hitThumb, topRight))
+            {
+                HandleTopRight(hitThumb, args);
+            }
+            else if (ReferenceEquals(hitThumb, bottom))
+            {
+                HandleBottom(hitThumb, args);
+            }
+            else if (ReferenceEquals(hitThumb, right))
+            {
+                HandleRight(hitThumb, args);
+            }
+            else if (ReferenceEquals(hitThumb, top))
+            {
+                HandleTop(hitThumb, args);
+            }
+            else if (ReferenceEquals(hitThumb, left))
+            {
+                HandleLeft(hitThumb, args);
+            }
         }
 
-        // Handler for resizing from the top-right.
-        private void HandleTopRight(object sender, DragDeltaEventArgs args)
+        private void HandleRight(Thumb hitThumb, DragDeltaEventArgs args)
         {
-            var adornedElement = AdornedElement as FrameworkElement;
-            var hitThumb = sender as Thumb;
-
-            if (adornedElement == null || hitThumb == null) return;
-
-            // Ensure that the Width and Height are properly initialized after the resize.
-            EnforceSize(adornedElement);
-
-            // Change the size by the amount the user drags the mouse, as long as it's larger 
-            // than the width or height of an adorner, respectively.
-            adornedElement.Width = Math.Max(adornedElement.Width + args.HorizontalChange, hitThumb.DesiredSize.Width);
-            //adornedElement.Height = Math.Max(adornedElement.Height - args.VerticalChange, hitThumb.DesiredSize.Height);
-
-            var heightOld = adornedElement.Height;
-            var heightNew = Math.Max(adornedElement.Height - args.VerticalChange, hitThumb.DesiredSize.Height);
-            var topOld = Canvas.GetTop(adornedElement);
-            adornedElement.Height = heightNew;
-            Canvas.SetTop(adornedElement, topOld - (heightNew - heightOld));
+            var newWidth = Math.Max(Adorned.Width + args.HorizontalChange, hitThumb.DesiredSize.Width);
+            Adorned.Width = newWidth;
         }
 
-        // Handler for resizing from the top-left.
-        private void HandleTopLeft(object sender, DragDeltaEventArgs args)
+        private void HandleBottom(Thumb hitThumb, DragDeltaEventArgs args)
         {
-            var adornedElement = AdornedElement as FrameworkElement;
-            var hitThumb = sender as Thumb;
-
-            if (adornedElement == null || hitThumb == null) return;
-
-            // Ensure that the Width and Height are properly initialized after the resize.
-            EnforceSize(adornedElement);
-
-            // Change the size by the amount the user drags the mouse, as long as it's larger 
-            // than the width or height of an adorner, respectively.
-            //adornedElement.Width = Math.Max(adornedElement.Width - args.HorizontalChange, hitThumb.DesiredSize.Width);
-            //adornedElement.Height = Math.Max(adornedElement.Height - args.VerticalChange, hitThumb.DesiredSize.Height);
-
-            var widthOld = adornedElement.Width;
-            var widthNew = Math.Max(adornedElement.Width - args.HorizontalChange, hitThumb.DesiredSize.Width);
-            var leftOld = Canvas.GetLeft(adornedElement);
-            adornedElement.Width = widthNew;
-            Canvas.SetLeft(adornedElement, leftOld - (widthNew - widthOld));
-
-            var heightOld = adornedElement.Height;
-            var heightNew = Math.Max(adornedElement.Height - args.VerticalChange, hitThumb.DesiredSize.Height);
-            var topOld = Canvas.GetTop(adornedElement);
-            adornedElement.Height = heightNew;
-            Canvas.SetTop(adornedElement, topOld - (heightNew - heightOld));
+            var newHeight = Math.Max(Adorned.Height + args.VerticalChange, hitThumb.DesiredSize.Width);
+            Adorned.Height = newHeight;
         }
 
-        // Handler for resizing from the bottom-left.
-        private void HandleBottomLeft(object sender, DragDeltaEventArgs args)
+        private void HandleLeft(Thumb hitThumb, DragDeltaEventArgs args)
         {
-            var adornedElement = AdornedElement as FrameworkElement;
-            var hitThumb = sender as Thumb;
+            var widthOld = Adorned.Width;
+            var leftOld = Canvas.GetLeft(Adorned);
 
-            if (adornedElement == null || hitThumb == null) return;
+            var newWidth = Math.Max(Adorned.Width - args.HorizontalChange, hitThumb.DesiredSize.Width);
+            Adorned.Width = newWidth;
 
-            // Ensure that the Width and Height are properly initialized after the resize.
-            EnforceSize(adornedElement);
+            Canvas.SetLeft(Adorned, leftOld - (Adorned.Width - widthOld));
+        }
 
-            // Change the size by the amount the user drags the mouse, as long as it's larger 
-            // than the width or height of an adorner, respectively.
-            //adornedElement.Width = Math.Max(adornedElement.Width - args.HorizontalChange, hitThumb.DesiredSize.Width);
-            adornedElement.Height = Math.Max(args.VerticalChange + adornedElement.Height, hitThumb.DesiredSize.Height);
+        private void HandleTop(Thumb hitThumb, DragDeltaEventArgs args)
+        {
+            var heightOld = Adorned.Height;
+            var topOld = Canvas.GetTop(Adorned);
 
-            var widthOld = adornedElement.Width;
-            var widthNew = Math.Max(adornedElement.Width - args.HorizontalChange, hitThumb.DesiredSize.Width);
-            var leftOld = Canvas.GetLeft(adornedElement);
-            adornedElement.Width = widthNew;
-            Canvas.SetLeft(adornedElement, leftOld - (widthNew - widthOld));
+            var newHeight = Math.Max(Adorned.Height - args.VerticalChange, hitThumb.DesiredSize.Width);
+            Adorned.Height = newHeight;
+
+            Canvas.SetTop(Adorned, topOld - (Adorned.Height - heightOld));
+        }
+
+        private void HandleBottomRight(Thumb hitThumb, DragDeltaEventArgs args)
+        {
+            ApplySizeChange(new Point(args.HorizontalChange, args.VerticalChange), hitThumb);
+        }
+
+        private void HandleTopRight(Thumb hitThumb, DragDeltaEventArgs args)
+        {
+            var heightOld = Adorned.Height;
+            var topOld = Canvas.GetTop(Adorned);
+
+            ApplySizeChange(new Point(args.HorizontalChange, -args.VerticalChange), hitThumb);
+
+            Canvas.SetTop(Adorned, topOld - (Adorned.Height - heightOld));
+        }
+
+        private void HandleTopLeft(Thumb hitThumb, DragDeltaEventArgs args)
+        {
+            var widthOld = Adorned.Width;
+            var leftOld = Canvas.GetLeft(Adorned);
+
+            var heightOld = Adorned.Height;
+            var topOld = Canvas.GetTop(Adorned);
+
+            ApplySizeChange(new Point(-args.HorizontalChange, -args.VerticalChange), hitThumb);
+
+            Canvas.SetLeft(Adorned, leftOld - (Adorned.Width - widthOld));
+            Canvas.SetTop(Adorned, topOld - (Adorned.Height - heightOld));
+        }
+
+        private void HandleBottomLeft(Thumb hitThumb, DragDeltaEventArgs args)
+        {
+            var widthOld = Adorned.Width;
+            var leftOld = Canvas.GetLeft(Adorned);
+
+            ApplySizeChange(new Point(-args.HorizontalChange, args.VerticalChange), hitThumb);
+
+            Canvas.SetLeft(Adorned, leftOld - (Adorned.Width - widthOld));
+        }
+
+        private void ApplySizeChange(Point change, Thumb hitThumb)
+        {
+            var newHeight = Math.Max(Adorned.Height + change.Y, hitThumb.DesiredSize.Height);
+            var newWidth = Math.Max(Adorned.Width + change.X, hitThumb.DesiredSize.Width);
+
+            if (Keyboard.Modifiers == ModifierKeys.Shift)
+            {
+                var scaleFactor = Math.Max(newWidth/Adorned.Width, newHeight/Adorned.Height);
+
+                Adorned.Height *= scaleFactor;
+                Adorned.Width *= scaleFactor;
+            }
+            else
+            {
+                Adorned.Height = newHeight;
+                Adorned.Width = newWidth;
+            }
+        }
+
+        private FrameworkElement Adorned
+        {
+            get { return AdornedElement as FrameworkElement; }
         }
 
         // Arrange the Adorners.
@@ -153,8 +202,12 @@ namespace FMA.View.Helpers
             topLeft.Arrange(new Rect(-adornerWidth / 2, -adornerHeight / 2, adornerWidth, adornerHeight));
             topRight.Arrange(new Rect(desiredWidth - adornerWidth / 2, -adornerHeight / 2, adornerWidth, adornerHeight));
             bottomLeft.Arrange(new Rect(-adornerWidth / 2, desiredHeight - adornerHeight / 2, adornerWidth, adornerHeight));
-            bottomRight.Arrange(new Rect(desiredWidth - adornerWidth / 2, desiredHeight - adornerHeight / 2, adornerWidth,
-                adornerHeight));
+            bottomRight.Arrange(new Rect(desiredWidth - adornerWidth / 2, desiredHeight - adornerHeight / 2, adornerWidth,adornerHeight));
+
+            left.Arrange(new Rect(-adornerWidth / 2, 0, adornerWidth, adornerHeight));
+            right.Arrange(new Rect(desiredWidth - adornerWidth / 2, 0, adornerWidth, adornerHeight));
+            bottom.Arrange(new Rect(0,desiredHeight - adornerHeight / 2,adornerWidth, adornerHeight));
+            top.Arrange(new Rect(0, -adornerHeight / 2,  adornerWidth, adornerHeight));
 
             // Return the final size.
             return finalSize;
@@ -162,39 +215,46 @@ namespace FMA.View.Helpers
 
         // Helper method to instantiate the corner Thumbs, set the Cursor property, 
         // set some appearance properties, and add the elements to the visual tree.
-        private void BuildAdornerCorner(ref Thumb cornerThumb, Cursor customizedCursor)
+        private Thumb CreateAdornerCorner(Cursor customizedCursor)
         {
-            cornerThumb = new Thumb
+            var cornerThumb = new Thumb
             {
                 Cursor = customizedCursor,
                 Height = 15,
                 Width = 15,
-                Opacity = 0.50,
+                Opacity = 0.5,
                 Background = new SolidColorBrush(Colors.Blue),
-                BorderThickness = new Thickness(1),
-                BorderBrush = Brushes.White
+                BorderThickness = new Thickness(0),
+                BorderBrush = Brushes.Silver
             };
 
             visualChildren.Add(cornerThumb);
+            return cornerThumb;
         }
 
         // This method ensures that the Widths and Heights are initialized.  Sizing to content produces
         // Width and Height values of Double.NaN.  Because this Adorner explicitly resizes, the Width and Height
         // need to be set first.  It also sets the maximum size of the adorned element.
-        private void EnforceSize(FrameworkElement adornedElement)
+        private void EnforceSize()
         {
-            if (adornedElement.Width.Equals(double.NaN))
-                adornedElement.Width = adornedElement.DesiredSize.Width;
-            if (adornedElement.Height.Equals(double.NaN))
-                adornedElement.Height = adornedElement.DesiredSize.Height;
+            if (Adorned.Width.Equals(double.NaN))
+                Adorned.Width = Adorned.DesiredSize.Width;
+            if (Adorned.Height.Equals(double.NaN))
+                Adorned.Height = Adorned.DesiredSize.Height;
 
-            var parent = adornedElement.Parent as FrameworkElement;
+            var parent = Adorned.Parent as FrameworkElement;
             if (parent != null)
             {
-                adornedElement.MaxHeight = parent.ActualHeight;
-                adornedElement.MaxWidth = parent.ActualWidth;
+                Adorned.MaxHeight = parent.ActualHeight;
+                Adorned.MaxWidth = parent.ActualWidth;
             }
         }
+
+        protected override int VisualChildrenCount
+        {
+            get { return visualChildren.Count; }
+        }
+
 
         protected override Visual GetVisualChild(int index)
         {

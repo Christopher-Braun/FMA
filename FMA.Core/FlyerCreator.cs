@@ -9,34 +9,44 @@ namespace FMA.Core
 {
     public class FlyerCreator
     {
-        public static MemoryStream CreateFlyer(CustomMaterial material)
+        private readonly MaterialToTextFieldConverter materialToTextFieldConverter;
+
+        public FlyerCreator(string customFontsDir)
+        {
+            materialToTextFieldConverter = new MaterialToTextFieldConverter(new FontService(customFontsDir));
+        }
+
+        public MemoryStream CreateFlyer(CustomMaterial material)
         {
             var image = CreateImage(material);
 
             return SaveDrawingImage(image);
         }
 
-        public static ImageSource CreateImage(CustomMaterial material)
+        private ImageSource CreateImage(CustomMaterial material)
         {
-            var bitmapSourceBackground = material.GetFlyerBackground();
+            var bitmapSourceBackground = material.FlyerFrontSide.GetBitmapImage();
 
             var visual = new DrawingVisual();
             using (var drawingContext = visual.RenderOpen())
             {
+                drawingContext.PushClip(new RectangleGeometry(new Rect(0, 0, bitmapSourceBackground.Width, bitmapSourceBackground.Height)));
+
                 drawingContext.DrawImage(bitmapSourceBackground, new Rect(0, 0, bitmapSourceBackground.Width, bitmapSourceBackground.Height));
 
-                foreach (var textField in material.GetTextFields())
+                foreach (var textField in materialToTextFieldConverter.CreateTextFields(material))
                 {
                     drawingContext.DrawText(textField.FormattedText, textField.Origin);
                 }
 
                 if (material.CustomLogo.HasLogo)
                 {
-                    var flyerLogo = material.GetFlyerLogo();
+                    var flyerLogo = material.CustomLogo.Logo.GetBitmapImage();
                     drawingContext.DrawImage(flyerLogo, new Rect(material.CustomLogo.LogoLeftMargin, material.CustomLogo.LogoTopMargin, material.CustomLogo.LogoWidth, material.CustomLogo.LogoHeight));
                 }
             }
             var image = new DrawingImage(visual.Drawing);
+
             image.Freeze();
             return image;
         }

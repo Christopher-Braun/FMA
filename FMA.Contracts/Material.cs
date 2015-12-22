@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace FMA.Contracts
 {
+     [DebuggerDisplay("Title: {Title}")]
     public class Material
     {
         public Material(int id, string title, string description, IEnumerable<MaterialField> materialFields, byte[] flyerFrontSide, byte[] flyerBackside)
@@ -12,13 +13,13 @@ namespace FMA.Contracts
             Title = title;
             Description = description;
 
-            this.MaterialFields = materialFields.ToList();
+            MaterialFields = materialFields.ToList();
 
             FlyerFrontSide = flyerFrontSide;
             FlyerBackside = flyerBackside;
         }
 
-        public Int32 Id { get; private set; }
+        public int Id { get; private set; }
 
         public string Title { get; private set; }
 
@@ -26,9 +27,8 @@ namespace FMA.Contracts
 
         public IEnumerable<MaterialField> MaterialFields { get; private set; }
 
+        public byte[] FlyerFrontSide { get; private set; }
 
-        public Byte[] FlyerFrontSide { get; private set; }
-
-        public Byte[] FlyerBackside    { get; private set; }
+        public byte[] FlyerBackside    { get; private set; }
     }
 }

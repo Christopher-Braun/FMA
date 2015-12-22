@@ -1,5 +1,3 @@
-using System;
-
 namespace FMA.Contracts
 {
     public class CustomLogo

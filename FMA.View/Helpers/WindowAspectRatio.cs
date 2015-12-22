@@ -47,10 +47,9 @@ namespace FMA.View.Helpers
         {
             if ((WM)msg == WM.WINDOWPOSCHANGING)
             {
-                WINDOWPOS position = (WINDOWPOS)Marshal.PtrToStructure(lParam, typeof(WINDOWPOS));
+                var position = (WINDOWPOS)Marshal.PtrToStructure(lParam, typeof(WINDOWPOS));
 
-                if ((position.flags & (int)SWP.NoMove) != 0 ||
-                    HwndSource.FromHwnd(hwnd).RootVisual == null) return IntPtr.Zero;
+                if ((position.flags & (int)SWP.NoMove) != 0 || HwndSource.FromHwnd(hwnd).RootVisual == null) return IntPtr.Zero;
 
                 position.cx = (int)(position.cy * ratio);
 

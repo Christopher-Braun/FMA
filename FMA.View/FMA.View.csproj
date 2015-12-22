@@ -34,15 +34,11 @@
   <ItemGroup>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -64,11 +60,17 @@
     </Compile>
     <Compile Include="ExternalPreviewViewModel.cs" />
     <Compile Include="FlyerViewModelBase.cs" />
+    <Compile Include="Helpers\FontInfo.cs" />
+    <Compile Include="Helpers\FontStyleConverter.cs" />
+    <Compile Include="Helpers\FontWeightConverter.cs" />
     <Compile Include="LayoutCanvasBase.cs" />
     <Compile Include="LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="LayoutViewModel.cs" />
+    <Compile Include="LogoLayoutView.xaml.cs">
+      <DependentUpon>LogoLayoutView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SelectedMaterialProvider.cs" />
     <Compile Include="Models\MaterialModelExtensions.cs" />
     <Compile Include="Models\NotifyPropertyChangedBase.cs" />
@@ -101,6 +103,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="LogoLayoutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="NumericUpDown.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -120,7 +126,6 @@
       <DependentUpon>NumericUpDown.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -135,8 +140,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -148,14 +154,6 @@
     <ProjectReference Include="..\FMA.Contracts\FMA.Contracts.csproj">
       <Project>{3eee4f9d-e4bb-48bb-85df-87f57935c843}</Project>
       <Name>FMA.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FMA.Core\FMA.Core.csproj">
-      <Project>{06e4f4dc-2035-487c-9206-80a11a8cbd89}</Project>
-      <Name>FMA.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FMA.TestData\FMA.TestData.csproj">
-      <Project>{71A6B3C3-228D-41D0-BA24-AB8E31547263}</Project>
-      <Name>FMA.TestData</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

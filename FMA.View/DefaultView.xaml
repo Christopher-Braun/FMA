@@ -24,158 +24,91 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <Border x:Name="Input"
-                Margin="8,8,0,8"
-                BorderBrush="CadetBlue"
-                BorderThickness="1">
-            <Grid>
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                    <StackPanel>
-                        <TextBlock FontWeight="Bold">Textfelder</TextBlock>
-                        <ItemsControl Margin="8"
-                                      Grid.IsSharedSizeScope="True"
-                                      ItemsSource="{Binding SelectedMaterialProvider.MaterialModel.MaterialFields}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate DataType="models:MaterialFieldModel">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" SharedSizeGroup="A" />
-                                            <ColumnDefinition Width="*" SharedSizeGroup="B" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Margin="4" Text="{Binding FieldName}" />
-                                        <TextBox Grid.Column="1"
-                                                 AcceptsReturn="True"
-                                                 Style="{StaticResource TextBoxWithValidation}"
-                                                 Text="{Binding Value,
-                                                                UpdateSourceTrigger=PropertyChanged,
-                                                                NotifyOnValidationError=True,
-                                                                ValidatesOnDataErrors=True}">
-                                            <i:Interaction.Triggers>
-                                                <i:EventTrigger EventName="MouseDoubleClick">
-                                                    <ei:CallMethodAction MethodName="MouseDoubleClick" TargetObject="{Binding}" />
-                                                </i:EventTrigger>
-                                            </i:Interaction.Triggers>
-                                        </TextBox>
-                                    </Grid>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-
-                        <StackPanel Visibility="{Binding SelectedMaterialProvider.MaterialModel.LogoModel.HasLogo, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <TextBlock FontWeight="Bold">Logo</TextBlock>
-                            <Grid Name="Logo"
-                                  Margin="8"
-                                  DataContext="{Binding SelectedMaterialProvider.MaterialModel.LogoModel}">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Grid.Column="0"
-                                           Margin="4"
-                                           Text="Top Margin" />
-
-                                <view:NumericUpDown Grid.Row="0"
-                                                    Grid.Column="1"
-                                                    Value="{Binding TopMargin}" />
-                                <TextBlock Grid.Row="1"
-                                           Grid.Column="0"
-                                           Margin="4"
-                                           Text="Left Margin" />
-                                <view:NumericUpDown Grid.Row="1"
-                                                    Grid.Column="1"
-                                                    Value="{Binding LeftMargin}" />
-                                <TextBlock Grid.Row="2"
-                                           Grid.Column="0"
-                                           Margin="4"
-                                           Text="Width" />
-                                <view:NumericUpDown Grid.Row="2"
-                                                    Grid.Column="1"
-                                                    Value="{Binding Width}" />
-                                <TextBlock Grid.Row="3"
-                                           Grid.Column="0"
-                                           Margin="4"
-                                           Text="Height" />
-                                <view:NumericUpDown Grid.Row="3                                              "
-                                                    Grid.Column="1"
-                                                    Value="{Binding Height}" />
-
-                            </Grid>
-                        </StackPanel>
-                    </StackPanel>
-                </ScrollViewer>
-
-            </Grid>
-            <Border.Style>
-                <Style TargetType="Border">
+        <Grid Margin="4,0">
+            <Grid.Style>
+                <Style TargetType="FrameworkElement">
                     <Style.Triggers>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding PreviewVisible}" Value="True" />
-                                <Condition Binding="{Binding BothVisible}" Value="False" />
-                            </MultiDataTrigger.Conditions>
-                            <MultiDataTrigger.ExitActions>
+                        <DataTrigger Binding="{Binding ViewState}" Value="OnlyPreview">
+                            <DataTrigger.ExitActions>
                                 <BeginStoryboard Storyboard="{StaticResource FadeIn}" />
-                            </MultiDataTrigger.ExitActions>
-                            <MultiDataTrigger.EnterActions>
+                            </DataTrigger.ExitActions>
+                            <DataTrigger.EnterActions>
                                 <BeginStoryboard Storyboard="{StaticResource FadeOut}" />
-                            </MultiDataTrigger.EnterActions>
-                        </MultiDataTrigger>
+                            </DataTrigger.EnterActions>
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </Border.Style>
+            </Grid.Style>
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock FontWeight="Bold">Textfelder</TextBlock>
+                    <ItemsControl Margin="8"
+                                  Grid.IsSharedSizeScope="True"
+                                  ItemsSource="{Binding SelectedMaterialProvider.MaterialModel.MaterialFields}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="models:MaterialFieldModel">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" SharedSizeGroup="A" />
+                                        <ColumnDefinition Width="*" SharedSizeGroup="B" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Margin="4"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding FieldName}" />
+                                    <TextBox Grid.Column="1"
+                                             AcceptsReturn="True"
+                                             Style="{StaticResource TextBoxWithValidation}"
+                                             Text="{Binding Value,
+                                                            UpdateSourceTrigger=PropertyChanged,
+                                                            NotifyOnValidationError=True,
+                                                            ValidatesOnDataErrors=True}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="MouseDoubleClick">
+                                                <ei:CallMethodAction MethodName="MouseDoubleClick" TargetObject="{Binding}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </TextBox>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
 
-        </Border>
+                    <view:LogoLayoutView DataContext="{Binding SelectedMaterialProvider.MaterialModel.LogoModel}" />
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
 
         <GridSplitter Grid.Column="1"
-                      Width="8"
+                      Width="4"
                       HorizontalAlignment="Stretch"
                       Background="Transparent" />
 
-        <Border x:Name="Preview"
-                Grid.Column="2"
-                Margin="0,8,8,8"
-                HorizontalAlignment="Left"
-                BorderBrush="CadetBlue"
-                BorderThickness="1">
-            <Viewbox HorizontalAlignment="Stretch"
-                     VerticalAlignment="Stretch"
-                     Stretch="Uniform">
-                <view:LayoutCanvas Margin="8"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"
-                                   CanManipulateLogos="True"
-                                   MaterialModel="{Binding SelectedMaterialProvider.MaterialModel}" />
-            </Viewbox>
-            <Border.Style>
-                <Style TargetType="Border">
+        <Viewbox Grid.Column="2"
+                 Margin="4"
+                 HorizontalAlignment="Stretch"
+                 VerticalAlignment="Stretch"
+                 Stretch="Uniform">
+            <view:LayoutCanvas Margin="8"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               CanManipulateLogos="True"
+                               FontService="{Binding FontService}"
+                               MaterialModel="{Binding SelectedMaterialProvider.MaterialModel}" />
+            <Viewbox.Style>
+                <Style TargetType="FrameworkElement">
                     <Style.Triggers>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding InputVisible}" Value="True" />
-                                <Condition Binding="{Binding BothVisible}" Value="False" />
-                            </MultiDataTrigger.Conditions>
-                            <MultiDataTrigger.ExitActions>
+                        <DataTrigger Binding="{Binding ViewState}" Value="OnlyInput">
+                            <DataTrigger.ExitActions>
                                 <BeginStoryboard Storyboard="{StaticResource FadeIn}" />
-                            </MultiDataTrigger.ExitActions>
-                            <MultiDataTrigger.EnterActions>
+                            </DataTrigger.ExitActions>
+                            <DataTrigger.EnterActions>
                                 <BeginStoryboard Storyboard="{StaticResource FadeOut}" />
-                            </MultiDataTrigger.EnterActions>
-                        </MultiDataTrigger>
-
+                            </DataTrigger.EnterActions>
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </Border.Style>
-        </Border>
-
+            </Viewbox.Style>
+        </Viewbox>
     </Grid>
 
 </UserControl>

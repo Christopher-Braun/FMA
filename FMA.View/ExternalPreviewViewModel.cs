@@ -1,10 +1,10 @@
+using FMA.Contracts;
 using FMA.View.Models;
 
 namespace FMA.View
 {
     public class ExternalPreviewViewModel : NotifyPropertyChangedBase
     {
-        private bool canEdit;
         private SelectedMaterialProvider selectedMaterialProvider;
 
         public SelectedMaterialProvider SelectedMaterialProvider
@@ -18,20 +18,12 @@ namespace FMA.View
             }
         }
 
-        public bool CanEdit
-        {
-            get { return canEdit; }
-            private set
-            {
-                if (value.Equals(canEdit)) return;
-                canEdit = value;
-                OnPropertyChanged();
-            }
-        }
+        public FontService FontService { get; set; }
 
-        public ExternalPreviewViewModel(SelectedMaterialProvider selectedMaterialProvider)
+        public ExternalPreviewViewModel(SelectedMaterialProvider selectedMaterialProvider, FontService fontService)
         {
             this.SelectedMaterialProvider = selectedMaterialProvider;
+            FontService = fontService;
         }
     }
 }

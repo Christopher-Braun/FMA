@@ -1,59 +1,56 @@
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using FMA.View.Annotations;
+using FMA.Contracts;
+using FMA.View.Properties;
 
 namespace FMA.View
 {
     public abstract class FlyerViewModelBase : INotifyPropertyChanged
     {
-        private bool previewVisible;
-        private bool inputVisible;
-        private bool bothVisible;
+        private ViewStates viewState;
 
-        protected FlyerViewModelBase(SelectedMaterialProvider selectedMaterialProvider, bool previewVisible, bool inputVisible, bool bothVisible)
+        protected FlyerViewModelBase(SelectedMaterialProvider selectedMaterialProvider, FontService fontService, ViewStates viewState)
         {
+            this.viewState = viewState;
             SelectedMaterialProvider = selectedMaterialProvider;
-            this.previewVisible = previewVisible;
-            this.inputVisible = inputVisible;
-            this.bothVisible = bothVisible;
+            FontService = fontService;
         }
 
         public SelectedMaterialProvider SelectedMaterialProvider { get; private set; }
+        public FontService FontService { get; private set; }
 
         public abstract bool CanCreate { get; }
 
-        public bool PreviewVisible
+        public void ToggleViews()
         {
-            get { return previewVisible; }
+            switch (ViewState)
+            {
+                case ViewStates.Both:
+                    ViewState = ViewStates.OnlyInput;
+                    break;
+                case ViewStates.OnlyInput:
+                    ViewState = ViewStates.OnlyPreview;
+                    break;
+                case ViewStates.OnlyPreview:
+                    ViewState = ViewStates.Both;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+
+        public ViewStates ViewState
+        {
+            get { return viewState; }
             set
             {
-                if (value == previewVisible) return;
-                previewVisible = value;
+                viewState = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool InputVisible
-        {
-            get { return inputVisible; }
-            set
-            {
-                if (value == inputVisible) return;
-                inputVisible = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool BothVisible
-        {
-            get { return bothVisible; }
-            set
-            {
-                if (value.Equals(bothVisible)) return;
-                bothVisible = value;
-                OnPropertyChanged();
-            }
-        }
 
         public virtual event PropertyChangedEventHandler PropertyChanged;
 
@@ -62,6 +59,13 @@ namespace FMA.View
         {
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public enum ViewStates
+        {
+            Both,
+            OnlyInput,
+            OnlyPreview,
         }
     }
 }

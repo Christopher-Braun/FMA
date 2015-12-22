@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Media.Imaging;
+using FMA.Contracts;
 using FMA.Contracts.Properties;
-using FMA.Core;
 
 namespace FMA.View.Models
 {
     public class MaterialModel : INotifyPropertyChanged
     {
-        private readonly List<MaterialFieldModel> materialFields;
         private byte[] flyerFrontSide;
 
         public MaterialModel(int id, string title, string description, IEnumerable<MaterialFieldModel> materialFields, byte[] flyerFrontSide, byte[] flyerBackside)
@@ -20,12 +20,14 @@ namespace FMA.View.Models
             Title = title;
             Description = description;
 
-            this.materialFields = new List<MaterialFieldModel>();
-            materialFields.ToList().ForEach(m =>
+
+            var materialFieldModels = materialFields.ToList();
+            materialFieldModels.ForEach(m =>
             {
-                this.materialFields.Add(m);
                 m.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
             });
+
+            MaterialFields = new ObservableCollection<MaterialFieldModel>(materialFieldModels);
 
             FlyerFrontSide = flyerFrontSide;
             FlyerBackside = flyerBackside;
@@ -41,12 +43,16 @@ namespace FMA.View.Models
 
         public string Description { get; private set; }
 
-        public IEnumerable<MaterialFieldModel> MaterialFields
+        public ObservableCollection<MaterialFieldModel> MaterialFields
         {
-            get
-            {
-                return materialFields;
-            }
+            get;
+            private set;
+        }
+
+        public void AddMaterialField(MaterialFieldModel materialField)
+        {
+            materialField.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
+            this.MaterialFields.Add(materialField);
         }
 
         public BitmapImage FlyerFrontSideImage { get; private set; }

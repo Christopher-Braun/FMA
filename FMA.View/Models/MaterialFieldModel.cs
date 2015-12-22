@@ -11,17 +11,23 @@ namespace FMA.View.Models
     public class MaterialFieldModel : INotifyPropertyChanged, IDataErrorInfo
     {
         private string value;
-        private string error= string.Empty;
-        private int topMargin;
-        private int leftMargin;
-        private int maxRows;
-        private int maxLength;
+        private string error = string.Empty;
+        private int topMargin = 100;
+        private int leftMargin = 20;
+        private int maxRows = Int32.MaxValue;
+        private int maxLength = Int32.MaxValue;
         private bool uppper;
         private bool italic;
         private bool bold;
-        private int fontSize;
-        private string fontName;
+        private int fontSize = 12;
+        private string fontName = "Arial";
         private string fieldName;
+
+        public MaterialFieldModel(string fieldName, string value)
+        {
+            this.fieldName = fieldName;
+            this.value = value;
+        }
 
         public MaterialFieldModel(string fieldName, string fontName, int fontSize, bool bold, bool italic, bool uppper, int maxLength, int maxRows, int leftMargin, int topMargin, string value)
         {
@@ -95,6 +101,7 @@ namespace FMA.View.Models
             {
                 uppper = value;
                 OnPropertyChanged();
+                OnPropertyChanged("DisplayValue");
             }
         }
 
@@ -146,6 +153,15 @@ namespace FMA.View.Models
             {
                 this.value = value;
                 OnPropertyChanged();
+                OnPropertyChanged("DisplayValue");
+            }
+        }
+
+        public string DisplayValue
+        {
+            get
+            {
+                return Uppper ? this.Value.ToUpper() : this.Value;
             }
         }
 
@@ -173,11 +189,11 @@ namespace FMA.View.Models
                     //{
                     //    errorText = String.Format("Der Text darf maximal '{0}' Zeichen enthalten", MaxLength);
                     //} 
-                    if (lines.Any( t=> t.Length > MaxLength))
+                    if (lines.Any(t => t.Length > MaxLength))
                     {
                         errorText = string.Format("Der Text darf maximal '{0}' Zeichen pro Zeile enthalten", MaxLength);
                     }
-                    else if (lines.Count() > this.MaxRows)
+                    else if (lines.Length > this.MaxRows)
                     {
                         errorText = string.Format("Der Text darf maximal '{0}' Zeilen enthalten", MaxRows);
                     }
@@ -195,7 +211,7 @@ namespace FMA.View.Models
             get { return error; }
             private set
             {
-                if( string.CompareOrdinal(error, value) == 0)
+                if (string.CompareOrdinal(error, value) == 0)
                 {
                     return;
                 }

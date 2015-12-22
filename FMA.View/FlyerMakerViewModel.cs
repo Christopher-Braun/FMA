@@ -6,17 +6,19 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Input;
 using FMA.Contracts;
-using FMA.TestData;
+using FMA.View.Helpers;
 using FMA.View.Models;
 using FMA.View.Properties;
 using Microsoft.Win32;
 
 namespace FMA.View
 {
-    public class FlyerMakerViewModel : INotifyPropertyChanged, IFlyerMakerView
+    public class FlyerMakerViewModel : INotifyPropertyChanged
     {
         public event Action<CustomMaterial> FlyerCreated = m => { };
+
         public WindowService WindowService { get; set; }
 
         private List<MaterialModel> materials;
@@ -25,30 +27,39 @@ namespace FMA.View
         private bool layoutMode;
         private FlyerViewModelBase flyerViewModel;
         private readonly SelectedMaterialProvider selectedMaterialProvider;
+        private bool layoutButtonsVisible;
+        private readonly FontService fontService;
 
-        /// <summary>
-        /// TODO only for Debug
-        /// </summary>
-        public FlyerMakerViewModel()
+        public FlyerMakerViewModel(List<Material> materials, int selectedMateriaId, Func<string, FontInfo> getFont, string customFontsDir)
         {
-            this.selectedMaterialProvider = new SelectedMaterialProvider();
-            this.selectedMaterialProvider.PropertyChanged += (s, e) => OnPropertyChanged("CanCreate");
+            fontService = new FontService(customFontsDir);
 
-            this.SetMaterials(DummyData.GetDummyMaterials(), 1);
+            UpdateFonts(materials, getFont);
 
-            this.LayoutMode = true;
-            this.BothVisible = true;
-        }
-
-        public FlyerMakerViewModel(IEnumerable<Material> materials, int selectedMateriaId = -1)
-        {
             this.selectedMaterialProvider = new SelectedMaterialProvider();
             this.selectedMaterialProvider.PropertyChanged += (s, e) => OnPropertyChanged("CanCreate");
 
             this.SetMaterials(materials, selectedMateriaId);
 
-            this.LayoutMode = true;
-            this.BothVisible = true;
+            this.LayoutMode = false;
+        }
+
+        private void UpdateFonts(IEnumerable<Material> materials, Func<string, FontInfo> getFont)
+        {
+            var requiredFonts = materials.SelectMany(m => m.MaterialFields).Select(f => f.FontName);
+
+            foreach (var requiredFont in requiredFonts)
+            {
+                if (fontService.IsFontAvailable(requiredFont))
+                {
+                    continue;
+                }
+                var fontInfo = getFont(requiredFont);
+                if (fontInfo != null)
+                {
+                    fontService.InstallFont(fontInfo.FileName, fontInfo.Buffer);
+                }
+            }
         }
 
         private void SetMaterials(IEnumerable<Material> materials, int selectedMateriaId = -1)
@@ -79,7 +90,7 @@ namespace FMA.View
 
                 if (value)
                 {
-                    WindowService.OpenExternalPreviewWindow(this.selectedMaterialProvider);
+                    WindowService.OpenExternalPreviewWindow(this.selectedMaterialProvider, this.fontService);
                 }
                 else
                 {
@@ -97,12 +108,30 @@ namespace FMA.View
 
                 if (value)
                 {
-                    WindowService.OpenExternalEditWindow(this.selectedMaterialProvider);
+                    WindowService.OpenExternalEditWindow(this.selectedMaterialProvider, this.fontService);
                 }
                 else
                 {
                     WindowService.CloseExternalEditWindow();
                 }
+            }
+        }
+
+        public bool LayoutButtonsVisible
+        {
+            get { return layoutButtonsVisible; }
+            set
+            {
+                layoutButtonsVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public void EnableLayoutButtons()
+        {
+            if (Keyboard.Modifiers == (ModifierKeys.Shift | ModifierKeys.Control))
+            {
+                LayoutButtonsVisible = !LayoutButtonsVisible;
             }
         }
 
@@ -113,24 +142,21 @@ namespace FMA.View
             {
                 layoutMode = value;
 
-                bool previewVisible = false;
-                bool inputVisible = false;
-                bool bothVisible = true;
+                var viewState = FlyerViewModelBase.ViewStates.Both;
 
-                if (flyerViewModel != null)
+                if (FlyerViewModel != null)
                 {
-                    previewVisible = flyerViewModel.PreviewVisible;
-                    inputVisible = flyerViewModel.InputVisible;
-                    bothVisible = flyerViewModel.BothVisible;
+                    viewState = FlyerViewModel.ViewState;
+
                 }
 
                 if (layoutMode)
                 {
-                    this.FlyerViewModel = new LayoutViewModel(this.selectedMaterialProvider, previewVisible, inputVisible, bothVisible);
+                    this.FlyerViewModel = new LayoutViewModel(this.selectedMaterialProvider, fontService, viewState);
                 }
                 else
                 {
-                    this.FlyerViewModel = new DefaultViewModel(this.selectedMaterialProvider, previewVisible, inputVisible, bothVisible);
+                    this.FlyerViewModel = new DefaultViewModel(this.selectedMaterialProvider, fontService, viewState);
                 }
 
                 OnPropertyChanged("CanCreate");
@@ -153,6 +179,11 @@ namespace FMA.View
             set { this.selectedMaterialProvider.MaterialModel = value.Clone(); }
         }
 
+        public bool CanCreate
+        {
+            get { return this.FlyerViewModel.CanCreate; }
+        }
+
         public void Create()
         {
             FlyerCreated(SelectedMaterial.ToCustomMaterial());
@@ -165,11 +196,13 @@ namespace FMA.View
 
         public void AddLogo()
         {
-            var dialog = new OpenFileDialog();
-            //TODO Remove when going productive
-            dialog.InitialDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            //TODO Filder ;(
-            dialog.Filter = "Warum muss ich das immer wieder von Hand machen?|*.png";
+            var dialog = new OpenFileDialog
+            {
+                //TODO Remove when going productive
+                Title = "Select logo file",
+                InitialDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
+                Filter = "Image files | *.jpg; *.jpeg; *.bmp; *.png; *.gif | All Files | *.*"
+            };
 
             var result = dialog.ShowDialog();
             if (result != true)
@@ -177,31 +210,15 @@ namespace FMA.View
                 return;
             }
 
-            this.selectedMaterialProvider.MaterialModel.SetLogo(dialog.FileName, new Point(20, 20));
+            this.selectedMaterialProvider.MaterialModel.SetLogo(dialog.FileName, new Point(25, 75));
         }
 
-        public bool CanCreate
+        public void DeleteLogo()
         {
-            get { return this.FlyerViewModel.CanCreate; }
+            this.selectedMaterialProvider.MaterialModel.LogoModel.DeleteLogo();
         }
 
-        public bool PreviewVisible
-        {
-            get { return this.FlyerViewModel.PreviewVisible; }
-            set { this.FlyerViewModel.PreviewVisible = value; }
-        }
 
-        public bool InputVisible
-        {
-            get { return this.FlyerViewModel.InputVisible; }
-            set { this.FlyerViewModel.InputVisible = value; }
-        }
-
-        public bool BothVisible
-        {
-            get { return this.FlyerViewModel.BothVisible; }
-            set { this.FlyerViewModel.BothVisible = value; }
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

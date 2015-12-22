@@ -27,7 +27,6 @@ namespace FMA.Contracts
 
         public IEnumerable<MaterialField> MaterialFields { get; private set; }
 
-
         public byte[] FlyerFrontSide { get; private set; }
 
         public byte[] FlyerBackside { get; private set; }

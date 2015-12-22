@@ -1,12 +1,13 @@
-﻿using System.Linq;
-using System.Windows;
+﻿using System;
+using System.Linq;
+using FMA.Contracts;
 
 namespace FMA.View
 {
     public class DefaultViewModel : FlyerViewModelBase
     {
-        public DefaultViewModel(SelectedMaterialProvider selectedMaterialProvider, bool previewVisible, bool inputVisible, bool bothVisible)
-            : base(selectedMaterialProvider, previewVisible, inputVisible, bothVisible)
+        public DefaultViewModel(SelectedMaterialProvider selectedMaterialProvider, FontService fontService, ViewStates viewState)
+            : base(selectedMaterialProvider,fontService, viewState)
         {
         }
 
@@ -22,5 +23,6 @@ namespace FMA.View
                 return SelectedMaterialProvider.MaterialModel.MaterialFields.All(f => string.IsNullOrEmpty(f.Error));
             }
         }
+
     }
 }

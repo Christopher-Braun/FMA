@@ -1,7 +1,9 @@
 ﻿using System.Windows;
+using FMA.Contracts;
 
-namespace FMA.View
+namespace FMA.View.Helpers
 {
+    //TODO mit Markus Ersetzten durch richtigen WindowService
     public class WindowService
     {
         private readonly Window mainWindow;
@@ -13,7 +15,7 @@ namespace FMA.View
             this.mainWindow = mainWindow;
         }
 
-        public void OpenExternalPreviewWindow(SelectedMaterialProvider selectedMaterialProvider)
+        public void OpenExternalPreviewWindow(SelectedMaterialProvider selectedMaterialProvider, FontService fontService)
         {
             if (externalPreviewView != null)
             {
@@ -22,13 +24,13 @@ namespace FMA.View
 
             externalPreviewView = new ExternalPreviewView
             {
-                DataContext = new ExternalPreviewViewModel(selectedMaterialProvider),
+                DataContext = new ExternalPreviewViewModel(selectedMaterialProvider, fontService),
                 Owner = mainWindow
             };
             externalPreviewView.Show();
         }
 
-        public void OpenExternalEditWindow(SelectedMaterialProvider selectedMaterialProvider)
+        public void OpenExternalEditWindow(SelectedMaterialProvider selectedMaterialProvider, FontService fontService)
         {
             if (externalEditView != null)
             {
@@ -37,7 +39,7 @@ namespace FMA.View
 
             externalEditView = new ExternalEditView
             {
-                DataContext = new ExternalPreviewViewModel(selectedMaterialProvider),
+                DataContext = new ExternalPreviewViewModel(selectedMaterialProvider, fontService),
                 Owner = mainWindow
             };
             externalEditView.Show();

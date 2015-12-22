@@ -2,7 +2,7 @@
 
 namespace FMA.Contracts
 {
-      [DebuggerDisplay("Name: {FieldName} Valu:e {DefaultValue}")]
+    [DebuggerDisplay("Name: {FieldName} Value: {DefaultValue}")]
     public class MaterialField
     {
         public MaterialField(string fieldName, string fontName, int fontSize, bool bold, bool italic, bool uppper, int maxLength, int maxRows, int leftMargin, int topMargin, string defaultValue)
@@ -32,5 +32,7 @@ namespace FMA.Contracts
         public int TopMargin { get; set; }
 
         public string DefaultValue { get; set; }
+
+       
     }
 }

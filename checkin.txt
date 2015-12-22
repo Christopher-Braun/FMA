@@ -1,9 +1,4 @@
-MultiSelect mit Aufziehrahmen
-Unterstützung von Ctrl + Selekt
-
-Markierung von Kollisionen
-
-Logo legt sich hinter die Texte
-
-External Edit implementiert
-
+4#		Spezial Layout Modus implementiert. GUI Layout angepasst. Icons erstellt. Umschalten der ViewModi verbessert. Logo can gelöscht werden. 
+0,5#	Eigene Textfelder werden unterstützt. Reagt ein Text über das Bild hinaus wird er beim BItmap erstellen auch geclippt
+1#		Aligment Left Top Bottom Right in der Layoutview, FontService wird nicht mehr als Static Field verwendet
+1,5#	Resizing geht jetzt proportional oder auch nur in einer Diemension

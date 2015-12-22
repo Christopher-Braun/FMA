@@ -1,12 +1,12 @@
 using System;
 using System.Windows.Media.Imaging;
-using FMA.Core;
+using FMA.Contracts;
 
 namespace FMA.View.Models
 {
     public class LogoModel : NotifyPropertyChangedBase
     {
-        private byte[] logo;
+        private byte[] logo = new byte[0];
         private double leftMargin;
         private double topMargin;
         private double height;
@@ -79,8 +79,10 @@ namespace FMA.View.Models
             }
         }
 
-     
 
-     
+        public void DeleteLogo()
+        {
+            Logo = new byte[0];
+        }
     }
 }

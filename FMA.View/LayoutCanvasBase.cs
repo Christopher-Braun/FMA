@@ -23,7 +23,7 @@ namespace FMA.View
 
         private State state = State.None;
 
-        private AdornerLayer adornerLayer
+        private AdornerLayer AdornerLayer
         {
             get
             {
@@ -48,6 +48,30 @@ namespace FMA.View
             this.Focusable = true;
         }
 
+        public void AlignLeft()
+        {
+            var position = this.selectedElements.Select(e => GetLeft(e.Element)).Min();
+            this.selectedElements.ForEach(e => SetLeft(e.Element, position));
+        }
+
+        public void AlignRight()
+        {
+            var position = this.selectedElements.Select(e => GetLeft(e.Element) + e.Element.ActualWidth).Max();
+            this.selectedElements.ForEach(e => SetLeft(e.Element, position - e.Element.ActualWidth));
+        }
+
+        public void AlignTop()
+        {
+            var position = this.selectedElements.Select(e => GetTop(e.Element)).Min();
+            this.selectedElements.ForEach(e => SetTop(e.Element, position));
+        }
+
+        public void AlignBottom()
+        {
+            var position = this.selectedElements.Select(e => GetTop(e.Element) + e.Element.ActualHeight).Max();
+            this.selectedElements.ForEach(e => SetTop(e.Element, position - e.Element.ActualHeight));
+        }
+
         protected override void OnInitialized(EventArgs e)
         {
             PreviewMouseDown += Canvas_MouseDown;
@@ -61,10 +85,10 @@ namespace FMA.View
             {
                 Visibility = Visibility.Collapsed,
                 BorderBrush = Brushes.Blue,
-                BorderThickness = new Thickness(1),
+                BorderThickness = new Thickness(1.5),
                 Background = Brushes.LightBlue,
                 CornerRadius = new CornerRadius(2),
-                Opacity = 0.5,
+                Opacity = 0.6
             };
 
             this.Children.Add(dragSelectionBorder);
@@ -296,7 +320,7 @@ namespace FMA.View
             }
             selectedElements.Add(new SelectedElement(child));
 
-            adornerLayer.Add(CreateAdornerForElement(child));
+            AdornerLayer.Add(CreateAdornerForElement(child));
         }
 
         private void RemoveAllSelectedElements()
@@ -313,8 +337,8 @@ namespace FMA.View
 
         private void RemoveAdorner(SelectedElement selectedElement)
         {
-            var adorners = adornerLayer.GetAdorners(selectedElement.Element);
-            if (adorners != null) adornerLayer.Remove(adorners[0]);
+            var adorners = AdornerLayer.GetAdorners(selectedElement.Element);
+            if (adorners != null) AdornerLayer.Remove(adorners[0]);
         }
 
         protected void ClearChildren()
@@ -331,7 +355,7 @@ namespace FMA.View
 
         protected virtual bool CanManipulateElement(UIElement child)
         {
-            return true;
+            return this.Children.Contains(child) && !ReferenceEquals(child, dragSelectionBorder);
         }
 
         protected virtual bool CanManipulateElements
@@ -358,7 +382,7 @@ namespace FMA.View
 
             public FrameworkElement Element { get; private set; }
 
-            public Double OriginalTop { get; private set; }
+            public double OriginalTop { get; private set; }
             public Double OriginalLeft { get; private set; }
 
             public void UpdateOrignalPosition()

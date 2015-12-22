@@ -13,6 +13,7 @@
         <view:LayoutCanvas HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            CanManipulateTextsAndLogos="True"
+                            FontService="{Binding FontService}"
                            MaterialModel="{Binding SelectedMaterialProvider.MaterialModel}" />
     </Viewbox>
 </Window>
