@@ -19,7 +19,6 @@ namespace FMA.Contracts
         {
             this.customFontsDir = customFontsDir;
 
-
             ScanFontsFolder();
         }
 

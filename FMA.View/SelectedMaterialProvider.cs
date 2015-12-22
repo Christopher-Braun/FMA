@@ -11,8 +11,8 @@ namespace FMA.View
             get { return materialModel; }
             set
             {
-                this.materialModel = value;
-                this.materialModel.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
+                materialModel = value;
+                materialModel.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
                 OnPropertyChanged();
             }
         }

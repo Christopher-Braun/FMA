@@ -142,7 +142,7 @@ namespace FMA.View
             }
         }
 
-        private static Rect GetRectFromElement(FrameworkElement element)
+        private static Rect GetRectFromElement(UIElement element)
         {
             return new Rect(new Point(Canvas.GetLeft(element), Canvas.GetTop(element)), element.RenderSize);
         }
