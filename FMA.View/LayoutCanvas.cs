@@ -242,13 +242,13 @@ namespace FMA.View
             }
 
             var isLogo = ReferenceEquals(source, logoImage);
-            if (this.CanManipulateTextsAndLogos == false && this.CanManipulateLogos == false)
+            if (CanManipulateTextsAndLogos == false && CanManipulateLogos == false)
             {
                 //In PreviewMode Nothing can be selected
                 return false;
             }
 
-            if (this.CanManipulateTextsAndLogos == false && isLogo == false)
+            if (CanManipulateTextsAndLogos == false && isLogo == false)
             {
                 //Is DefaultMode only Logo can be manipulated
                 return false;
