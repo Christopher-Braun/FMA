@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BitmapImageExtensions.cs" />
+    <Compile Include="FontFamilyWithName.cs" />
     <Compile Include="FontService.cs" />
     <Compile Include="CustomLogo.cs" />
     <Compile Include="CustomMaterial.cs" />

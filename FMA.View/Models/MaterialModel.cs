@@ -4,9 +4,10 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using FMA.Contracts;
-using FMA.Contracts.Properties;
+using FMA.View.Properties;
 
 namespace FMA.View.Models
 {
@@ -14,7 +15,7 @@ namespace FMA.View.Models
     {
         private byte[] flyerFrontSide;
 
-        public MaterialModel(int id, string title, string description, IEnumerable<MaterialFieldModel> materialFields, byte[] flyerFrontSide, byte[] flyerBackside)
+        public MaterialModel(int id, string title, string description, IEnumerable<MaterialFieldModel> materialFields, byte[] flyerFrontSide, byte[] flyerBackside, FontFamily defaultFont)
         {
             Id = id;
             Title = title;
@@ -25,12 +26,14 @@ namespace FMA.View.Models
             materialFieldModels.ForEach(m =>
             {
                 m.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
+                m.OnDelete += () => MaterialFields.Remove(m);
             });
 
             MaterialFields = new ObservableCollection<MaterialFieldModel>(materialFieldModels);
 
             FlyerFrontSide = flyerFrontSide;
             FlyerBackside = flyerBackside;
+            DefaultFont = defaultFont;
 
             LogoModel = new LogoModel();
             LogoModel.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
@@ -49,8 +52,10 @@ namespace FMA.View.Models
             private set;
         }
 
-        public void AddMaterialField(MaterialFieldModel materialField)
+        public void AddMaterialField()
         {
+            var materialField = new MaterialFieldModel("CustomField", Resources.CustomFieldText, DefaultFont );
+
             materialField.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
             this.MaterialFields.Add(materialField);
         }
@@ -68,12 +73,13 @@ namespace FMA.View.Models
         }
 
         public Byte[] FlyerBackside { get; private set; }
+        public FontFamily DefaultFont { get; set; }
 
         public LogoModel LogoModel { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
+        [Contracts.Properties.NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;

@@ -1,4 +1,17 @@
 
+
+
+Expert Mode Vorschau weg 
+Schriften über Combobox
+
+Textfelder löschen über entfernen in Layoutview
+
+
+Nicte to have
+
+Markierung in Textmode wenn Selektiert
+
+
 Ja in Reousrcen ! Lokalisierung?
 
 Colors und Borderwidht rausziehen 

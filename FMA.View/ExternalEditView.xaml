@@ -10,10 +10,6 @@
     <Viewbox HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch"
              Stretch="Uniform">
-        <view:LayoutCanvas HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           CanManipulateTextsAndLogos="True"
-                            FontService="{Binding FontService}"
-                           MaterialModel="{Binding SelectedMaterialProvider.MaterialModel}" />
+        <view:LayoutArea></view:LayoutArea>
     </Viewbox>
 </Window>

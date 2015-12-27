@@ -30,7 +30,7 @@ namespace FMA.TestData
                 new MaterialField("Ort", "Bakery", 46, false, true, false, 80, 3, 60, 520, "Hamburg")
             };
 
-            var material2 = new Material(2, "Nordkorea", "Zum Thema Nordkorea…", material2Fields, Helper.GetFrontSide(2), Helper.GetFrontSide(2));
+            var material2 = new Material(2, "Nordkorea", "Zum Thema Nordkorea…", material2Fields, Helper.GetFrontSide(2), Helper.GetFrontSide(2),"Bakery");
 
             materials.Add(material1);
             materials.Add(material2);

@@ -41,20 +41,20 @@ namespace FMA.View
 
             this.SetMaterials(materials, selectedMateriaId);
 
-            this.LayoutMode = false;
+            this.LayoutMode = true;
         }
 
         private void UpdateFonts(IEnumerable<Material> materials, Func<string, FontInfo> getFont)
         {
             var requiredFonts = materials.SelectMany(m => m.MaterialFields).Select(f => f.FontName);
 
-            foreach (var requiredFont in requiredFonts)
+            foreach (var requiredFontName in requiredFonts)
             {
-                if (fontService.IsFontAvailable(requiredFont))
+                if (fontService.IsFontAvailable(requiredFontName))
                 {
                     continue;
                 }
-                var fontInfo = getFont(requiredFont);
+                var fontInfo = getFont(requiredFontName);
                 if (fontInfo != null)
                 {
                     fontService.InstallFont(fontInfo.FileName, fontInfo.Buffer);
@@ -64,7 +64,7 @@ namespace FMA.View
 
         private void SetMaterials(IEnumerable<Material> materials, int selectedMateriaId = -1)
         {
-            this.Materials = materials.Select(m => m.ToMaterialModel()).ToList();
+            this.Materials = materials.Select(m => m.ToMaterialModel(fontService)).ToList();
             if (selectedMateriaId != -1)
             {
                 this.SelectedMaterial = this.Materials.Single(m => m.Id.Equals(selectedMateriaId));

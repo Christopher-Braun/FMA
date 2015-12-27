@@ -1,0 +1,1 @@
+#6 DefaultFont. Lokalisierung. Löschen von Textfeldern im Editbereich und auch in der View. FontFamily auswählbar über  ComboBox oder Eingabe mit System- und Custom Schriften. 

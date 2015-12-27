@@ -44,8 +44,8 @@ namespace FMA.View
         public LayoutCanvasBase()
         {
             this.ClipToBounds = true;
-            this.Focus();
             this.Focusable = true;
+            this.Focus();
         }
 
         public void AlignLeft()
@@ -118,7 +118,7 @@ namespace FMA.View
             {
                 //Klick auf Hintergrund - Beginne Selection
                 state = State.IsStartingSelection;
-                this.RemoveAllSelectedElements();
+                this.UnSelectAllElements();
                 this.CaptureMouse();
                 e.Handled = true;
             }
@@ -144,7 +144,7 @@ namespace FMA.View
                     //Selektiere Element bzw füge zur Selektion hinzu
                     if (Keyboard.Modifiers != ModifierKeys.Control)
                     {
-                        this.RemoveAllSelectedElements();
+                        this.UnSelectAllElements();
                     }
 
                     AddSelectedElement(hitTest);
@@ -174,7 +174,7 @@ namespace FMA.View
                     if (DragIsGreaterThanDragDelta(mousePosition))
                     {
                         state = State.IsDraggingSelectionRect;
-                        RemoveAllSelectedElements();
+                        UnSelectAllElements();
                         InitDragSelectionRect(origMouseDownPoint, mousePosition);
                     }
                     e.Handled = true;
@@ -263,7 +263,7 @@ namespace FMA.View
             var dragRect = new Rect(x, y, width, height);
 
             dragRect.Inflate(width / 10, height / 10);
-            RemoveAllSelectedElements();
+            UnSelectAllElements();
             foreach (var child in this.Children.OfType<FrameworkElement>().Where(CanManipulateElement))
             {
                 var itemRect = new Rect(Canvas.GetLeft(child), Canvas.GetTop(child), child.ActualWidth, child.ActualHeight);
@@ -318,12 +318,14 @@ namespace FMA.View
             {
                 throw new InvalidOperationException("child");
             }
+            child.Focus();
+
             selectedElements.Add(new SelectedElement(child));
 
             AdornerLayer.Add(CreateAdornerForElement(child));
         }
 
-        private void RemoveAllSelectedElements()
+        protected void UnSelectAllElements()
         {
             selectedElements.ForEach(RemoveAdorner);
             selectedElements.Clear();
@@ -364,6 +366,11 @@ namespace FMA.View
             {
                 return true;
             }
+        }
+
+        protected IEnumerable<FrameworkElement> SelectedElements1
+        {
+            get { return selectedElements.Select(s=>s.Element); }
         }
 
 

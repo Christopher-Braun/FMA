@@ -6,6 +6,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:FMA.View.Models"
+             xmlns:properties="clr-namespace:FMA.View.Properties"
              xmlns:view="clr-namespace:FMA.View"
              d:DesignHeight="300"
              d:DesignWidth="300"
@@ -29,19 +30,19 @@
                 <Style TargetType="FrameworkElement">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding ViewState}" Value="OnlyPreview">
-                            <DataTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource FadeIn}" />
-                            </DataTrigger.ExitActions>
                             <DataTrigger.EnterActions>
                                 <BeginStoryboard Storyboard="{StaticResource FadeOut}" />
                             </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard Storyboard="{StaticResource FadeIn}" />
+                            </DataTrigger.ExitActions>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <StackPanel>
-                    <TextBlock FontWeight="Bold">Textfelder</TextBlock>
+                    <TextBlock FontWeight="Bold" Text="{x:Static properties:Resources.TextFields}" />
                     <ItemsControl Margin="8"
                                   Grid.IsSharedSizeScope="True"
                                   ItemsSource="{Binding SelectedMaterialProvider.MaterialModel.MaterialFields}">
@@ -73,7 +74,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
-                    <view:LogoLayoutView DataContext="{Binding SelectedMaterialProvider.MaterialModel.LogoModel}" />
+                    <view:LogoLayout DataContext="{Binding SelectedMaterialProvider.MaterialModel.LogoModel}" />
                 </StackPanel>
             </ScrollViewer>
         </Grid>
@@ -98,12 +99,12 @@
                 <Style TargetType="FrameworkElement">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding ViewState}" Value="OnlyInput">
-                            <DataTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource FadeIn}" />
-                            </DataTrigger.ExitActions>
                             <DataTrigger.EnterActions>
                                 <BeginStoryboard Storyboard="{StaticResource FadeOut}" />
                             </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard Storyboard="{StaticResource FadeIn}" />
+                            </DataTrigger.ExitActions>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>

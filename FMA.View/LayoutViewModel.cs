@@ -1,4 +1,5 @@
-﻿using FMA.Contracts;
+﻿using System.Linq;
+using FMA.Contracts;
 using FMA.View.Models;
 
 namespace FMA.View
@@ -17,7 +18,9 @@ namespace FMA.View
 
         public void AddField()
         {
-            this.SelectedMaterialProvider.MaterialModel.AddMaterialField(new MaterialFieldModel("CustomField", "Custom Field"));
+          
+
+            this.SelectedMaterialProvider.MaterialModel.AddMaterialField();
         }
     }
 }

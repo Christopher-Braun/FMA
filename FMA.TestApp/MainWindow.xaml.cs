@@ -31,11 +31,11 @@ namespace FMA
             {
                 if (name == "Signarita Anne")
                 {
-                    return new FontInfo("SignaritaAnneDemo.ttf", Helper.GetByteArrayFromFile("SignaritaAnneDemo.ttf"));
-                }    
+                    return new FontInfo("SignaritaAnne.ttf", Helper.GetByteArrayFromFile("SignaritaAnneDemo.ttf"));
+                }
                 if (name == "Bakery")
                 {
-                    return new FontInfo("bakery.ttf", Helper.GetByteArrayFromFile("bakery.ttf"));
+                    return new FontInfo("Bakery.ttf", Helper.GetByteArrayFromFile("bakery.ttf"));
                 }
 
                 return null;
@@ -43,7 +43,7 @@ namespace FMA
 
             var exeDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             var customFontsDir = string.Format(@"{0}\CustomFonts\", exeDir);
-            var viewModel = new FlyerMakerViewModel(dummyMaterials, 1, getFont,customFontsDir);
+            var viewModel = new FlyerMakerViewModel(dummyMaterials, 2, getFont, customFontsDir);
             var flyerCreator = new FlyerCreator(customFontsDir);
 
             viewModel.WindowService = new WindowService(this);

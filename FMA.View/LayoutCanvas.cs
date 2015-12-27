@@ -26,11 +26,11 @@ namespace FMA.View
 
 
         public static readonly DependencyProperty FontServiceProperty = DependencyProperty.Register(
-            "FontService", typeof (FontService), typeof (LayoutCanvas), new PropertyMetadata(default(FontService)));
+            "FontService", typeof(FontService), typeof(LayoutCanvas), new PropertyMetadata(default(FontService)));
 
         public FontService FontService
         {
-            get { return (FontService) GetValue(FontServiceProperty); }
+            get { return (FontService)GetValue(FontServiceProperty); }
             set { SetValue(FontServiceProperty, value); }
         }
 
@@ -62,6 +62,7 @@ namespace FMA.View
             this.AllowDrop = true;
             this.Drop += (sender, e) => this.DropLogo(this.MaterialModel, e);
         }
+      
 
         private Image backgroundImage;
         private Image logoImage;
@@ -149,21 +150,24 @@ namespace FMA.View
 
         private TextBlock CreateTextBlock(MaterialFieldModel materialFieldModel)
         {
-            var fontFamily = FontService.GetFontFamily(materialFieldModel.FontName);
-
             var textBlock = new TextBlock
             {
-                FontFamily = fontFamily,
-
+                Tag = materialFieldModel,
                 DataContext = materialFieldModel,
-                Margin = new Thickness(0)
+                Margin = new Thickness(0),
+                Focusable = true
             };
+
+            textBlock.PreviewKeyUp += textBlock_PreviewKeyUp;
 
             if (CanManipulateTextsAndLogos)
             {
                 textBlock.Cursor = Cursors.Hand;
             }
 
+            var fontFamilyBinding = new Binding("FontFamily") { Mode = BindingMode.OneWay };
+            textBlock.SetBinding(TextBlock.FontFamilyProperty, fontFamilyBinding); 
+            
             var fontStyleBinding = new Binding("Italic") { Mode = BindingMode.OneWay, Converter = new FontStyleConverter() };
             textBlock.SetBinding(TextBlock.FontStyleProperty, fontStyleBinding);
 
@@ -185,9 +189,22 @@ namespace FMA.View
             return textBlock;
         }
 
+        void textBlock_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                foreach (var materialFieldModel in SelectedElements1.Select(s => s.Tag).OfType<MaterialFieldModel>().ToArray())
+                {
+                    MaterialModel.MaterialFields.Remove(materialFieldModel);
+                }
+
+                UnSelectAllElements();
+            }
+        }
+
         private Image CreateLogoImage()
         {
-            var logoImage = new Image
+            var logo = new Image
             {
                 DataContext = MaterialModel.LogoModel,
                 Stretch = Stretch.Fill,
@@ -195,24 +212,24 @@ namespace FMA.View
 
             if (CanManipulateTextsAndLogos || CanManipulateLogos)
             {
-                logoImage.Cursor = Cursors.Hand;
+                logo.Cursor = Cursors.Hand;
             }
 
             var sourceBinding = new Binding("LogoImage") { Mode = BindingMode.OneWay };
-            logoImage.SetBinding(Image.SourceProperty, sourceBinding);
+            logo.SetBinding(Image.SourceProperty, sourceBinding);
 
             var heightBinding = new Binding("Height") { Mode = BindingMode.TwoWay };
-            logoImage.SetBinding(HeightProperty, heightBinding);
+            logo.SetBinding(HeightProperty, heightBinding);
 
             var widthBinding = new Binding("Width") { Mode = BindingMode.TwoWay };
-            logoImage.SetBinding(WidthProperty, widthBinding);
+            logo.SetBinding(WidthProperty, widthBinding);
 
             var topBinding = new Binding("TopMargin") { Mode = BindingMode.TwoWay };
-            logoImage.SetBinding(Canvas.TopProperty, topBinding);
+            logo.SetBinding(Canvas.TopProperty, topBinding);
 
             var leftBinding = new Binding("LeftMargin") { Mode = BindingMode.TwoWay };
-            logoImage.SetBinding(Canvas.LeftProperty, leftBinding);
-            return logoImage;
+            logo.SetBinding(Canvas.LeftProperty, leftBinding);
+            return logo;
         }
 
 

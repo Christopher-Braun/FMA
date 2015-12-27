@@ -63,13 +63,16 @@
     <Compile Include="Helpers\FontInfo.cs" />
     <Compile Include="Helpers\FontStyleConverter.cs" />
     <Compile Include="Helpers\FontWeightConverter.cs" />
+    <Compile Include="LayoutArea.xaml.cs">
+      <DependentUpon>LayoutArea.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LayoutCanvasBase.cs" />
     <Compile Include="LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="LayoutViewModel.cs" />
-    <Compile Include="LogoLayoutView.xaml.cs">
-      <DependentUpon>LogoLayoutView.xaml</DependentUpon>
+    <Compile Include="LogoLayout.xaml.cs">
+      <DependentUpon>LogoLayout.xaml</DependentUpon>
     </Compile>
     <Compile Include="SelectedMaterialProvider.cs" />
     <Compile Include="Models\MaterialModelExtensions.cs" />
@@ -99,11 +102,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="LayoutArea.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LayoutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LogoLayoutView.xaml">
+    <Page Include="LogoLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

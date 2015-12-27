@@ -3,11 +3,14 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Media;
+using FMA.Contracts;
 using FMA.Contracts.Properties;
+using FMA.View.Helpers;
 
 namespace FMA.View.Models
 {
-    [DebuggerDisplay("Name: {FieldName} Value {Value}")]
+    [DebuggerDisplay("Name: {FieldName}, Value {Value}")]
     public class MaterialFieldModel : INotifyPropertyChanged, IDataErrorInfo
     {
         private string value;
@@ -20,19 +23,19 @@ namespace FMA.View.Models
         private bool italic;
         private bool bold;
         private int fontSize = 12;
-        private string fontName = "Arial";
+        private FontFamilyWithName fontFamilyWithName;
         private string fieldName;
 
-        public MaterialFieldModel(string fieldName, string value)
+        public MaterialFieldModel(string fieldName, string value, FontFamily fontFamily)
         {
             this.fieldName = fieldName;
             this.value = value;
+            FontFamilyWithName = new FontFamilyWithName(fontFamily);
         }
 
-        public MaterialFieldModel(string fieldName, string fontName, int fontSize, bool bold, bool italic, bool uppper, int maxLength, int maxRows, int leftMargin, int topMargin, string value)
+        public MaterialFieldModel(string fieldName, string value, FontFamily fontFamily, int fontSize, bool bold, bool italic, bool uppper, int maxLength, int maxRows, int leftMargin, int topMargin)
+            : this(fieldName, value, fontFamily)
         {
-            FieldName = fieldName;
-            FontName = fontName;
             FontSize = fontSize;
             Bold = bold;
             Italic = italic;
@@ -41,7 +44,6 @@ namespace FMA.View.Models
             MaxRows = maxRows;
             LeftMargin = leftMargin;
             TopMargin = topMargin;
-            Value = value;
         }
 
         public string FieldName
@@ -54,14 +56,20 @@ namespace FMA.View.Models
             }
         }
 
-        public string FontName
+        public FontFamilyWithName FontFamilyWithName
         {
-            get { return fontName; }
+            get { return fontFamilyWithName; }
             set
             {
-                fontName = value;
+                fontFamilyWithName = value;
                 OnPropertyChanged();
+                OnPropertyChanged("FontFamily");
             }
+        }
+
+        public FontFamily FontFamily
+        {
+            get { return FontFamilyWithName.FontFamily; }
         }
 
         public int FontSize
@@ -219,6 +227,13 @@ namespace FMA.View.Models
                 OnPropertyChanged();
 
             }
+        }
+
+        public Action OnDelete = () => { };
+
+        public void DeleteTextField()
+        {
+            OnDelete();
         }
     }
 }
