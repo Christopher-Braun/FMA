@@ -89,8 +89,10 @@ namespace FMA.Contracts
             var directoryInfo = new DirectoryInfo(location);
             if (!directoryInfo.Exists)
             {
-                throw new ArgumentOutOfRangeException("location");
+                directoryInfo.Create();
+               // throw new ArgumentOutOfRangeException("location");
             }
+
 
             var fontFiles = directoryInfo.GetFiles("*.?tf");
             return fontFiles.SelectMany(f => Fonts.GetFontFamilies(f.FullName));

@@ -11,7 +11,7 @@ namespace FMA.View.Models
     {
         public static MaterialModel ToMaterialModel(this Material material, FontService fontService)
         {
-            var defaultFontFamily = fontService.GetFontFamily(material.DefaultFont);
+            var defaultFontFamily = new FontFamilyWithName( fontService.GetFontFamily(material.DefaultFont));
 
             return new MaterialModel(material.Id, material.Title, material.Description, material.MaterialFields.Select(f => f.ToMaterialFieldModel(fontService)), material.FlyerFrontSide, material.FlyerBackside, defaultFontFamily);
         }
@@ -36,14 +36,14 @@ namespace FMA.View.Models
 
         public static MaterialFieldModel ToMaterialFieldModel(this MaterialField field, FontService fontService)
         {
-            var fontFamily = fontService.GetFontFamily(field.FontName);
+            var fontFamilyWithName = new FontFamilyWithName(fontService.GetFontFamily(field.FontName));
 
-            return new MaterialFieldModel(field.FieldName, field.DefaultValue, fontFamily, field.FontSize, field.Bold, field.Italic, field.Uppper, field.MaxLength, field.MaxRows, field.LeftMargin, field.TopMargin);
+            return new MaterialFieldModel(field.FieldName, field.DefaultValue, fontFamilyWithName, field.FontSize, field.Bold, field.Italic, field.Uppper, field.MaxLength, field.MaxRows, field.LeftMargin, field.TopMargin);
         }
 
         public static MaterialField ToMaterialField(this MaterialFieldModel fieldModel)
         {
-            var fontName = fieldModel.FontFamilyWithName.Name;
+            var fontName = fieldModel.FontFamilyWithNameWithName.Name;
             return new MaterialField(fieldModel.FieldName, fontName, fieldModel.FontSize, fieldModel.Bold,
                 fieldModel.Italic, fieldModel.Uppper, fieldModel.MaxLength, fieldModel.MaxRows, fieldModel.LeftMargin,
                 fieldModel.TopMargin, fieldModel.Value);
@@ -51,7 +51,7 @@ namespace FMA.View.Models
 
         public static MaterialFieldModel Clone(this MaterialFieldModel field)
         {
-            return new MaterialFieldModel(field.FieldName, field.Value, field.FontFamily, field.FontSize, field.Bold, field.Italic, field.Uppper, field.MaxLength, field.MaxRows, field.LeftMargin, field.TopMargin);
+            return new MaterialFieldModel(field.FieldName, field.Value, field.FontFamilyWithNameWithName, field.FontSize, field.Bold, field.Italic, field.Uppper, field.MaxLength, field.MaxRows, field.LeftMargin, field.TopMargin);
         }
     }
 }

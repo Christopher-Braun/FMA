@@ -1,5 +1,13 @@
 
 
+External Edit , delete selected
+Preview Delete selected
+
+
+Links Baum seletekt sync.
+
+EIne Art Property Grid für seletiertes Elelemtn Vertical ausgerichtet
+
 
 Expert Mode Vorschau weg 
 Schriften über Combobox

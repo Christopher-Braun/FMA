@@ -15,7 +15,7 @@ namespace FMA.View.Models
     {
         private byte[] flyerFrontSide;
 
-        public MaterialModel(int id, string title, string description, IEnumerable<MaterialFieldModel> materialFields, byte[] flyerFrontSide, byte[] flyerBackside, FontFamily defaultFont)
+        public MaterialModel(int id, string title, string description, IEnumerable<MaterialFieldModel> materialFields, byte[] flyerFrontSide, byte[] flyerBackside, FontFamilyWithName defaultFont)
         {
             Id = id;
             Title = title;
@@ -54,7 +54,7 @@ namespace FMA.View.Models
 
         public void AddMaterialField()
         {
-            var materialField = new MaterialFieldModel("CustomField", Resources.CustomFieldText, DefaultFont );
+            var materialField = new MaterialFieldModel("CustomField", Resources.CustomFieldText, DefaultFont);
 
             materialField.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
             this.MaterialFields.Add(materialField);
@@ -73,7 +73,7 @@ namespace FMA.View.Models
         }
 
         public Byte[] FlyerBackside { get; private set; }
-        public FontFamily DefaultFont { get; set; }
+        public FontFamilyWithName DefaultFont { get; set; }
 
         public LogoModel LogoModel { get; private set; }
 

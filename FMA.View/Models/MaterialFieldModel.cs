@@ -23,18 +23,18 @@ namespace FMA.View.Models
         private bool italic;
         private bool bold;
         private int fontSize = 12;
-        private FontFamilyWithName fontFamilyWithName;
+        private FontFamilyWithName fontFamilyWithNameWithName;
         private string fieldName;
 
-        public MaterialFieldModel(string fieldName, string value, FontFamily fontFamily)
+        public MaterialFieldModel(string fieldName, string value, FontFamilyWithName fontFamilyWithName)
         {
             this.fieldName = fieldName;
             this.value = value;
-            FontFamilyWithName = new FontFamilyWithName(fontFamily);
+            FontFamilyWithNameWithName = fontFamilyWithName;
         }
 
-        public MaterialFieldModel(string fieldName, string value, FontFamily fontFamily, int fontSize, bool bold, bool italic, bool uppper, int maxLength, int maxRows, int leftMargin, int topMargin)
-            : this(fieldName, value, fontFamily)
+        public MaterialFieldModel(string fieldName, string value, FontFamilyWithName fontFamilyWithName, int fontSize, bool bold, bool italic, bool uppper, int maxLength, int maxRows, int leftMargin, int topMargin)
+            : this(fieldName, value, fontFamilyWithName)
         {
             FontSize = fontSize;
             Bold = bold;
@@ -56,20 +56,15 @@ namespace FMA.View.Models
             }
         }
 
-        public FontFamilyWithName FontFamilyWithName
+        public FontFamilyWithName FontFamilyWithNameWithName
         {
-            get { return fontFamilyWithName; }
+            get { return fontFamilyWithNameWithName; }
             set
             {
-                fontFamilyWithName = value;
+                fontFamilyWithNameWithName = value;
                 OnPropertyChanged();
                 OnPropertyChanged("FontFamily");
             }
-        }
-
-        public FontFamily FontFamily
-        {
-            get { return FontFamilyWithName.FontFamily; }
         }
 
         public int FontSize

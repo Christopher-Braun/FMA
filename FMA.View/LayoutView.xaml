@@ -154,7 +154,7 @@
                                           IsEditable="True"
                                           ItemsSource="{Binding Path=DataContext.FontService.AllFontFamilies,
                                                                 RelativeSource={RelativeSource AncestorType=view:LayoutView}}"
-                                          SelectedItem="{Binding FontFamilyWithName}"
+                                          SelectedItem="{Binding FontFamilyWithNameWithName}"
                                           TextSearch.TextPath="Name">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate DataType="contracts:FontFamilyWithName">

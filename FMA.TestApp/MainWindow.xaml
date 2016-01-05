@@ -4,7 +4,7 @@
         xmlns:view="clr-namespace:FMA.View;assembly=FMA.View"
         Title="MainWindow"
         Width="860"
-        Height="530" >
+        Height="530">
     <Window.Resources>
         <DataTemplate DataType="{x:Type view:FlyerMakerViewModel}">
             <view:FlyerMakerView />
