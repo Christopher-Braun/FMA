@@ -24,5 +24,10 @@ namespace FMA.View
         {
             InitializeComponent();
         }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+       this.LayoutCanvas.DeleteSelectedElements();
+        }
     }
 }

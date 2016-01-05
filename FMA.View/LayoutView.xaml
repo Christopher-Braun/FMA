@@ -30,16 +30,18 @@
                       HorizontalScrollBarVisibility="Auto"
                       VerticalScrollBarVisibility="Auto">
 
-            <Grid IsSharedSizeScope="True">
+            <Grid>
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                  
                 </Grid.RowDefinitions>
 
                 <view:TextFieldLayout Grid.Row="0"
+                                      Width="400"
                                  HorizontalAlignment="Left"
+                                      DataContext="{Binding SelectedMaterialProvider}"
                                   />
 
                 <view:LogoLayout Grid.Row="1"

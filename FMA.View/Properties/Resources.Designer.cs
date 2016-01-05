@@ -142,6 +142,15 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete selected elements.
+        /// </summary>
+        public static string DeleteSelectedElements {
+            get {
+                return ResourceManager.GetString("DeleteSelectedElements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Textfeld löschen.
         /// </summary>
         public static string DeleteTextField {
@@ -169,11 +178,20 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Feldname.
+        ///   Looks up a localized string similar to FieldName.
         /// </summary>
         public static string FieldName {
             get {
                 return ResourceManager.GetString("FieldName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FontName.
+        /// </summary>
+        public static string FontName {
+            get {
+                return ResourceManager.GetString("FontName", resourceCulture);
             }
         }
         

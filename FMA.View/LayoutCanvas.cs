@@ -24,6 +24,15 @@ namespace FMA.View
             set { SetValue(MaterialModelProperty, value); }
         }
 
+        public static readonly DependencyProperty SelectedMaterialFieldProperty = DependencyProperty.Register(
+            "SelectedMaterialField", typeof(MaterialFieldModel), typeof(LayoutCanvas), new PropertyMetadata(default(MaterialFieldModel), (d, e) => ((LayoutCanvas)d).SelectedMaterialFieldChanged()));
+
+        public MaterialFieldModel SelectedMaterialField
+        {
+            get { return (MaterialFieldModel) GetValue(SelectedMaterialFieldProperty); }
+            set { SetValue(SelectedMaterialFieldProperty, value); }
+        }
+
 
         public static readonly DependencyProperty FontServiceProperty = DependencyProperty.Register(
             "FontService", typeof(FontService), typeof(LayoutCanvas), new PropertyMetadata(default(FontService)));
@@ -61,10 +70,51 @@ namespace FMA.View
         {
             this.AllowDrop = true;
             this.Drop += (sender, e) => this.DropLogo(this.MaterialModel, e);
+            SelectedChilds.CollectionChanged += SelectedElements_CollectionChanged;
         }
-      
 
-        private Image backgroundImage;
+        private bool selectedMaterialChangedInternal = false;
+
+        private void SelectedElements_CollectionChanged(object sender,System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            selectedMaterialChangedInternal = true;
+            try
+            {
+                if (SelectedElements.Count() != 1)
+                {
+                    this.SelectedMaterialField = null;
+                    return;
+                }
+
+                var selectedMaterialFieldModel = this.SelectedElements.First().Tag as MaterialFieldModel;
+
+                this.SelectedMaterialField = selectedMaterialFieldModel;
+            }
+            finally
+            {
+                selectedMaterialChangedInternal = false;
+            }
+        }
+
+        private void SelectedMaterialFieldChanged()
+       {
+           if (selectedMaterialChangedInternal)
+           {
+               return;
+           }
+
+           if (this.SelectedMaterialField == null)
+           {
+               UnSelectAllElements();
+               return;
+           }
+
+           var elementToSelect = this.Children.OfType<FrameworkElement>().First(t => this.SelectedMaterialField.Equals(t.Tag));
+
+           SetSelectedElement(elementToSelect);
+       }
+
+       private Image backgroundImage;
         private Image logoImage;
 
         private void MaterialModelChanged()
@@ -93,19 +143,16 @@ namespace FMA.View
             }
 
             CreateSelectionBorder();
+       
         }
 
-        void MaterialFields_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+       private void MaterialFields_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (MaterialModel == null) return;
             CreateChildren();
-        }
-
-        protected override void OnRender(DrawingContext dc)
-        {
-            base.OnRender(dc);
             HighlightCollisions();
         }
+
 
         private void MaterialModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -158,7 +205,7 @@ namespace FMA.View
                 Focusable = true
             };
 
-            textBlock.PreviewKeyUp += textBlock_PreviewKeyUp;
+            textBlock.PreviewKeyUp += element_PreviewKeyUp;
 
             if (CanManipulateTextsAndLogos)
             {
@@ -189,17 +236,29 @@ namespace FMA.View
             return textBlock;
         }
 
-        void textBlock_PreviewKeyUp(object sender, KeyEventArgs e)
+        void element_PreviewKeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Delete)
             {
-                foreach (var materialFieldModel in SelectedElements1.Select(s => s.Tag).OfType<MaterialFieldModel>().ToArray())
-                {
-                    MaterialModel.MaterialFields.Remove(materialFieldModel);
-                }
-
-                UnSelectAllElements();
+                DeleteSelectedElements();
             }
+        }
+
+        public void DeleteSelectedElements()
+        {
+            var materialFieldModels = SelectedElements.Select(s => s.Tag).OfType<MaterialFieldModel>().ToArray();
+
+            if (SelectedElements.Contains(logoImage))
+            {
+                MaterialModel.LogoModel.DeleteLogo();
+            }
+
+            foreach (var materialFieldModel in materialFieldModels)
+            {
+                MaterialModel.MaterialFields.Remove(materialFieldModel);
+            }
+
+            UnSelectAllElements();
         }
 
         private Image CreateLogoImage()
@@ -208,7 +267,10 @@ namespace FMA.View
             {
                 DataContext = MaterialModel.LogoModel,
                 Stretch = Stretch.Fill,
+                Focusable = true
             };
+
+            logo.PreviewKeyUp += element_PreviewKeyUp;
 
             if (CanManipulateTextsAndLogos || CanManipulateLogos)
             {
@@ -232,6 +294,11 @@ namespace FMA.View
             return logo;
         }
 
+        //protected override void OnRender(DrawingContext dc)
+        //{
+        //    base.OnRender(dc);
+        //    HighlightCollisions();
+        //}
 
         protected override Size MeasureOverride(Size constraint)
         {

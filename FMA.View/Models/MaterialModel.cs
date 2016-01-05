@@ -26,10 +26,10 @@ namespace FMA.View.Models
             materialFieldModels.ForEach(m =>
             {
                 m.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
-                m.OnDelete += () => MaterialFields.Remove(m);
             });
 
             MaterialFields = new ObservableCollection<MaterialFieldModel>(materialFieldModels);
+            MaterialFields.CollectionChanged += (s, e) => { OnPropertyChanged("MaterialFields"); };
 
             FlyerFrontSide = flyerFrontSide;
             FlyerBackside = flyerBackside;

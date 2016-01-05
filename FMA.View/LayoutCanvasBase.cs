@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,7 +35,7 @@ namespace FMA.View
 
         private Point origMouseDownPoint;
 
-        private readonly List<SelectedElement> selectedElements = new List<SelectedElement>();
+        private readonly ObservableCollection<SelectedChild> selectedChilds = new ObservableCollection<SelectedChild>();
 
         static LayoutCanvasBase()
         {
@@ -50,26 +51,26 @@ namespace FMA.View
 
         public void AlignLeft()
         {
-            var position = this.selectedElements.Select(e => GetLeft(e.Element)).Min();
-            this.selectedElements.ForEach(e => SetLeft(e.Element, position));
+            var position = this.SelectedChilds.Select(e => GetLeft(e.Element)).Min();
+            this.SelectedChilds.ToList().ForEach(e => SetLeft(e.Element, position));
         }
 
         public void AlignRight()
         {
-            var position = this.selectedElements.Select(e => GetLeft(e.Element) + e.Element.ActualWidth).Max();
-            this.selectedElements.ForEach(e => SetLeft(e.Element, position - e.Element.ActualWidth));
+            var position = this.SelectedChilds.Select(e => GetLeft(e.Element) + e.Element.ActualWidth).Max();
+            this.SelectedChilds.ToList().ForEach(e => SetLeft(e.Element, position - e.Element.ActualWidth));
         }
 
         public void AlignTop()
         {
-            var position = this.selectedElements.Select(e => GetTop(e.Element)).Min();
-            this.selectedElements.ForEach(e => SetTop(e.Element, position));
+            var position = this.SelectedChilds.Select(e => GetTop(e.Element)).Min();
+            this.SelectedChilds.ToList().ForEach(e => SetTop(e.Element, position));
         }
 
         public void AlignBottom()
         {
-            var position = this.selectedElements.Select(e => GetTop(e.Element) + e.Element.ActualHeight).Max();
-            this.selectedElements.ForEach(e => SetTop(e.Element, position - e.Element.ActualHeight));
+            var position = this.SelectedChilds.Select(e => GetTop(e.Element) + e.Element.ActualHeight).Max();
+            this.SelectedChilds.ToList().ForEach(e => SetTop(e.Element, position - e.Element.ActualHeight));
         }
 
         protected override void OnInitialized(EventArgs e)
@@ -125,7 +126,7 @@ namespace FMA.View
             else if (CanManipulateElement(hitTest))
             {
                 //Klick auf selektiertes Element - starte Bewegen / oder entfernen
-                var selectedElementHit = selectedElements.FirstOrDefault(s => s.Element.Equals(hitTest));
+                var selectedElementHit = SelectedChilds.FirstOrDefault(s => s.Element.Equals(hitTest));
 
                 if (selectedElementHit != null)
                 {
@@ -136,7 +137,7 @@ namespace FMA.View
                     else
                     {
                         state = State.IsStartingDragging;
-                        selectedElements.ForEach(c => c.UpdateOrignalPosition());
+                        SelectedChilds.ToList().ForEach(c => c.UpdateOrignalPosition());
                     }
                 }
                 else
@@ -190,7 +191,7 @@ namespace FMA.View
 
             if (state == State.IsDragging)
             {
-                foreach (var selectedElement in selectedElements)
+                foreach (var selectedElement in SelectedChilds)
                 {
                     var mouseDiff = mousePosition - origMouseDownPoint;
 
@@ -225,7 +226,7 @@ namespace FMA.View
                     e.Handled = true;
                     break;
                 case State.IsStartingDragging:
-                    selectedElements.ForEach(c => c.UpdateOrignalPosition());
+                    SelectedChilds.ToList().ForEach(c => c.UpdateOrignalPosition());
                     e.Handled = true;
                     break;
             }
@@ -233,25 +234,11 @@ namespace FMA.View
             state = State.None;
         }
 
-        //void Canvas_KeyDown(object sender, KeyEventArgs e)
-        //{
-        //    if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.A)
-        //    {
-        //        this.Children
-        //            .OfType<FrameworkElement>()
-        //            .Where(CanManipulateElement)
-        //            .ToList()
-        //            .ForEach(AddSelectedElement);
-        //    }
-        //}
-
         private bool DragIsGreaterThanDragDelta(Point mousePosition)
         {
             return ((Math.Abs(mousePosition.X - origMouseDownPoint.X) > SystemParameters.MinimumHorizontalDragDistance) ||
                     (Math.Abs(mousePosition.Y - origMouseDownPoint.Y) > SystemParameters.MinimumVerticalDragDistance));
         }
-
-
 
         private void ApplyDragSelectionRect()
         {
@@ -312,7 +299,7 @@ namespace FMA.View
 
         }
 
-        private void AddSelectedElement(FrameworkElement child)
+        protected void AddSelectedElement(FrameworkElement child)
         {
             if (!CanManipulateElement(child))
             {
@@ -320,33 +307,41 @@ namespace FMA.View
             }
             child.Focus();
 
-            selectedElements.Add(new SelectedElement(child));
+            SelectedChilds.Add(new SelectedChild(child));
 
             AdornerLayer.Add(CreateAdornerForElement(child));
         }
 
+        protected void SetSelectedElement(FrameworkElement child)
+        {
+            UnSelectAllElements();
+            AddSelectedElement(child);
+        }
+
         protected void UnSelectAllElements()
         {
-            selectedElements.ForEach(RemoveAdorner);
-            selectedElements.Clear();
+            SelectedChilds.ToList().ForEach(RemoveAdorner);
+            SelectedChilds.Clear();
         }
 
-        private void UnSelectElement(SelectedElement selectedElement)
+        private void UnSelectElement(SelectedChild selectedChild)
         {
-            selectedElements.Remove(selectedElement);
-            RemoveAdorner(selectedElement);
+            SelectedChilds.Remove(selectedChild);
+            RemoveAdorner(selectedChild);
         }
 
-        private void RemoveAdorner(SelectedElement selectedElement)
+        private void RemoveAdorner(SelectedChild selectedChild)
         {
-            var adorners = AdornerLayer.GetAdorners(selectedElement.Element);
+            if (AdornerLayer == null) { return; }
+
+            var adorners = AdornerLayer.GetAdorners(selectedChild.Element);
             if (adorners != null) AdornerLayer.Remove(adorners[0]);
         }
 
         protected void ClearChildren()
         {
             this.Children.Clear();
-            this.selectedElements.Clear();
+            this.SelectedChilds.Clear();
         }
 
         protected virtual Adorner CreateAdornerForElement(UIElement child)
@@ -368,9 +363,14 @@ namespace FMA.View
             }
         }
 
-        protected IEnumerable<FrameworkElement> SelectedElements1
+        protected IEnumerable<FrameworkElement> SelectedElements
         {
-            get { return selectedElements.Select(s=>s.Element); }
+            get { return SelectedChilds.Select(s=>s.Element); }
+        }
+
+        protected ObservableCollection<SelectedChild> SelectedChilds
+        {
+            get { return selectedChilds; }
         }
 
 
@@ -379,9 +379,9 @@ namespace FMA.View
             return this.Children.Contains(source) == false;
         }
 
-        private class SelectedElement
+        protected class SelectedChild
         {
-            public SelectedElement(FrameworkElement element)
+            public SelectedChild(FrameworkElement element)
             {
                 Element = element;
                 UpdateOrignalPosition();
@@ -390,7 +390,7 @@ namespace FMA.View
             public FrameworkElement Element { get; private set; }
 
             public double OriginalTop { get; private set; }
-            public Double OriginalLeft { get; private set; }
+            public double OriginalLeft { get; private set; }
 
             public void UpdateOrignalPosition()
             {

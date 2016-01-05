@@ -223,12 +223,5 @@ namespace FMA.View.Models
 
             }
         }
-
-        public Action OnDelete = () => { };
-
-        public void DeleteTextField()
-        {
-            OnDelete();
-        }
     }
 }

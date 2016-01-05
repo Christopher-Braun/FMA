@@ -145,7 +145,7 @@
     <value>External Edit</value>
   </data>
   <data name="FieldName" xml:space="preserve">
-    <value>Feldname</value>
+    <value>FieldName</value>
   </data>
   <data name="Text" xml:space="preserve">
     <value>Text</value>
@@ -191,5 +191,11 @@
   </data>
   <data name="AddTextField" xml:space="preserve">
     <value>Textfeld hinzufügen</value>
+  </data>
+  <data name="FontName" xml:space="preserve">
+    <value>FontName</value>
+  </data>
+  <data name="DeleteSelectedElements" xml:space="preserve">
+    <value>Delete selected elements</value>
   </data>
 </root>

@@ -59,5 +59,14 @@ namespace FMA.Contracts.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FontName.
+        /// </summary>
+        internal static string FontName {
+            get {
+                return ResourceManager.GetString("FontName", resourceCulture);
+            }
+        }
     }
 }
