@@ -3,15 +3,13 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows.Media;
 using FMA.Contracts;
 using FMA.Contracts.Properties;
-using FMA.View.Helpers;
 
 namespace FMA.View.Models
 {
     [DebuggerDisplay("Name: {FieldName}, Value {Value}")]
-    public class MaterialFieldModel : INotifyPropertyChanged, IDataErrorInfo
+    public class MaterialFieldModel : INotifyPropertyChanged, IDataErrorInfo, IMaterialChild
     {
         private string value;
         private string error = string.Empty;

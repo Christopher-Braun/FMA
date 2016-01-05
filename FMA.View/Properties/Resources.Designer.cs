@@ -160,6 +160,15 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Elemente.
+        /// </summary>
+        public static string Elements {
+            get {
+                return ResourceManager.GetString("Elements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to External Edit.
         /// </summary>
         public static string ExternalEdit {

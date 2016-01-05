@@ -198,4 +198,7 @@
   <data name="DeleteSelectedElements" xml:space="preserve">
     <value>Delete selected elements</value>
   </data>
+  <data name="Elements" xml:space="preserve">
+    <value>Elemente</value>
+  </data>
 </root>

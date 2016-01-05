@@ -51,7 +51,6 @@
       <DependentUpon>DefaultView.xaml</DependentUpon>
     </Compile>
     <Compile Include="DefaultViewModel.cs" />
-    <Compile Include="Extensions.cs" />
     <Compile Include="ExternalPreviewView.xaml.cs">
       <DependentUpon>ExternalPreviewView.xaml</DependentUpon>
     </Compile>
@@ -74,14 +73,21 @@
     <Compile Include="LogoLayout.xaml.cs">
       <DependentUpon>LogoLayout.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LogoProperties.xaml.cs">
+      <DependentUpon>LogoProperties.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IMaterialChild.cs" />
     <Compile Include="SelectedMaterialProvider.cs" />
-    <Compile Include="Models\MaterialModelExtensions.cs" />
+    <Compile Include="Models\LogoExtensions.cs" />
     <Compile Include="Models\NotifyPropertyChangedBase.cs" />
     <Compile Include="Helpers\SelectionAdorner.cs" />
     <Compile Include="Helpers\WindowAspectRatio.cs" />
     <Compile Include="Helpers\WindowService.cs" />
     <Compile Include="TextFieldLayout.xaml.cs">
       <DependentUpon>TextFieldLayout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TextFieldProperties.xaml.cs">
+      <DependentUpon>TextFieldProperties.xaml</DependentUpon>
     </Compile>
     <Page Include="DefaultView.xaml">
       <SubType>Designer</SubType>
@@ -117,6 +123,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="LogoProperties.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="NumericUpDown.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -126,6 +136,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="TextFieldLayout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TextFieldProperties.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

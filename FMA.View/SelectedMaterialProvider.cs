@@ -1,12 +1,17 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Windows;
 using FMA.View.Models;
+using Microsoft.Win32;
 
 namespace FMA.View
 {
     public class SelectedMaterialProvider : NotifyPropertyChangedBase
     {
         private MaterialModel materialModel;
-        private MaterialFieldModel selectedMaterialField;
+        private IMaterialChild selectedMaterialChild;
 
         public MaterialModel MaterialModel
         {
@@ -14,22 +19,40 @@ namespace FMA.View
             set
             {
                 materialModel = value;
-                SelectedMaterialField = materialModel.MaterialFields.First();
-                materialModel.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
+                SelectedMaterialChild = materialModel.MaterialFields.First();
+                materialModel.PropertyChanged += (s, e) =>
+                {
+                    OnPropertyChanged(e.PropertyName);
+                    OnPropertyChanged("MaterialChilds");
+                };
                 OnPropertyChanged();
             }
         }
 
-        public MaterialFieldModel SelectedMaterialField
+        public IEnumerable<IMaterialChild> MaterialChilds
         {
-            get { return selectedMaterialField; }
+            get
+            {
+                foreach (var materialField in MaterialModel.MaterialFields)
+                {
+                    yield return materialField;
+                }
+
+                if (MaterialModel.LogoModel.HasLogo)
+                {
+                    yield return MaterialModel.LogoModel;
+                }
+            }
+        } 
+
+        public IMaterialChild SelectedMaterialChild
+        {
+            get { return selectedMaterialChild; }
             set
             {
-                selectedMaterialField = value;
+                selectedMaterialChild = value;
                 OnPropertyChanged();
             }
         }
-
-
 }
 }

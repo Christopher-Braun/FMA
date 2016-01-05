@@ -24,13 +24,13 @@ namespace FMA.View
             set { SetValue(MaterialModelProperty, value); }
         }
 
-        public static readonly DependencyProperty SelectedMaterialFieldProperty = DependencyProperty.Register(
-            "SelectedMaterialField", typeof(MaterialFieldModel), typeof(LayoutCanvas), new PropertyMetadata(default(MaterialFieldModel), (d, e) => ((LayoutCanvas)d).SelectedMaterialFieldChanged()));
+        public static readonly DependencyProperty SelectedMaterialChildProperty = DependencyProperty.Register(
+            "SelectedMaterialChild", typeof(IMaterialChild), typeof(LayoutCanvas), new PropertyMetadata(default(IMaterialChild), (d, e) => ((LayoutCanvas)d).SelectedMaterialFieldChanged()));
 
-        public MaterialFieldModel SelectedMaterialField
+        public IMaterialChild SelectedMaterialChild
         {
-            get { return (MaterialFieldModel) GetValue(SelectedMaterialFieldProperty); }
-            set { SetValue(SelectedMaterialFieldProperty, value); }
+            get { return (IMaterialChild)GetValue(SelectedMaterialChildProperty); }
+            set { SetValue(SelectedMaterialChildProperty, value); }
         }
 
 
@@ -82,13 +82,13 @@ namespace FMA.View
             {
                 if (SelectedElements.Count() != 1)
                 {
-                    this.SelectedMaterialField = null;
+                    this.SelectedMaterialChild = null;
                     return;
                 }
 
-                var selectedMaterialFieldModel = this.SelectedElements.First().Tag as MaterialFieldModel;
+                var selectedMaterialFieldModel = SelectedElements.Single().Tag as IMaterialChild;
 
-                this.SelectedMaterialField = selectedMaterialFieldModel;
+                SelectedMaterialChild = selectedMaterialFieldModel;
             }
             finally
             {
@@ -103,13 +103,13 @@ namespace FMA.View
                return;
            }
 
-           if (this.SelectedMaterialField == null)
+           if (this.SelectedMaterialChild == null)
            {
                UnSelectAllElements();
                return;
            }
 
-           var elementToSelect = this.Children.OfType<FrameworkElement>().First(t => this.SelectedMaterialField.Equals(t.Tag));
+           var elementToSelect = Children.OfType<FrameworkElement>().First(t => SelectedMaterialChild.Equals(t.Tag));
 
            SetSelectedElement(elementToSelect);
        }
@@ -267,7 +267,8 @@ namespace FMA.View
             {
                 DataContext = MaterialModel.LogoModel,
                 Stretch = Stretch.Fill,
-                Focusable = true
+                Focusable = true,
+                Tag = MaterialModel.LogoModel
             };
 
             logo.PreviewKeyUp += element_PreviewKeyUp;

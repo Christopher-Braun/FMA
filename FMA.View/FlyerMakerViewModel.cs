@@ -196,29 +196,13 @@ namespace FMA.View
 
         public void AddLogo()
         {
-            var dialog = new OpenFileDialog
-            {
-                //TODO Remove when going productive
-                Title = "Select logo file",
-                InitialDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
-                Filter = "Image files | *.jpg; *.jpeg; *.bmp; *.png; *.gif | All Files | *.*"
-            };
-
-            var result = dialog.ShowDialog();
-            if (result != true)
-            {
-                return;
-            }
-
-            this.selectedMaterialProvider.MaterialModel.SetLogo(dialog.FileName, new Point(25, 75));
+            this.selectedMaterialProvider.MaterialModel.AddLogo();
         }
 
         public void DeleteLogo()
         {
             this.selectedMaterialProvider.MaterialModel.LogoModel.DeleteLogo();
         }
-
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using FMA.Contracts;
 using FMA.View.Models;
 
@@ -22,41 +23,59 @@ namespace FMA.View
             get { return this.SelectedMaterialProvider.MaterialModel; }
         }
 
-        private MaterialFieldModel SelectedFieldModel
+        private IMaterialChild SelectedMaterialChild
         {
-            get { return SelectedMaterialProvider.SelectedMaterialField; }
-            set { this.SelectedMaterialProvider.SelectedMaterialField = value; }
+            get { return SelectedMaterialProvider.SelectedMaterialChild; }
+            set { this.SelectedMaterialProvider.SelectedMaterialChild = value; }
         }
 
         public void AddField()
         {
             MaterialModel.AddMaterialField();
-            SelectedFieldModel = MaterialModel.MaterialFields.Last();
+            SelectedMaterialChild = MaterialModel.MaterialFields.Last();
         }
 
-        public void DeleteSelectedField()
+        public void AddLogo()
         {
+            MaterialModel.AddLogo();
+            SelectedMaterialChild = MaterialModel.LogoModel;
+        }
+
+        public void DeleteSelectedChild()
+        {
+            int index = int.MaxValue;
             var materialFieldModels = MaterialModel.MaterialFields;
 
-            var index = materialFieldModels.IndexOf(SelectedFieldModel);
-            if (index == -1)
+            if (SelectedMaterialChild is LogoModel)
             {
-                return;
-            }
+                MaterialModel.LogoModel.DeleteLogo();
 
-            materialFieldModels.Remove(SelectedFieldModel);
-
-            if (materialFieldModels.Count > index)
-            {
-                SelectedFieldModel = materialFieldModels[index];
-            }
-            else if (materialFieldModels.Any())
-            {
-                SelectedFieldModel = materialFieldModels[materialFieldModels.Count - 1];
             }
             else
             {
-                SelectedFieldModel = null;
+                var selectedFieldModel = SelectedMaterialChild as MaterialFieldModel;
+ 
+                index = materialFieldModels.IndexOf(selectedFieldModel);
+
+                if (index == -1)
+                {
+                    return;
+                }
+
+                materialFieldModels.Remove(selectedFieldModel);
+            }
+
+            if (materialFieldModels.Count > index)
+            {
+                SelectedMaterialChild = materialFieldModels[index];
+            }
+            else if (materialFieldModels.Any())
+            {
+                SelectedMaterialChild = materialFieldModels[materialFieldModels.Count - 1];
+            }
+            else
+            {
+                SelectedMaterialChild = null;
             }
         }
     }

@@ -4,7 +4,7 @@ using FMA.Contracts;
 
 namespace FMA.View.Models
 {
-    public class LogoModel : NotifyPropertyChangedBase
+    public class LogoModel : NotifyPropertyChangedBase, IMaterialChild
     {
         private byte[] logo = new byte[0];
         private double leftMargin;
@@ -12,6 +12,11 @@ namespace FMA.View.Models
         private double height;
         private double width;
         private BitmapImage logoImage;
+
+        public LogoModel()
+        {
+            this.FieldName = "Logo";
+        }
 
         public bool HasLogo
         {
@@ -84,5 +89,7 @@ namespace FMA.View.Models
         {
             Logo = new byte[0];
         }
+
+        public string FieldName { get; set; }
     }
 }

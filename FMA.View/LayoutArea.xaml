@@ -39,7 +39,7 @@
                                CanManipulateTextsAndLogos="True"
                                FontService="{Binding FontService}"
                                MaterialModel="{Binding SelectedMaterialProvider.MaterialModel}"
-                               SelectedMaterialField="{Binding SelectedMaterialProvider.SelectedMaterialField, Mode=TwoWay}"/>
+                               SelectedMaterialChild="{Binding SelectedMaterialProvider.SelectedMaterialChild, Mode=TwoWay}"/>
 
         </Viewbox>
         <StackPanel Grid.Row="1"
