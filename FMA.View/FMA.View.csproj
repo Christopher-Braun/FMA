@@ -47,110 +47,110 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DefaultView.xaml.cs">
+    <Compile Include="View.Default\DefaultView.xaml.cs">
       <DependentUpon>DefaultView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DefaultViewModel.cs" />
-    <Compile Include="ExternalPreviewView.xaml.cs">
+    <Compile Include="View.Default\DefaultViewModel.cs" />
+    <Compile Include="View.Default\ExternalPreviewView.xaml.cs">
       <DependentUpon>ExternalPreviewView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ExternalEditView.xaml.cs">
+    <Compile Include="View.Layout\ExternalEditView.xaml.cs">
       <DependentUpon>ExternalEditView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ExternalPreviewViewModel.cs" />
-    <Compile Include="FlyerViewModelBase.cs" />
+    <Compile Include="View.Common\ExternalViewModel.cs" />
+    <Compile Include="View.Common\FlyerViewModelBase.cs" />
     <Compile Include="Helpers\FontInfo.cs" />
     <Compile Include="Helpers\FontStyleConverter.cs" />
     <Compile Include="Helpers\FontWeightConverter.cs" />
-    <Compile Include="LayoutArea.xaml.cs">
+    <Compile Include="View.Layout\LayoutArea.xaml.cs">
       <DependentUpon>LayoutArea.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LayoutCanvasBase.cs" />
-    <Compile Include="LayoutView.xaml.cs">
+    <Compile Include="View.Common\LayoutCanvasBase.cs" />
+    <Compile Include="View.Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LayoutViewModel.cs" />
-    <Compile Include="LogoLayout.xaml.cs">
+    <Compile Include="View.Layout\LayoutViewModel.cs" />
+    <Compile Include="View.Default\LogoLayout.xaml.cs">
       <DependentUpon>LogoLayout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LogoProperties.xaml.cs">
+    <Compile Include="View.Common\LogoProperties.xaml.cs">
       <DependentUpon>LogoProperties.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\IMaterialChild.cs" />
-    <Compile Include="SelectedMaterialProvider.cs" />
+    <Compile Include="View.Common\SelectedMaterialProvider.cs" />
     <Compile Include="Models\LogoExtensions.cs" />
     <Compile Include="Models\NotifyPropertyChangedBase.cs" />
     <Compile Include="Helpers\SelectionAdorner.cs" />
     <Compile Include="Helpers\WindowAspectRatio.cs" />
     <Compile Include="Helpers\WindowService.cs" />
-    <Compile Include="TextFieldLayout.xaml.cs">
+    <Compile Include="View.Layout\TextFieldLayout.xaml.cs">
       <DependentUpon>TextFieldLayout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TextFieldProperties.xaml.cs">
+    <Compile Include="View.Layout\TextFieldProperties.xaml.cs">
       <DependentUpon>TextFieldProperties.xaml</DependentUpon>
     </Compile>
-    <Page Include="DefaultView.xaml">
+    <Page Include="View.Default\DefaultView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ExternalPreviewView.xaml">
+    <Page Include="View.Default\ExternalPreviewView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="FlyerMakerView.xaml">
+    <Page Include="View.Common\FlyerMakerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Helpers\ResizingAdorner.cs" />
-    <Compile Include="FlyerMakerViewModel.cs" />
-    <Compile Include="FlyerMakerView.xaml.cs">
+    <Compile Include="View.Common\FlyerMakerViewModel.cs" />
+    <Compile Include="View.Common\FlyerMakerView.xaml.cs">
       <DependentUpon>FlyerMakerView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ExternalEditView.xaml">
+    <Page Include="View.Layout\ExternalEditView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LayoutArea.xaml">
+    <Page Include="View.Layout\LayoutArea.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LayoutView.xaml">
+    <Page Include="View.Layout\LayoutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LogoLayout.xaml">
+    <Page Include="View.Default\LogoLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LogoProperties.xaml">
+    <Page Include="View.Common\LogoProperties.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NumericUpDown.xaml">
+    <Page Include="View.Common\NumericUpDown.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Resources.xaml">
+    <Page Include="View.Common\Resources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TextFieldLayout.xaml">
+    <Page Include="View.Layout\TextFieldLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TextFieldProperties.xaml">
+    <Page Include="View.Layout\TextFieldProperties.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LayoutCanvas.cs" />
+    <Compile Include="View.Common\LayoutCanvas.cs" />
     <Compile Include="Models\LogoModel.cs" />
     <Compile Include="Models\MaterialConversions.cs" />
     <Compile Include="Models\MaterialModel.cs" />
     <Compile Include="Models\MaterialFieldModel.cs" />
-    <Compile Include="NumericUpDown.xaml.cs">
+    <Compile Include="View.Common\NumericUpDown.xaml.cs">
       <DependentUpon>NumericUpDown.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Annotations.cs" />

@@ -24,7 +24,7 @@ namespace FMA.View.Helpers
 
             externalPreviewView = new ExternalPreviewView
             {
-                DataContext = new ExternalPreviewViewModel(selectedMaterialProvider, fontService),
+                DataContext = new ExternalViewModel(selectedMaterialProvider, fontService),
                 Owner = mainWindow
             };
             externalPreviewView.Show();
@@ -39,7 +39,7 @@ namespace FMA.View.Helpers
 
             externalEditView = new ExternalEditView
             {
-                DataContext = new ExternalPreviewViewModel(selectedMaterialProvider, fontService),
+                DataContext = new ExternalViewModel(selectedMaterialProvider, fontService),
                 Owner = mainWindow
             };
             externalEditView.Show();

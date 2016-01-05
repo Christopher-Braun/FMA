@@ -1,0 +1,24 @@
+﻿<Window x:Class="FMA.View.ExternalPreviewView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:view="clr-namespace:FMA.View"
+        Height="800"
+        AllowsTransparency="True"
+        BorderThickness="1"
+        MouseLeftButtonDown="FlyerPreviewView_OnMouseLeftButtonDown"
+        ResizeMode="CanResizeWithGrip"
+        SizeToContent="Width"
+        SourceInitialized="FlyerPreviewView_OnSourceInitialized"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None">
+
+    <Viewbox HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch"
+             Stretch="Uniform">
+        <view:LayoutCanvas HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           CanManipulateTextsAndLogos="{Binding CanEdit}"
+                           FontService="{Binding FontService}"
+                           MaterialModel="{Binding SelectedMaterialProvider.MaterialModel}" />
+    </Viewbox>
+</Window>
