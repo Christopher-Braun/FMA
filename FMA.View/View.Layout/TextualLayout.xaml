@@ -37,7 +37,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
             <TextBlock Margin="4,0"
@@ -51,7 +51,7 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <ListBox BorderThickness="1,1,1,0" MinWidth="100" BorderBrush="CadetBlue" x:Name="ListBox"  Margin="8,8,8,0" ItemsSource="{Binding SelectedMaterialProvider.MaterialChilds}" SelectedItem="{Binding SelectedMaterialProvider.SelectedMaterialChild}">
+            <ListBox BorderThickness="1,1,1,0" MinWidth="100" BorderBrush="CadetBlue" x:Name="ListBox"  Margin="4,8,8,0" ItemsSource="{Binding SelectedMaterialProvider.MaterialChilds}" SelectedItem="{Binding SelectedMaterialProvider.SelectedMaterialChild}">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="models:MaterialFieldModel">
                     <StackPanel Orientation="Horizontal">
@@ -60,7 +60,7 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Border Margin="8,0,8,8" Background="White" Grid.Row="1"  BorderThickness="1,0,1,1" BorderBrush="CadetBlue">
+        <Border Margin="4,0,8,8" Background="White" Grid.Row="1"  BorderThickness="1,0,1,1" BorderBrush="CadetBlue">
         <StackPanel Orientation="Horizontal">
         
         <Button   Style="{StaticResource ImageButton}" ToolTip="{x:Static properties:Resources.AddTextField}">
@@ -118,7 +118,7 @@
         <ContentPresenter  Grid.Column="1"
                            Grid.Row="1"
                               Margin="8"
-                           Width="400"
+                          
                               Content="{Binding SelectedMaterialProvider.SelectedMaterialChild}" />
         
 

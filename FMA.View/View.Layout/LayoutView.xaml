@@ -19,7 +19,30 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <ScrollViewer Margin="4"
+        <view:GraphicalLayout  Margin="8">
+            <view:GraphicalLayout.Style>
+                <Style TargetType="FrameworkElement">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ViewState}" Value="OnlyInput">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard Storyboard="{StaticResource FadeOut}" />
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard Storyboard="{StaticResource FadeIn}" />
+                            </DataTrigger.ExitActions>
+
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </view:GraphicalLayout.Style>
+        </view:GraphicalLayout>
+
+        <GridSplitter Grid.Column="1"
+                      Width="8"
+                      HorizontalAlignment="Stretch"
+                      Background="Transparent" />
+
+        <ScrollViewer Grid.Column="2" Margin="4"
                       HorizontalScrollBarVisibility="Auto"
                       VerticalScrollBarVisibility="Auto">
 
@@ -28,14 +51,14 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
-                 
+
                 </Grid.RowDefinitions>
 
                 <view:TextualLayout Grid.Row="0"
                                       MinWidth="400"
                                  HorizontalAlignment="Left"/>
 
-              
+
             </Grid>
             <ScrollViewer.Style>
                 <Style TargetType="FrameworkElement">
@@ -53,27 +76,5 @@
             </ScrollViewer.Style>
         </ScrollViewer>
 
-        <GridSplitter Grid.Column="1"
-                      Width="8"
-                      HorizontalAlignment="Stretch"
-                      Background="Transparent" />
-
-        <view:GraphicalLayout Grid.Column="2" Margin="8">
-            <view:GraphicalLayout.Style>
-                <Style TargetType="FrameworkElement">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding ViewState}" Value="OnlyInput">
-                            <DataTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource FadeOut}" />
-                            </DataTrigger.EnterActions>
-                            <DataTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource FadeIn}" />
-                            </DataTrigger.ExitActions>
-
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </view:GraphicalLayout.Style>
-        </view:GraphicalLayout>
     </Grid>
 </UserControl>
