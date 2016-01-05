@@ -48,7 +48,28 @@ namespace FMA.Contracts
             //TODO Potentiell gefährlich wenn auf dem Server andere Sprache ist.
             var currentLanguage = CultureInfo.CurrentUICulture.IetfLanguageTag;
             var currentXmlLanguage = XmlLanguage.GetLanguage(currentLanguage);
-            var fontName = fontFamily.FamilyNames[currentXmlLanguage];
+
+            if (fontFamily.FamilyNames.ContainsKey(currentXmlLanguage))
+            {
+                return fontFamily.FamilyNames[currentXmlLanguage];
+            }
+
+            var defaultLanguage = CultureInfo.InvariantCulture.IetfLanguageTag;
+            var defaultXmlLanguage = XmlLanguage.GetLanguage(defaultLanguage);
+
+            if (fontFamily.FamilyNames.ContainsKey(defaultXmlLanguage))
+            {
+                return fontFamily.FamilyNames[defaultXmlLanguage];
+            }
+
+          
+            var fontName = fontFamily.FamilyNames.Values.FirstOrDefault();
+            if (fontName == null)
+            {
+              return fontFamily.Source;
+             //   throw new InvalidOperationException("No FontName for Font available");
+            }
+
             return fontName;
 
         }

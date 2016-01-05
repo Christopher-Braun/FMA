@@ -80,6 +80,9 @@
     <Compile Include="Helpers\SelectionAdorner.cs" />
     <Compile Include="Helpers\WindowAspectRatio.cs" />
     <Compile Include="Helpers\WindowService.cs" />
+    <Compile Include="TextFieldLayout.xaml.cs">
+      <DependentUpon>TextFieldLayout.xaml</DependentUpon>
+    </Compile>
     <Page Include="DefaultView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -119,6 +122,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TextFieldLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
