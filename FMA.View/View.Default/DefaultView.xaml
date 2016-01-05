@@ -74,7 +74,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
-                    <view:LogoLayout DataContext="{Binding SelectedMaterialProvider.MaterialModel.LogoModel}" />
+                    <view:LogoLayout/>
                 </StackPanel>
             </ScrollViewer>
         </Grid>

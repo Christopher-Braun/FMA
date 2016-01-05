@@ -15,13 +15,15 @@ namespace FMA.View
             set
             {
                 materialModel = value;
-                SelectedMaterialChild = materialModel.MaterialFields.First();
+               
                 materialModel.PropertyChanged += (s, e) =>
                 {
                     OnPropertyChanged(e.PropertyName);
                     OnPropertyChanged("MaterialChilds");
                 };
                 OnPropertyChanged();
+                OnPropertyChanged("MaterialChilds");
+                SelectedMaterialChild = materialModel.MaterialFields.First();
             }
         }
 

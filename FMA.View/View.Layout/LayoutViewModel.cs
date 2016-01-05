@@ -35,12 +35,6 @@ namespace FMA.View
             SelectedMaterialChild = MaterialModel.MaterialFields.Last();
         }
 
-        public void AddLogo()
-        {
-            MaterialModel.AddLogo();
-            SelectedMaterialChild = MaterialModel.LogoModel;
-        }
-
         public void DeleteSelectedChild()
         {
             int index = int.MaxValue;
@@ -49,7 +43,6 @@ namespace FMA.View
             if (SelectedMaterialChild is LogoModel)
             {
                 MaterialModel.LogoModel.DeleteLogo();
-
             }
             else
             {

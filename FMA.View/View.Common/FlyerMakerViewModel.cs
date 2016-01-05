@@ -194,15 +194,15 @@ namespace FMA.View
             this.SelectedMaterial = this.Materials.Single(m => m.Id.Equals(this.SelectedMaterial.Id));
         }
 
-        public void AddLogo()
-        {
-            this.selectedMaterialProvider.MaterialModel.AddLogo();
-        }
+        //public void AddLogo()
+        //{
+        //    this.selectedMaterialProvider.MaterialModel.AddLogo();
+        //}
 
-        public void DeleteLogo()
-        {
-            this.selectedMaterialProvider.MaterialModel.LogoModel.DeleteLogo();
-        }
+        //public void DeleteLogo()
+        //{
+        //    this.selectedMaterialProvider.MaterialModel.LogoModel.DeleteLogo();
+        //}
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -1,7 +1,9 @@
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using FMA.Contracts;
+using FMA.View.Models;
 using FMA.View.Properties;
 
 namespace FMA.View
@@ -22,6 +24,18 @@ namespace FMA.View
         public FontService FontService { get; private set; }
 
         public abstract bool CanCreate { get; }
+
+        public void AddLogo()
+        {
+            SelectedMaterialProvider.MaterialModel.AddLogo();
+            SelectedMaterialProvider.SelectedMaterialChild = SelectedMaterialProvider.MaterialModel.LogoModel;
+        }
+
+        public void DeleteLogo()
+        {
+            SelectedMaterialProvider.MaterialModel.LogoModel.DeleteLogo();
+            SelectedMaterialProvider.SelectedMaterialChild = SelectedMaterialProvider.MaterialModel.MaterialFields.Last();
+        }
 
         public void ToggleViews()
         {

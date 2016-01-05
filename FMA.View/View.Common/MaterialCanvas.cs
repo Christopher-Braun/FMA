@@ -109,7 +109,11 @@ namespace FMA.View
                return;
            }
 
-           var elementToSelect = Children.OfType<FrameworkElement>().First(t => SelectedMaterialChild.Equals(t.Tag));
+           var elementToSelect = Children.OfType<FrameworkElement>().FirstOrDefault(t => SelectedMaterialChild.Equals(t.Tag));
+            if (elementToSelect == null)
+            {
+                return;
+            }
 
            SetSelectedElement(elementToSelect);
        }
