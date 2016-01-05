@@ -1,10 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Windows;
 using FMA.View.Models;
-using Microsoft.Win32;
 
 namespace FMA.View
 {

@@ -62,10 +62,10 @@
     <Compile Include="Helpers\FontInfo.cs" />
     <Compile Include="Helpers\FontStyleConverter.cs" />
     <Compile Include="Helpers\FontWeightConverter.cs" />
-    <Compile Include="View.Layout\LayoutArea.xaml.cs">
-      <DependentUpon>LayoutArea.xaml</DependentUpon>
+    <Compile Include="View.Layout\GraphicalLayout.xaml.cs">
+      <DependentUpon>GraphicalLayout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View.Common\LayoutCanvasBase.cs" />
+    <Compile Include="View.Common\LayoutCanvas.cs" />
     <Compile Include="View.Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
@@ -83,8 +83,8 @@
     <Compile Include="Helpers\SelectionAdorner.cs" />
     <Compile Include="Helpers\WindowAspectRatio.cs" />
     <Compile Include="Helpers\WindowService.cs" />
-    <Compile Include="View.Layout\TextFieldLayout.xaml.cs">
-      <DependentUpon>TextFieldLayout.xaml</DependentUpon>
+    <Compile Include="View.Layout\TextualLayout.xaml.cs">
+      <DependentUpon>TextualLayout.xaml</DependentUpon>
     </Compile>
     <Compile Include="View.Layout\TextFieldProperties.xaml.cs">
       <DependentUpon>TextFieldProperties.xaml</DependentUpon>
@@ -111,7 +111,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View.Layout\LayoutArea.xaml">
+    <Page Include="View.Layout\GraphicalLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -135,7 +135,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View.Layout\TextFieldLayout.xaml">
+    <Page Include="View.Layout\TextualLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -145,7 +145,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="View.Common\LayoutCanvas.cs" />
+    <Compile Include="View.Common\MaterialCanvas.cs" />
     <Compile Include="Models\LogoModel.cs" />
     <Compile Include="Models\MaterialConversions.cs" />
     <Compile Include="Models\MaterialModel.cs" />

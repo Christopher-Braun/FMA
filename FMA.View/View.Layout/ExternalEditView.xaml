@@ -10,6 +10,6 @@
     <Viewbox HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch"
              Stretch="Uniform">
-        <view:LayoutArea></view:LayoutArea>
+        <view:GraphicalLayout></view:GraphicalLayout>
     </Viewbox>
 </Window>

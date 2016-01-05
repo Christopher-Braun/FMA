@@ -89,7 +89,7 @@
                  HorizontalAlignment="Stretch"
                  VerticalAlignment="Stretch"
                  Stretch="Uniform">
-            <view:LayoutCanvas Margin="8"
+            <view:MaterialCanvas Margin="8"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"
                                CanManipulateLogos="True"

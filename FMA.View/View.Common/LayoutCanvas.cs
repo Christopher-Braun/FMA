@@ -1,65 +1,41 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using FMA.Contracts;
 using FMA.View.Helpers;
-using FMA.View.Models;
-using FontStyleConverter = FMA.View.Helpers.FontStyleConverter;
-using FontWeightConverter = FMA.View.Helpers.FontWeightConverter;
 
 namespace FMA.View
 {
-    public class LayoutCanvas : LayoutCanvasBase
+    public class LayoutCanvas : Canvas
     {
-        public static readonly DependencyProperty MaterialModelProperty = DependencyProperty.Register(
-            "MaterialModel", typeof(MaterialModel), typeof(LayoutCanvas), new PropertyMetadata(null, (d, e) => ((LayoutCanvas)d).MaterialModelChanged()));
-        public MaterialModel MaterialModel
+        private enum State
         {
-            get { return (MaterialModel)GetValue(MaterialModelProperty); }
-            set { SetValue(MaterialModelProperty, value); }
+            None,
+            IsStartingSelection,
+            IsDraggingSelectionRect,
+            IsStartingDragging,
+            IsDragging,
         }
 
-        public static readonly DependencyProperty SelectedMaterialChildProperty = DependencyProperty.Register(
-            "SelectedMaterialChild", typeof(IMaterialChild), typeof(LayoutCanvas), new PropertyMetadata(default(IMaterialChild), (d, e) => ((LayoutCanvas)d).SelectedMaterialFieldChanged()));
+        private State state = State.None;
 
-        public IMaterialChild SelectedMaterialChild
+        private AdornerLayer AdornerLayer
         {
-            get { return (IMaterialChild)GetValue(SelectedMaterialChildProperty); }
-            set { SetValue(SelectedMaterialChildProperty, value); }
+            get
+            {
+                return AdornerLayer.GetAdornerLayer(this);
+            }
         }
+        private Border dragSelectionBorder;
 
+        private Point origMouseDownPoint;
 
-        public static readonly DependencyProperty FontServiceProperty = DependencyProperty.Register(
-            "FontService", typeof(FontService), typeof(LayoutCanvas), new PropertyMetadata(default(FontService)));
-
-        public FontService FontService
-        {
-            get { return (FontService)GetValue(FontServiceProperty); }
-            set { SetValue(FontServiceProperty, value); }
-        }
-
-        public static readonly DependencyProperty CanManipulateTextsAndLogosProperty = DependencyProperty.Register(
-            "CanManipulateTextsAndLogos", typeof(bool), typeof(LayoutCanvas), new PropertyMetadata(default(bool)));
-
-        public bool CanManipulateTextsAndLogos
-        {
-            get { return (bool)GetValue(CanManipulateTextsAndLogosProperty); }
-            set { SetValue(CanManipulateTextsAndLogosProperty, value); }
-        }
-
-        public static readonly DependencyProperty CanManipulateLogosProperty = DependencyProperty.Register(
-            "CanManipulateLogos", typeof(bool), typeof(LayoutCanvas), new PropertyMetadata(default(bool)));
-
-        public bool CanManipulateLogos
-        {
-            get { return (bool)GetValue(CanManipulateLogosProperty); }
-            set { SetValue(CanManipulateLogosProperty, value); }
-        }
+        private readonly ObservableCollection<SelectedChild> selectedChilds = new ObservableCollection<SelectedChild>();
 
         static LayoutCanvas()
         {
@@ -68,296 +44,360 @@ namespace FMA.View
 
         public LayoutCanvas()
         {
-            this.AllowDrop = true;
-            this.Drop += (sender, e) => this.DropLogo(this.MaterialModel, e);
-            SelectedChilds.CollectionChanged += SelectedElements_CollectionChanged;
+            this.ClipToBounds = true;
+            this.Focusable = true;
+            this.Focus();
         }
 
-        private bool selectedMaterialChangedInternal = false;
-
-        private void SelectedElements_CollectionChanged(object sender,System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        public void AlignLeft()
         {
-            selectedMaterialChangedInternal = true;
-            try
+            var position = this.SelectedChilds.Select(e => GetLeft(e.Element)).Min();
+            this.SelectedChilds.ToList().ForEach(e => SetLeft(e.Element, position));
+        }
+
+        public void AlignRight()
+        {
+            var position = this.SelectedChilds.Select(e => GetLeft(e.Element) + e.Element.ActualWidth).Max();
+            this.SelectedChilds.ToList().ForEach(e => SetLeft(e.Element, position - e.Element.ActualWidth));
+        }
+
+        public void AlignTop()
+        {
+            var position = this.SelectedChilds.Select(e => GetTop(e.Element)).Min();
+            this.SelectedChilds.ToList().ForEach(e => SetTop(e.Element, position));
+        }
+
+        public void AlignBottom()
+        {
+            var position = this.SelectedChilds.Select(e => GetTop(e.Element) + e.Element.ActualHeight).Max();
+            this.SelectedChilds.ToList().ForEach(e => SetTop(e.Element, position - e.Element.ActualHeight));
+        }
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            PreviewMouseDown += Canvas_MouseDown;
+            PreviewMouseMove += Canvas_MouseMove;
+            PreviewMouseUp += Canvas_MouseUp;
+        }
+
+        protected void CreateSelectionBorder()
+        {
+            dragSelectionBorder = new Border
             {
-                if (SelectedElements.Count() != 1)
+                Visibility = Visibility.Collapsed,
+                BorderBrush = Brushes.Blue,
+                BorderThickness = new Thickness(1.5),
+                Background = Brushes.LightBlue,
+                CornerRadius = new CornerRadius(2),
+                Opacity = 0.6
+            };
+
+            this.Children.Add(dragSelectionBorder);
+        }
+
+        private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (CanManipulateElements == false)
+            {
+                return;
+            }
+
+            if (e.ChangedButton != MouseButton.Left)
+            {
+                return;
+            }
+
+            origMouseDownPoint = e.GetPosition(this);
+            var hitTest = this.InputHitTest(origMouseDownPoint) as FrameworkElement;
+            if (hitTest == null)
+            {
+                //Außerhalb des Bereiches oder falsches Element
+                return;
+            }
+
+            if (IsBackground(hitTest))
+            {
+                //Klick auf Hintergrund - Beginne Selection
+                state = State.IsStartingSelection;
+                this.UnSelectAllElements();
+                this.CaptureMouse();
+                e.Handled = true;
+            }
+            else if (CanManipulateElement(hitTest))
+            {
+                //Klick auf selektiertes Element - starte Bewegen / oder entfernen
+                var selectedElementHit = SelectedChilds.FirstOrDefault(s => s.Element.Equals(hitTest));
+
+                if (selectedElementHit != null)
                 {
-                    this.SelectedMaterialChild = null;
-                    return;
-                }
-
-                var selectedMaterialFieldModel = SelectedElements.Single().Tag as IMaterialChild;
-
-                SelectedMaterialChild = selectedMaterialFieldModel;
-            }
-            finally
-            {
-                selectedMaterialChangedInternal = false;
-            }
-        }
-
-        private void SelectedMaterialFieldChanged()
-       {
-           if (selectedMaterialChangedInternal)
-           {
-               return;
-           }
-
-           if (this.SelectedMaterialChild == null)
-           {
-               UnSelectAllElements();
-               return;
-           }
-
-           var elementToSelect = Children.OfType<FrameworkElement>().First(t => SelectedMaterialChild.Equals(t.Tag));
-
-           SetSelectedElement(elementToSelect);
-       }
-
-       private Image backgroundImage;
-        private Image logoImage;
-
-        private void MaterialModelChanged()
-        {
-            if (MaterialModel == null) return;
-
-            CreateChildren();
-
-            MaterialModel.PropertyChanged += MaterialModel_PropertyChanged;
-            MaterialModel.MaterialFields.CollectionChanged += MaterialFields_CollectionChanged;
-        }
-
-        private void CreateChildren()
-        {
-            this.ClearChildren();
-
-            backgroundImage = new Image { Source = MaterialModel.FlyerFrontSideImage, Cursor = Cursors.Arrow };
-            this.Children.Add(backgroundImage);
-
-            logoImage = CreateLogoImage();
-            this.Children.Add(logoImage);
-
-            foreach (var textBlock in MaterialModel.MaterialFields.Select(CreateTextBlock))
-            {
-                this.Children.Add(textBlock);
-            }
-
-            CreateSelectionBorder();
-       
-        }
-
-       private void MaterialFields_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            if (MaterialModel == null) return;
-            CreateChildren();
-            HighlightCollisions();
-        }
-
-
-        private void MaterialModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            HighlightCollisions();
-        }
-
-        private void HighlightCollisions()
-        {
-            var children = this.Children.OfType<TextBlock>().Where(CanManipulateElement).ToList();
-            children.ForEach(c => c.Foreground = Brushes.Black);
-
-            var childrenWithRects = children.Select(c => new Tuple<TextBlock, Rect>(c, GetRectFromElement(c))).ToArray();
-            var childrenWithRectsToCompare = childrenWithRects.ToList();
-
-            foreach (var child in childrenWithRects)
-            {
-                childrenWithRectsToCompare.Remove(child);
-                var childRect = child.Item2;
-                var childItem = child.Item1;
-
-                foreach (var otherChild in childrenWithRectsToCompare)
-                {
-                    if (childRect.IntersectsWith(otherChild.Item2))
+                    if (Keyboard.Modifiers == ModifierKeys.Control)
                     {
-                        childItem.Foreground = Brushes.Red;
-                        otherChild.Item1.Foreground = Brushes.Red;
+                        UnSelectElement(selectedElementHit);
+                    }
+                    else
+                    {
+                        state = State.IsStartingDragging;
+                        SelectedChilds.ToList().ForEach(c => c.UpdateOrignalPosition());
                     }
                 }
-
-                if (childRect.Top < 0 || childRect.Left < 0 || childRect.Right > this.ActualWidth ||
-                    childRect.Bottom > this.ActualHeight)
+                else
                 {
-                    childItem.Foreground = Brushes.Red;
+                    //Selektiere Element bzw füge zur Selektion hinzu
+                    if (Keyboard.Modifiers != ModifierKeys.Control)
+                    {
+                        this.UnSelectAllElements();
+                    }
+
+                    AddSelectedElement(hitTest);
+                    state = State.IsStartingDragging;
+                }
+
+                e.Handled = true;
+            }
+        }
+
+        private void Canvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (CanManipulateElements == false)
+            {
+                return;
+            }
+
+            var mousePosition = e.GetPosition(this);
+
+            switch (state)
+            {
+                case State.IsDraggingSelectionRect:
+                    UpdateDragSelectionRect(origMouseDownPoint, mousePosition);
+                    e.Handled = true;
+                    break;
+                case State.IsStartingSelection:
+                    if (DragIsGreaterThanDragDelta(mousePosition))
+                    {
+                        state = State.IsDraggingSelectionRect;
+                        UnSelectAllElements();
+                        InitDragSelectionRect(origMouseDownPoint, mousePosition);
+                    }
+                    e.Handled = true;
+                    break;
+                case State.IsStartingDragging:
+                    if (DragIsGreaterThanDragDelta(mousePosition))
+                    {
+                        state = State.IsDragging;
+                    }
+                    e.Handled = true;
+                    break;
+            }
+
+            if (state == State.IsDragging)
+            {
+                foreach (var selectedElement in SelectedChilds)
+                {
+                    var mouseDiff = mousePosition - origMouseDownPoint;
+
+                    Canvas.SetTop(selectedElement.Element, selectedElement.OriginalTop + mouseDiff.Y);
+                    Canvas.SetLeft(selectedElement.Element, selectedElement.OriginalLeft + mouseDiff.X);
                 }
             }
+
         }
 
-        private static Rect GetRectFromElement(UIElement element)
+        private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            return new Rect(new Point(Canvas.GetLeft(element), Canvas.GetTop(element)), element.RenderSize);
+            if (CanManipulateElements == false)
+            {
+                return;
+            }
+
+            if (e.ChangedButton != MouseButton.Left)
+            {
+                return;
+            }
+
+            switch (state)
+            {
+                case State.IsDraggingSelectionRect:
+                    this.ReleaseMouseCapture();
+                    ApplyDragSelectionRect();
+                    e.Handled = true;
+                    break;
+                case State.IsStartingSelection:
+                    this.ReleaseMouseCapture();
+                    e.Handled = true;
+                    break;
+                case State.IsStartingDragging:
+                    SelectedChilds.ToList().ForEach(c => c.UpdateOrignalPosition());
+                    e.Handled = true;
+                    break;
+            }
+
+            state = State.None;
         }
 
-        private TextBlock CreateTextBlock(MaterialFieldModel materialFieldModel)
+        private bool DragIsGreaterThanDragDelta(Point mousePosition)
         {
-            var textBlock = new TextBlock
-            {
-                Tag = materialFieldModel,
-                DataContext = materialFieldModel,
-                Margin = new Thickness(0),
-                Focusable = true
-            };
-
-            textBlock.PreviewKeyUp += element_PreviewKeyUp;
-
-            if (CanManipulateTextsAndLogos)
-            {
-                textBlock.Cursor = Cursors.Hand;
-            }
-
-            var fontFamilyBinding = new Binding("FontFamily") { Mode = BindingMode.OneWay };
-            textBlock.SetBinding(TextBlock.FontFamilyProperty, fontFamilyBinding); 
-            
-            var fontStyleBinding = new Binding("Italic") { Mode = BindingMode.OneWay, Converter = new FontStyleConverter() };
-            textBlock.SetBinding(TextBlock.FontStyleProperty, fontStyleBinding);
-
-            var fontWeightBinding = new Binding("Bold") { Mode = BindingMode.OneWay, Converter = new FontWeightConverter() };
-            textBlock.SetBinding(TextBlock.FontWeightProperty, fontWeightBinding);
-
-            var fontSizeBinding = new Binding("FontSize") { Mode = BindingMode.OneWay };
-            textBlock.SetBinding(TextBlock.FontSizeProperty, fontSizeBinding);
-
-            var textBinding = new Binding("DisplayValue") { Mode = BindingMode.OneWay };
-            textBlock.SetBinding(TextBlock.TextProperty, textBinding);
-
-            var topBinding = new Binding("TopMargin") { Mode = BindingMode.TwoWay };
-            textBlock.SetBinding(Canvas.TopProperty, topBinding);
-
-            var leftBinding = new Binding("LeftMargin") { Mode = BindingMode.TwoWay };
-            textBlock.SetBinding(Canvas.LeftProperty, leftBinding);
-
-            return textBlock;
+            return ((Math.Abs(mousePosition.X - origMouseDownPoint.X) > SystemParameters.MinimumHorizontalDragDistance) ||
+                    (Math.Abs(mousePosition.Y - origMouseDownPoint.Y) > SystemParameters.MinimumVerticalDragDistance));
         }
 
-        void element_PreviewKeyUp(object sender, KeyEventArgs e)
+        private void ApplyDragSelectionRect()
         {
-            if (e.Key == Key.Delete)
-            {
-                DeleteSelectedElements();
-            }
-        }
+            dragSelectionBorder.Visibility = Visibility.Collapsed;
+            var x = Canvas.GetLeft(dragSelectionBorder);
+            var y = Canvas.GetTop(dragSelectionBorder);
+            var width = dragSelectionBorder.Width;
+            var height = dragSelectionBorder.Height;
+            var dragRect = new Rect(x, y, width, height);
 
-        public void DeleteSelectedElements()
-        {
-            var materialFieldModels = SelectedElements.Select(s => s.Tag).OfType<MaterialFieldModel>().ToArray();
-
-            if (SelectedElements.Contains(logoImage))
-            {
-                MaterialModel.LogoModel.DeleteLogo();
-            }
-
-            foreach (var materialFieldModel in materialFieldModels)
-            {
-                MaterialModel.MaterialFields.Remove(materialFieldModel);
-            }
-
+            dragRect.Inflate(width / 10, height / 10);
             UnSelectAllElements();
+            foreach (var child in this.Children.OfType<FrameworkElement>().Where(CanManipulateElement))
+            {
+                var itemRect = new Rect(Canvas.GetLeft(child), Canvas.GetTop(child), child.ActualWidth, child.ActualHeight);
+                if (!dragRect.Contains(itemRect))
+                {
+                    continue;
+                }
+                AddSelectedElement(child);
+            }
         }
 
-        private Image CreateLogoImage()
+        private void InitDragSelectionRect(Point pt1, Point pt2)
         {
-            var logo = new Image
-            {
-                DataContext = MaterialModel.LogoModel,
-                Stretch = Stretch.Fill,
-                Focusable = true,
-                Tag = MaterialModel.LogoModel
-            };
-
-            logo.PreviewKeyUp += element_PreviewKeyUp;
-
-            if (CanManipulateTextsAndLogos || CanManipulateLogos)
-            {
-                logo.Cursor = Cursors.Hand;
-            }
-
-            var sourceBinding = new Binding("LogoImage") { Mode = BindingMode.OneWay };
-            logo.SetBinding(Image.SourceProperty, sourceBinding);
-
-            var heightBinding = new Binding("Height") { Mode = BindingMode.TwoWay };
-            logo.SetBinding(HeightProperty, heightBinding);
-
-            var widthBinding = new Binding("Width") { Mode = BindingMode.TwoWay };
-            logo.SetBinding(WidthProperty, widthBinding);
-
-            var topBinding = new Binding("TopMargin") { Mode = BindingMode.TwoWay };
-            logo.SetBinding(Canvas.TopProperty, topBinding);
-
-            var leftBinding = new Binding("LeftMargin") { Mode = BindingMode.TwoWay };
-            logo.SetBinding(Canvas.LeftProperty, leftBinding);
-            return logo;
+            UpdateDragSelectionRect(pt1, pt2);
+            dragSelectionBorder.Visibility = Visibility.Visible;
         }
 
-        //protected override void OnRender(DrawingContext dc)
-        //{
-        //    base.OnRender(dc);
-        //    HighlightCollisions();
-        //}
-
-        protected override Size MeasureOverride(Size constraint)
+        private void UpdateDragSelectionRect(Point pt1, Point pt2)
         {
-            base.MeasureOverride(constraint);
-
-            if (Children.Count == 0)
+            double x, y, width, height;
+            if (pt2.X < pt1.X)
             {
-                return new Size();
+                x = pt2.X;
+                width = pt1.X - pt2.X;
             }
+            else
+            {
+                x = pt1.X;
+                width = pt2.X - pt1.X;
+            }
+            if (pt2.Y < pt1.Y)
+            {
+                y = pt2.Y;
+                height = pt1.Y - pt2.Y;
+            }
+            else
+            {
+                y = pt1.Y;
+                height = pt2.Y - pt1.Y;
+            }
+            Canvas.SetLeft(dragSelectionBorder, x);
+            Canvas.SetTop(dragSelectionBorder, y);
 
-            var image = MaterialModel.FlyerFrontSideImage;
-            return new Size(image.Width, image.Height);
+            dragSelectionBorder.Width = width;
+            dragSelectionBorder.Height = height;
+
         }
 
-        protected override bool CanManipulateElements
+        protected void AddSelectedElement(FrameworkElement child)
         {
-            get { return CanManipulateLogos || CanManipulateTextsAndLogos; }
+            if (!CanManipulateElement(child))
+            {
+                throw new InvalidOperationException("child");
+            }
+            child.Focus();
+
+            SelectedChilds.Add(new SelectedChild(child));
+
+            AdornerLayer.Add(CreateAdornerForElement(child));
         }
 
-        protected override bool CanManipulateElement(UIElement source)
+        protected void SetSelectedElement(FrameworkElement child)
         {
-            if (IsBackground(source))
-            {
-                return false;
-            }
-
-            var isLogo = ReferenceEquals(source, logoImage);
-            if (CanManipulateTextsAndLogos == false && CanManipulateLogos == false)
-            {
-                //In PreviewMode Nothing can be selected
-                return false;
-            }
-
-            if (CanManipulateTextsAndLogos == false && isLogo == false)
-            {
-                //Is DefaultMode only Logo can be manipulated
-                return false;
-            }
-            return base.CanManipulateElement(source);
+            UnSelectAllElements();
+            AddSelectedElement(child);
         }
 
-        protected override bool IsBackground(UIElement source)
+        protected void UnSelectAllElements()
         {
-            return ReferenceEquals(source, backgroundImage);
+            SelectedChilds.ToList().ForEach(RemoveAdorner);
+            SelectedChilds.Clear();
         }
 
-        protected override Adorner CreateAdornerForElement(UIElement element)
+        private void UnSelectElement(SelectedChild selectedChild)
         {
-            if (element is TextBlock)
+            SelectedChilds.Remove(selectedChild);
+            RemoveAdorner(selectedChild);
+        }
+
+        private void RemoveAdorner(SelectedChild selectedChild)
+        {
+            if (AdornerLayer == null) { return; }
+
+            var adorners = AdornerLayer.GetAdorners(selectedChild.Element);
+            if (adorners != null) AdornerLayer.Remove(adorners[0]);
+        }
+
+        protected void ClearChildren()
+        {
+            this.Children.Clear();
+            this.SelectedChilds.Clear();
+        }
+
+        protected virtual Adorner CreateAdornerForElement(UIElement child)
+        {
+            return new ResizingAdorner(child);
+
+        }
+
+        protected virtual bool CanManipulateElement(UIElement child)
+        {
+            return this.Children.Contains(child) && !ReferenceEquals(child, dragSelectionBorder);
+        }
+
+        protected virtual bool CanManipulateElements
+        {
+            get
             {
-                return new SelectionAdorner(element);
+                return true;
             }
-            if (element is Image)
+        }
+
+        protected IEnumerable<FrameworkElement> SelectedElements
+        {
+            get { return SelectedChilds.Select(s=>s.Element); }
+        }
+
+        protected ObservableCollection<SelectedChild> SelectedChilds
+        {
+            get { return selectedChilds; }
+        }
+
+
+        protected virtual bool IsBackground(UIElement source)
+        {
+            return this.Children.Contains(source) == false;
+        }
+
+        protected class SelectedChild
+        {
+            public SelectedChild(FrameworkElement element)
             {
-                return new ResizingAdorner(element);
+                Element = element;
+                UpdateOrignalPosition();
             }
 
-            return new ResizingAdorner(element);
+            public FrameworkElement Element { get; private set; }
+
+            public double OriginalTop { get; private set; }
+            public double OriginalLeft { get; private set; }
+
+            public void UpdateOrignalPosition()
+            {
+                OriginalLeft = Canvas.GetLeft(Element);
+                OriginalTop = Canvas.GetTop(Element);
+            }
         }
+
     }
 }

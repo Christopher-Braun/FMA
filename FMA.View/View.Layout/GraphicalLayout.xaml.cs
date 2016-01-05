@@ -16,13 +16,18 @@ using System.Windows.Shapes;
 namespace FMA.View
 {
     /// <summary>
-    /// Interaction logic for TextFieldLayout.xaml
+    /// Interaction logic for LayoutArea.xaml
     /// </summary>
-    public partial class TextFieldLayout : UserControl
+    public partial class GraphicalLayout : UserControl
     {
-        public TextFieldLayout()
+        public GraphicalLayout()
         {
             InitializeComponent();
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.LayoutCanvas.DeleteSelectedElements();
         }
     }
 }

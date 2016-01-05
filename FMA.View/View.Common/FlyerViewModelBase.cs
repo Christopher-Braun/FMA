@@ -18,6 +18,7 @@ namespace FMA.View
         }
 
         public SelectedMaterialProvider SelectedMaterialProvider { get; private set; }
+       
         public FontService FontService { get; private set; }
 
         public abstract bool CanCreate { get; }

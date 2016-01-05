@@ -31,7 +31,7 @@
                  
                 </Grid.RowDefinitions>
 
-                <view:TextFieldLayout Grid.Row="0"
+                <view:TextualLayout Grid.Row="0"
                                       MinWidth="400"
                                  HorizontalAlignment="Left"/>
 
@@ -58,8 +58,8 @@
                       HorizontalAlignment="Stretch"
                       Background="Transparent" />
 
-        <view:LayoutArea Grid.Column="2" Margin="8">
-            <view:LayoutArea.Style>
+        <view:GraphicalLayout Grid.Column="2" Margin="8">
+            <view:GraphicalLayout.Style>
                 <Style TargetType="FrameworkElement">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding ViewState}" Value="OnlyInput">
@@ -73,7 +73,7 @@
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </view:LayoutArea.Style>
-        </view:LayoutArea>
+            </view:GraphicalLayout.Style>
+        </view:GraphicalLayout>
     </Grid>
 </UserControl>
