@@ -5,26 +5,26 @@ using FMA.View.ExternalView;
 
 namespace FMA.View.Helpers
 {
-    //TODO mit Markus Ersetzten durch richtigen WindowService
-    public class WindowService
+    //TODO mit Markus Ersetzen durch richtigen WindowService
+    public class WindowService : IWindowService
     {
         private readonly Window mainWindow;
-        private ExternalView.ExternalPreviewView externalPreviewView;
-        private ExternalView.ExternalEditView externalEditView;
+        private ExternalPreviewView externalPreviewView;
+        private ExternalEditView externalEditView;
 
         public WindowService(Window mainWindow)
         {
             this.mainWindow = mainWindow;
         }
 
-        public void OpenExternalPreviewWindow(SelectedMaterialProvider selectedMaterialProvider, FontService fontService)
+        public void OpenExternalPreviewWindow(SelectedMaterialProvider selectedMaterialProvider, IFontService fontService)
         {
             if (externalPreviewView != null)
             {
                 CloseExternalPreviewWindow();
             }
 
-            externalPreviewView = new ExternalView.ExternalPreviewView
+            externalPreviewView = new ExternalPreviewView
             {
                 DataContext = new ExternalViewModel(selectedMaterialProvider, fontService),
                 Owner = mainWindow
@@ -32,7 +32,7 @@ namespace FMA.View.Helpers
             externalPreviewView.Show();
         }
 
-        public void OpenExternalEditWindow(SelectedMaterialProvider selectedMaterialProvider, FontService fontService)
+        public void OpenExternalEditWindow(SelectedMaterialProvider selectedMaterialProvider, IFontService fontService)
         {
             if (externalEditView != null)
             {

@@ -28,11 +28,11 @@ namespace FMA.View.Common
         }
 
         public static readonly DependencyProperty FontServiceProperty = DependencyProperty.Register(
-            "FontService", typeof(FontService), typeof(MaterialCanvas), new PropertyMetadata(default(FontService)));
+            "FontService", typeof(IFontService), typeof(MaterialCanvas), new PropertyMetadata(default(IFontService)));
 
-        public FontService FontService
+        public IFontService FontService
         {
-            get { return (FontService)GetValue(FontServiceProperty); }
+            get { return (IFontService)GetValue(FontServiceProperty); }
             set { SetValue(FontServiceProperty, value); }
         }
 

@@ -5,6 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using FMA.Contracts;
 using FMA.Core;
 using FMA.TestData;
 using FMA.View;
@@ -44,10 +45,9 @@ namespace FMA
 
             var exeDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             var customFontsDir = string.Format(@"{0}\CustomFonts\", exeDir);
-            var viewModel = new FlyerMakerViewModel(dummyMaterials, 2, getFont, customFontsDir);
+            var viewModel = new FlyerMakerViewModel(dummyMaterials, 2, getFont, new FontService(customFontsDir),new WindowService(this));
+           
             var flyerCreator = new FlyerCreator(customFontsDir);
-
-            viewModel.WindowService = new WindowService(this);
 
             viewModel.FlyerCreated += cm =>
             {

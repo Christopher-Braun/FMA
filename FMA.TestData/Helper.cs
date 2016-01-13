@@ -8,7 +8,13 @@ namespace FMA.TestData
     {
         public static byte[] GetFrontSide(int id)
         {
-            var location = Assembly.GetEntryAssembly().Location;
+            var entryAssembly = Assembly.GetEntryAssembly();
+            if (entryAssembly == null)
+            {
+                return new byte[0];
+            }
+
+            var location = entryAssembly.Location;
             var dir = Path.GetDirectoryName(location);
             var flyerFileName = String.Format("Flyer_{0}.jpg", id.ToString("00"));
             if (dir == null)

@@ -6,7 +6,7 @@ namespace FMA.View.DefaultView
 {
     public class DefaultViewModel : FlyerViewModelBase
     {
-        public DefaultViewModel(SelectedMaterialProvider selectedMaterialProvider, FontService fontService, ViewStates viewState)
+        public DefaultViewModel(SelectedMaterialProvider selectedMaterialProvider, IFontService fontService, ViewStates viewState)
             : base(selectedMaterialProvider,fontService, viewState)
         {
         }

@@ -9,7 +9,7 @@ namespace FMA.View.Models
 {
     public static class MaterialConversions
     {
-        public static MaterialModel ToMaterialModel(this Material material, FontService fontService)
+        public static MaterialModel ToMaterialModel(this Material material, IFontService fontService)
         {
             var defaultFontFamily = new FontFamilyWithName( fontService.GetFontFamily(material.DefaultFont));
 
@@ -34,7 +34,7 @@ namespace FMA.View.Models
             return new MaterialModel(material.Id, material.Title, material.Description, material.MaterialFields.Select(f => f.Clone()), material.FlyerFrontSide, material.FlyerBackside, material.DefaultFont);
         }
 
-        public static MaterialFieldModel ToMaterialFieldModel(this MaterialField field, FontService fontService)
+        public static MaterialFieldModel ToMaterialFieldModel(this MaterialField field, IFontService fontService)
         {
             var fontFamilyWithName = new FontFamilyWithName(fontService.GetFontFamily(field.FontName));
 

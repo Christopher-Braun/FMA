@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media;
 
@@ -13,7 +12,7 @@ namespace FMA.Contracts
     /// Probleme mit FontCache
     /// see http://stackoverflow.com/questions/5488127/wpf-fonts-getfontfamilies-caches-the-list-of-fonts-how-to-clear-the-cache
     /// </summary>
-    public class FontService
+    public class FontService : IFontService
     {
         private List<FontFamily> customFontFamilies;
         private readonly string customFontsDir;
@@ -23,12 +22,6 @@ namespace FMA.Contracts
             this.customFontsDir = customFontsDir;
 
             ScanFontsFolder();
-        }
-
-        public void ScanFontsFolder()
-        {
-            customFontFamilies = GetNonCachedFontFamilies(customFontsDir).ToList();
-            // Geht nicht wegen Cache -> Fonts.GetFontFamilies(customFontsDir).ToList();
         }
 
         public FontFamily GetFontFamily(string fontName)
@@ -62,12 +55,12 @@ namespace FMA.Contracts
                 return fontFamily.FamilyNames[defaultXmlLanguage];
             }
 
-          
+
             var fontName = fontFamily.FamilyNames.Values.FirstOrDefault();
             if (fontName == null)
             {
-              return fontFamily.Source;
-             //   throw new InvalidOperationException("No FontName for Font available");
+                return fontFamily.Source;
+                //   throw new InvalidOperationException("No FontName for Font available");
             }
 
             return fontName;
@@ -79,13 +72,16 @@ namespace FMA.Contracts
             return AllFontFamilies.Any(x => x.Name.Equals(fontFamily));
         }
 
-        public IEnumerable<FontFamilyWithName> AllFontFamilies
+
+        private void ScanFontsFolder()
         {
-            get
-            {
-                return customFontFamilies.Concat(Fonts.SystemFontFamilies).Select(f => new FontFamilyWithName(f));
-            }
+            customFontFamilies = GetNonCachedFontFamilies(customFontsDir).ToList();
+            AllFontFamilies = customFontFamilies.Concat(Fonts.SystemFontFamilies).Select(f => new FontFamilyWithName(f)).ToList();
+            // Geht nicht wegen Cache -> Fonts.GetFontFamilies(customFontsDir).ToList();
         }
+
+
+        public List<FontFamilyWithName> AllFontFamilies {get; private set; }
 
         public void InstallFont(string fileName, byte[] font)
         {
@@ -100,7 +96,7 @@ namespace FMA.Contracts
             ScanFontsFolder();
         }
 
-        public static IEnumerable<FontFamily> GetNonCachedFontFamilies(string location)
+        private static IEnumerable<FontFamily> GetNonCachedFontFamilies(string location)
         {
             if (string.IsNullOrEmpty("location"))
             {

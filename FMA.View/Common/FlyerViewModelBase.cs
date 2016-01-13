@@ -11,7 +11,7 @@ namespace FMA.View.Common
     {
         private ViewStates viewState;
 
-        protected FlyerViewModelBase(SelectedMaterialProvider selectedMaterialProvider, FontService fontService, ViewStates viewState)
+        protected FlyerViewModelBase(SelectedMaterialProvider selectedMaterialProvider, IFontService fontService, ViewStates viewState)
         {
             this.viewState = viewState;
             SelectedMaterialProvider = selectedMaterialProvider;
@@ -20,7 +20,7 @@ namespace FMA.View.Common
 
         public SelectedMaterialProvider SelectedMaterialProvider { get; private set; }
 
-        public FontService FontService { get; private set; }
+        public IFontService FontService { get; private set; }
 
         public abstract bool CanCreate { get; }
 

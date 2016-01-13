@@ -48,6 +48,7 @@
     <Compile Include="FontService.cs" />
     <Compile Include="CustomLogo.cs" />
     <Compile Include="CustomMaterial.cs" />
+    <Compile Include="IFontService.cs" />
     <Compile Include="Material.cs" />
     <Compile Include="MaterialField.cs" />
     <Compile Include="Properties\Annotations.cs" />

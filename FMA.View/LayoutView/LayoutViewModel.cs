@@ -7,8 +7,7 @@ namespace FMA.View.LayoutView
 {
     public class LayoutViewModel : FlyerViewModelBase
     {
-        public LayoutViewModel(SelectedMaterialProvider selectedMaterialProvider, FontService fontService,
-            ViewStates viewState)
+        public LayoutViewModel(SelectedMaterialProvider selectedMaterialProvider, IFontService fontService,ViewStates viewState)
             : base(selectedMaterialProvider, fontService, viewState)
         {
         }

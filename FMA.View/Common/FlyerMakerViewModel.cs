@@ -17,22 +17,23 @@ namespace FMA.View.Common
     {
         public event Action<CustomMaterial> FlyerCreated = m => { };
 
-        public WindowService WindowService { get; set; }
-
         private List<MaterialModel> materials;
         private bool externalPreviewVisible;
         private bool externalEditVisible;
         private bool layoutMode;
-        private FlyerViewModelBase flyerViewModel;
-        private readonly SelectedMaterialProvider selectedMaterialProvider;
         private bool layoutButtonsVisible;
-        private readonly FontService fontService;
+        private FlyerViewModelBase flyerViewModel;
 
-        public FlyerMakerViewModel(List<Material> materials, int selectedMateriaId, Func<string, FontInfo> getFont, string customFontsDir)
+        private readonly SelectedMaterialProvider selectedMaterialProvider;
+        private readonly IWindowService windowService;
+        private readonly IFontService fontService;
+
+        public FlyerMakerViewModel(List<Material> materials, int selectedMateriaId, Func<string, FontInfo> getFont,IFontService fontService , IWindowService windowService)
         {
-            fontService = new FontService(customFontsDir);
-
+            this.fontService = fontService;
             UpdateFonts(materials, getFont);
+
+            this.windowService = windowService;
 
             this.selectedMaterialProvider = new SelectedMaterialProvider();
             this.selectedMaterialProvider.PropertyChanged += (s, e) => OnPropertyChanged("CanCreate");
@@ -88,11 +89,11 @@ namespace FMA.View.Common
 
                 if (value)
                 {
-                    WindowService.OpenExternalPreviewWindow(this.selectedMaterialProvider, this.fontService);
+                    windowService.OpenExternalPreviewWindow(this.selectedMaterialProvider, this.fontService);
                 }
                 else
                 {
-                    WindowService.CloseExternalPreviewWindow();
+                    windowService.CloseExternalPreviewWindow();
                 }
             }
         }
@@ -106,11 +107,11 @@ namespace FMA.View.Common
 
                 if (value)
                 {
-                    WindowService.OpenExternalEditWindow(this.selectedMaterialProvider, this.fontService);
+                    windowService.OpenExternalEditWindow(this.selectedMaterialProvider, this.fontService);
                 }
                 else
                 {
-                    WindowService.CloseExternalEditWindow();
+                    windowService.CloseExternalEditWindow();
                 }
             }
         }

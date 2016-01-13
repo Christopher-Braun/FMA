@@ -19,9 +19,9 @@ namespace FMA.View.ExternalView
             }
         }
 
-        public FontService FontService { get; set; }
+        public IFontService FontService { get; set; }
 
-        public ExternalViewModel(SelectedMaterialProvider selectedMaterialProvider, FontService fontService)
+        public ExternalViewModel(SelectedMaterialProvider selectedMaterialProvider, IFontService fontService)
         {
             this.SelectedMaterialProvider = selectedMaterialProvider;
             FontService = fontService;
