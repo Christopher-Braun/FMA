@@ -19,14 +19,15 @@ namespace FMA.View.ExternalView
             this.Height = SystemParameters.PrimaryScreenHeight - 2 * margin;
         }
 
-        private void FlyerPreviewView_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            DragMove();
-        }
-
         private void FlyerPreviewView_OnSourceInitialized(object sender, EventArgs e)
         {
             WindowAspectRatio.Register((Window)sender);
+        }
+
+        private void ExternalPreviewView_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+            e.Handled = true;
         }
     }
 }

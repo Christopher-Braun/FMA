@@ -4,7 +4,7 @@ TODO
 Dispose   ok
 Listbox
 Backside anstelle von FlyerPreview auch in External Views. Knopf zum drehen
-Drag von External Preview - Canvas klaut Mouse ;)
+
 
 Admin Mode
 Layout Mode auf basis von ... FrontSide BackSide konfigurierbar
@@ -12,10 +12,6 @@ Layout Mode auf basis von ... FrontSide BackSide konfigurierbar
 
 DONE
 
-ok Schriften über Combobox
-ok Textfelder löschen über entfernen in Layoutview
-ok Markierung in Textmode wenn Selektiert
-ok Property Grid ähnlich
 
 
 NEIN Expert Mode Vorschau weg 
