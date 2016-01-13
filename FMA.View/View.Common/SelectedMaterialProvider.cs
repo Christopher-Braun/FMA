@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using FMA.View.Models;
 
-namespace FMA.View
+namespace FMA.View.View.Common
 {
     public class SelectedMaterialProvider : NotifyPropertyChangedBase
     {
@@ -29,7 +29,6 @@ namespace FMA.View
                 this.MaterialChilds.Clear();
 
                 InitLogo(materialModel.LogoModel);
-
 
                 var materialFields = materialModel.MaterialFields;
                 InitMaterialFields(materialFields);
@@ -73,19 +72,19 @@ namespace FMA.View
         {
             if (logoModel.HasLogo)
             {
-                MaterialChilds.Add(logoModel);
+               AddChildToMaterialChilds(logoModel);
             }
             logoModel.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == "HasLogo")
                 {
-                    if (MaterialModel.LogoModel.HasLogo)
+                    if (MaterialModel.LogoModel.HasLogo && MaterialChilds.Contains(logoModel) == false)
                     {
-                        MaterialChilds.Add(logoModel);
+                        AddChildToMaterialChilds(logoModel);
                     }
-                    else if (MaterialChilds.Contains(logoModel))
+                    if (MaterialModel.LogoModel.HasLogo == false && MaterialChilds.Contains(logoModel))
                     {
-                        MaterialChilds.Remove(logoModel);
+                        RemoveChildFromMaterialChilds(logoModel);
                     }
                 }
             };
@@ -93,14 +92,23 @@ namespace FMA.View
 
         private void AddChildToMaterialChilds(MaterialChildModel materialChild)
         {
+            materialChild.PropertyChanged += materialChild_PropertyChanged;
             this.MaterialChilds.Insert(this.MaterialChilds.Count - this.MaterialChilds.OfType<LogoModel>().Count(), materialChild);
         }
-
+        
         private void RemoveChildFromMaterialChilds(MaterialChildModel materialChild)
         {
+            materialChild.PropertyChanged -= materialChild_PropertyChanged;
             this.MaterialChilds.Remove(materialChild);
         }
 
+        void materialChild_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "IsSelected")
+            {
+                OnPropertyChanged("SelectedMaterialChilds");
+            }
+        }
 
         public void SetSelectedChilds(params MaterialChildModel[] childrenToSelect)
         {

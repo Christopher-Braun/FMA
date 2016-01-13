@@ -1,12 +1,11 @@
 using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using FMA.Contracts;
 using FMA.View.Models;
 using FMA.View.Properties;
 
-namespace FMA.View
+namespace FMA.View.View.Common
 {
     public abstract class FlyerViewModelBase : INotifyPropertyChanged
     {

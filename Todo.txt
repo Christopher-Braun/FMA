@@ -1,25 +1,24 @@
-Dispos   ok
+
+TODO 
+
+Dispose   ok
 Listbox
-Backside
+Backside anstelle von FlyerPreview auch in External Views. Knopf zum drehen
+Drag von External Preview - Canvas klaut Mouse ;)
 
-External Edit , delete selected
-Preview Delete selected
-
-
-ok Links Baum seletekt sync.
-
-ok EIne Art Property Grid für seletiertes Elelemtn Vertical ausgerichtet
+Admin Mode
+Layout Mode auf basis von ... FrontSide BackSide konfigurierbar
 
 
-Expert Mode Vorschau weg 
-Schriften über Combobox
+DONE
 
-Textfelder löschen über entfernen in Layoutview
-
-
-Nicte to have
-
+ok Schriften über Combobox
+ok Textfelder löschen über entfernen in Layoutview
 ok Markierung in Textmode wenn Selektiert
+ok Property Grid ähnlich
+
+
+NEIN Expert Mode Vorschau weg 
 
 
 Ja in Reousrcen ! Lokalisierung?
@@ -30,8 +29,6 @@ Colors und Borderwidht rausziehen
 #Deployment 
 -System.Windows.Interarctivity -> Sollten eh schon da sein wegen Markus
 
-
-#Multiselect
 
 
 #Fonts

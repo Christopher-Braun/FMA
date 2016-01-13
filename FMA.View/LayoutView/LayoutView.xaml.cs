@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace FMA.View
+namespace FMA.View.LayoutView
 {
     /// <summary>
     /// Interaction logic for LayoutView.xaml

@@ -47,33 +47,33 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExternalView\ExternalEditView.xaml.cs">
+      <DependentUpon>ExternalEditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ExternalView\ExternalPreviewView.xaml.cs">
+      <DependentUpon>ExternalPreviewView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ExternalView\ExternalViewModel.cs" />
     <Compile Include="Helpers\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Helpers\TextPropertiesCaptionVisibilityConverter.cs" />
     <Compile Include="Helpers\TextPropertiesCaptionsVisibilityConverter.cs" />
-    <Compile Include="View.Default\DefaultView.xaml.cs">
+    <Compile Include="DefaultView\DefaultView.xaml.cs">
       <DependentUpon>DefaultView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View.Default\DefaultViewModel.cs" />
-    <Compile Include="View.Default\ExternalPreviewView.xaml.cs">
-      <DependentUpon>ExternalPreviewView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View.Layout\ExternalEditView.xaml.cs">
-      <DependentUpon>ExternalEditView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View.Common\ExternalViewModel.cs" />
+    <Compile Include="DefaultView\DefaultViewModel.cs" />
     <Compile Include="View.Common\FlyerViewModelBase.cs" />
     <Compile Include="Helpers\FontInfo.cs" />
     <Compile Include="Helpers\FontStyleConverter.cs" />
     <Compile Include="Helpers\FontWeightConverter.cs" />
-    <Compile Include="View.Layout\GraphicalLayout.xaml.cs">
+    <Compile Include="LayoutView\GraphicalLayout.xaml.cs">
       <DependentUpon>GraphicalLayout.xaml</DependentUpon>
     </Compile>
     <Compile Include="View.Common\LayoutCanvas.cs" />
-    <Compile Include="View.Layout\LayoutView.xaml.cs">
+    <Compile Include="LayoutView\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View.Layout\LayoutViewModel.cs" />
-    <Compile Include="View.Default\LogoLayout.xaml.cs">
+    <Compile Include="LayoutView\LayoutViewModel.cs" />
+    <Compile Include="DefaultView\LogoLayout.xaml.cs">
       <DependentUpon>LogoLayout.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\MaterialChildModel.cs" />
@@ -83,16 +83,20 @@
     <Compile Include="Helpers\SelectionAdorner.cs" />
     <Compile Include="Helpers\WindowAspectRatio.cs" />
     <Compile Include="Helpers\WindowService.cs" />
-    <Compile Include="View.Layout\TextualLayout.xaml.cs">
+    <Compile Include="LayoutView\TextualLayout.xaml.cs">
       <DependentUpon>TextualLayout.xaml</DependentUpon>
     </Compile>
-    <Page Include="View.Default\DefaultView.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="ExternalView\ExternalEditView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="View.Default\ExternalPreviewView.xaml">
+    <Page Include="ExternalView\ExternalPreviewView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DefaultView\DefaultView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View.Common\FlyerMakerView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -104,19 +108,15 @@
       <DependentUpon>FlyerMakerView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View.Layout\ExternalEditView.xaml">
+    <Page Include="LayoutView\GraphicalLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View.Layout\GraphicalLayout.xaml">
+    <Page Include="LayoutView\LayoutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View.Layout\LayoutView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View.Default\LogoLayout.xaml">
+    <Page Include="DefaultView\LogoLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -128,7 +128,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View.Layout\TextualLayout.xaml">
+    <Page Include="LayoutView\TextualLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

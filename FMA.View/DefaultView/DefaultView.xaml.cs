@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace FMA.View
+namespace FMA.View.DefaultView
 {
     /// <summary>
     /// Interaction logic for DefaultView.xaml

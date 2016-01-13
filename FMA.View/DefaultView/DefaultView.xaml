@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="FMA.View.DefaultView"
+﻿<UserControl x:Class="FMA.View.DefaultView.DefaultView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,7 +7,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:FMA.View.Models"
              xmlns:properties="clr-namespace:FMA.View.Properties"
-             xmlns:view="clr-namespace:FMA.View"
+             xmlns:common="clr-namespace:FMA.View.View.Common"
+             xmlns:defaultView="clr-namespace:FMA.View.DefaultView"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
@@ -29,7 +30,7 @@
                  HorizontalAlignment="Stretch"
                  VerticalAlignment="Stretch"
                  Stretch="Uniform">
-            <view:MaterialCanvas Margin="8"
+            <common:MaterialCanvas Margin="8"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  FontService="{Binding FontService}"
@@ -106,7 +107,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
-                    <view:LogoLayout />
+                    <defaultView:LogoLayout />
                 </StackPanel>
             </ScrollViewer>
         </Grid>

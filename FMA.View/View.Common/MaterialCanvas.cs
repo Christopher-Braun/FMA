@@ -14,12 +14,12 @@ using FMA.View.Models;
 using FontStyleConverter = FMA.View.Helpers.FontStyleConverter;
 using FontWeightConverter = FMA.View.Helpers.FontWeightConverter;
 
-namespace FMA.View
+namespace FMA.View.View.Common
 {
     public class MaterialCanvas : LayoutCanvas
     {
         public static readonly DependencyProperty MaterialModelProperty = DependencyProperty.Register(
-            "MaterialModel", typeof(MaterialModel), typeof(MaterialCanvas), new PropertyMetadata(null, (d, e) => ((MaterialCanvas)d).MaterialModelChanged()));
+            "MaterialModel", typeof(MaterialModel), typeof(MaterialCanvas), new PropertyMetadata(null, (d, e) => ((MaterialCanvas)d).MaterialModelChanged(e)));
         
         public MaterialModel MaterialModel
         {
@@ -61,7 +61,6 @@ namespace FMA.View
 
         private Image backgroundImage;
         private Image logoImage;
-        private MaterialModel currentModel;
 
         public MaterialCanvas()
         {
@@ -84,16 +83,15 @@ namespace FMA.View
             MaterialModel.LogoModel.IsSelected = selectedMaterialChilds.Contains(MaterialModel.LogoModel);
         }
 
-        private void MaterialModelChanged()
+        private void MaterialModelChanged(DependencyPropertyChangedEventArgs e)
         {
             if (MaterialModel == null)
             {
                 //this means view is killed
-                RemoveEvents();
+                RemoveEvents(e.OldValue as MaterialModel);
                 return;
             }
-
-            currentModel = MaterialModel;
+           
             CreateChildren();
             AddEvents();
         }
@@ -212,21 +210,21 @@ namespace FMA.View
             }
         }
        
-        private void RemoveEvents()
+        private void RemoveEvents(MaterialModel materialModel)
         {
-            PropertyChangedEventManager.RemoveHandler(currentModel, MaterialModel_PropertyChanged, "");
+            PropertyChangedEventManager.RemoveHandler(materialModel, MaterialModel_PropertyChanged, "");
             if (CanManipulateLogos)
             {
-                PropertyChangedEventManager.RemoveHandler(currentModel.LogoModel, MaterialChild_IsSelectedChanged, "IsSelected");
+                PropertyChangedEventManager.RemoveHandler(materialModel.LogoModel, MaterialChild_IsSelectedChanged, "IsSelected");
             }
             if (CanManipulateTexts)
             {
-                foreach (var materialField in currentModel.MaterialFields)
+                foreach (var materialField in materialModel.MaterialFields)
                 {
                     PropertyChangedEventManager.RemoveHandler(materialField, MaterialChild_IsSelectedChanged, "IsSelected");
                 }
 
-                CollectionChangedEventManager.RemoveHandler(currentModel.MaterialFields, MaterialFields_CollectionChanged);
+                CollectionChangedEventManager.RemoveHandler(materialModel.MaterialFields, MaterialFields_CollectionChanged);
             }
         }
 

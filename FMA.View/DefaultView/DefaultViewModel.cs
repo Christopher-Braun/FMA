@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using FMA.Contracts;
+using FMA.View.View.Common;
 
-namespace FMA.View
+namespace FMA.View.DefaultView
 {
     public class DefaultViewModel : FlyerViewModelBase
     {

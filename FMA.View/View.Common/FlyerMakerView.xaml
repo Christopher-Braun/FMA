@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="FMA.View.FlyerMakerView"
+﻿<UserControl x:Class="FMA.View.View.Common.FlyerMakerView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:Properties="clr-namespace:FMA.View.Properties"
@@ -8,6 +8,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:si="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
              xmlns:view="clr-namespace:FMA.View"
+             xmlns:defaultView="clr-namespace:FMA.View.DefaultView"
+             xmlns:layoutView="clr-namespace:FMA.View.LayoutView"
              d:DesignHeight="300"
              d:DesignWidth="640"
              mc:Ignorable="d">
@@ -18,12 +20,12 @@
                 <ResourceDictionary Source="Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <DataTemplate DataType="{x:Type view:DefaultViewModel}">
-                <view:DefaultView />
+            <DataTemplate DataType="{x:Type defaultView:DefaultViewModel}">
+                <defaultView:DefaultView />
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type view:LayoutViewModel}">
-                <view:LayoutView />
+            <DataTemplate DataType="{x:Type layoutView:LayoutViewModel}">
+                <layoutView:LayoutView />
             </DataTemplate>
 
         </ResourceDictionary>

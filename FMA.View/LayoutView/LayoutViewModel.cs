@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using FMA.Contracts;
 using FMA.View.Models;
+using FMA.View.View.Common;
 
-namespace FMA.View
+namespace FMA.View.LayoutView
 {
     public class LayoutViewModel : FlyerViewModelBase
     {

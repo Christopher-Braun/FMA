@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using System.Windows.Input;
 using FMA.Contracts;
+using FMA.View.DefaultView;
 using FMA.View.Helpers;
+using FMA.View.LayoutView;
 using FMA.View.Models;
 using FMA.View.Properties;
-using Microsoft.Win32;
 
-namespace FMA.View
+namespace FMA.View.View.Common
 {
     public class FlyerMakerViewModel : INotifyPropertyChanged
     {

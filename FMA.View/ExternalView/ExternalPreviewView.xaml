@@ -1,7 +1,8 @@
-﻿<Window x:Class="FMA.View.ExternalPreviewView"
+﻿<Window x:Class="FMA.View.ExternalView.ExternalPreviewView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:view="clr-namespace:FMA.View"
+        xmlns:common="clr-namespace:FMA.View.View.Common"
         Height="800"
         AllowsTransparency="True"
         BorderThickness="1"
@@ -15,7 +16,7 @@
     <Viewbox HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch"
              Stretch="Uniform">
-        <view:MaterialCanvas HorizontalAlignment="Left"
+        <common:MaterialCanvas HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            CanManipulateTexts="{Binding CanEdit}"
                            FontService="{Binding FontService}"

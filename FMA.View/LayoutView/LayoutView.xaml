@@ -1,9 +1,10 @@
-﻿<UserControl x:Class="FMA.View.LayoutView"
+﻿<UserControl x:Class="FMA.View.LayoutView.LayoutView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:view="clr-namespace:FMA.View"
+             xmlns:layoutView="clr-namespace:FMA.View.LayoutView"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -19,8 +20,8 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <view:GraphicalLayout Margin="8">
-            <view:GraphicalLayout.Style>
+        <layoutView:GraphicalLayout Margin="8">
+            <layoutView:GraphicalLayout.Style>
                 <Style TargetType="FrameworkElement">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding ViewState}" Value="OnlyInput">
@@ -34,8 +35,8 @@
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </view:GraphicalLayout.Style>
-        </view:GraphicalLayout>
+            </layoutView:GraphicalLayout.Style>
+        </layoutView:GraphicalLayout>
 
         <GridSplitter Grid.Column="1"
                       Width="8"
@@ -55,7 +56,7 @@
 
                 </Grid.RowDefinitions>
 
-                <view:TextualLayout Grid.Row="0"
+                <layoutView:TextualLayout Grid.Row="0"
                                     MinWidth="400"
                                     HorizontalAlignment="Left" />
 

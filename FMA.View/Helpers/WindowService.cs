@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using FMA.Contracts;
+using FMA.View.ExternalView;
+using FMA.View.View.Common;
 
 namespace FMA.View.Helpers
 {
@@ -7,8 +9,8 @@ namespace FMA.View.Helpers
     public class WindowService
     {
         private readonly Window mainWindow;
-        private ExternalPreviewView externalPreviewView;
-        private ExternalEditView externalEditView;
+        private ExternalView.ExternalPreviewView externalPreviewView;
+        private ExternalView.ExternalEditView externalEditView;
 
         public WindowService(Window mainWindow)
         {
@@ -22,7 +24,7 @@ namespace FMA.View.Helpers
                 CloseExternalPreviewWindow();
             }
 
-            externalPreviewView = new ExternalPreviewView
+            externalPreviewView = new ExternalView.ExternalPreviewView
             {
                 DataContext = new ExternalViewModel(selectedMaterialProvider, fontService),
                 Owner = mainWindow
@@ -37,7 +39,7 @@ namespace FMA.View.Helpers
                 CloseExternalEditWindow();
             }
 
-            externalEditView = new ExternalEditView
+            externalEditView = new ExternalView.ExternalEditView
             {
                 DataContext = new ExternalViewModel(selectedMaterialProvider, fontService),
                 Owner = mainWindow

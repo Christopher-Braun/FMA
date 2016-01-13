@@ -9,6 +9,7 @@ using FMA.Core;
 using FMA.TestData;
 using FMA.View;
 using FMA.View.Helpers;
+using FMA.View.View.Common;
 
 namespace FMA
 {
