@@ -17,7 +17,7 @@
              Stretch="Uniform">
         <view:MaterialCanvas HorizontalAlignment="Left"
                            VerticalAlignment="Top"
-                           CanManipulateTextsAndLogos="{Binding CanEdit}"
+                           CanManipulateTexts="{Binding CanEdit}"
                            FontService="{Binding FontService}"
                            MaterialModel="{Binding SelectedMaterialProvider.MaterialModel}" />
     </Viewbox>

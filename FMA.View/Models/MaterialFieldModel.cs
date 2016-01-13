@@ -16,8 +16,8 @@ namespace FMA.View.Models
         private string error = string.Empty;
         private int topMargin = 100;
         private int leftMargin = 20;
-        private int maxRows = Int32.MaxValue;
-        private int maxLength = Int32.MaxValue;
+        private int maxRows = int.MaxValue;
+        private int maxLength = int.MaxValue;
         private bool uppper;
         private bool italic;
         private bool bold;
@@ -86,6 +86,8 @@ namespace FMA.View.Models
                 fontFamilyWithName = value;
                 OnPropertyChanged();
                 OnPropertyChanged("FontFamily");
+                OnPropertyChanged("Width");
+                OnPropertyChanged("Height");
             }
         }
 
@@ -97,6 +99,8 @@ namespace FMA.View.Models
                 if (value == FontSize) { return; }
                 fontSize = value;
                 OnPropertyChanged();
+                OnPropertyChanged("Width");
+                OnPropertyChanged("Height");
             }
         }
 
@@ -107,6 +111,8 @@ namespace FMA.View.Models
             {
                 bold = value;
                 OnPropertyChanged();
+                OnPropertyChanged("Width");
+                OnPropertyChanged("Height");
             }
         }
 
@@ -117,6 +123,8 @@ namespace FMA.View.Models
             {
                 italic = value;
                 OnPropertyChanged();
+                OnPropertyChanged("Width");
+                OnPropertyChanged("Height");
             }
         }
 
@@ -128,6 +136,8 @@ namespace FMA.View.Models
                 uppper = value;
                 OnPropertyChanged();
                 OnPropertyChanged("DisplayValue");
+                OnPropertyChanged("Width");
+                OnPropertyChanged("Height");
             }
         }
 
@@ -180,6 +190,8 @@ namespace FMA.View.Models
                 this.value = value;
                 OnPropertyChanged();
                 OnPropertyChanged("DisplayValue");
+                OnPropertyChanged("Width");
+                OnPropertyChanged("Height");
             }
         }
 

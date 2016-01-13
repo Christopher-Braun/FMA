@@ -36,7 +36,7 @@
                                  Margin="0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 CanManipulateTextsAndLogos="True"
+                                 CanManipulateTexts="True"
                                  FontService="{Binding FontService}"
                                  MaterialModel="{Binding SelectedMaterialProvider.MaterialModel}"
                                  Visibility="{Binding Visibility,

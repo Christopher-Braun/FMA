@@ -32,7 +32,6 @@
             <view:MaterialCanvas Margin="8"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 CanManipulateLogos="True"
                                  FontService="{Binding FontService}"
                                  MaterialModel="{Binding SelectedMaterialProvider.MaterialModel}"
                                  Visibility="{Binding Visibility,

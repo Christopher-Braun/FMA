@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows.Media.Imaging;
 using FMA.Contracts;
 using FMA.View.Properties;
 
 namespace FMA.View.Models
 {
-    public class MaterialModel : INotifyPropertyChanged
+    public class MaterialModel : NotifyPropertyChangedBase
     {
         private byte[] flyerFrontSide;
 
         public MaterialModel(int id, string title, string description, IEnumerable<MaterialFieldModel> materialFields, byte[] flyerFrontSide, byte[] flyerBackside, FontFamilyWithName defaultFont)
         {
             MaterialFields = new ObservableCollection<MaterialFieldModel>();
-            PropertyChanged += (s, e) => { };
 
             Id = id;
             Title = title;
@@ -32,37 +28,24 @@ namespace FMA.View.Models
             DefaultFont = defaultFont;
 
             LogoModel = new LogoModel();
-            LogoModel.PropertyChanged += (s, e) => PropertyChanged(s, e);
+            LogoModel.PropertyChanged += (s, e) => OnPropertyChanged("Logo");
         }
 
-        public Int32 Id { get; private set; }
+        public int Id { get; private set; }
 
         public string Title { get; private set; }
 
         public string Description { get; private set; }
 
-        public ObservableCollection<MaterialFieldModel> MaterialFields
-        {
-            get;
-            private set;
-        }
+        public ObservableCollection<MaterialFieldModel> MaterialFields{ get; private set; }
 
-        public void AddNewMaterialField()
-        {
-            var materialField = new MaterialFieldModel("CustomField", Resources.CustomFieldText, DefaultFont);
+        public LogoModel LogoModel { get; private set; }
 
-            AddMaterialField(materialField);
-        }
-
-        private void AddMaterialField(MaterialFieldModel materialField)
-        {
-            materialField.PropertyChanged += (s, e) => PropertyChanged(s, e);
-            this.MaterialFields.Add(materialField);
-        }
+        public FontFamilyWithName DefaultFont { get; set; }
 
         public BitmapImage FlyerFrontSideImage { get; private set; }
 
-        public Byte[] FlyerFrontSide
+        public byte[] FlyerFrontSide
         {
             get { return flyerFrontSide; }
             private set
@@ -72,18 +55,18 @@ namespace FMA.View.Models
             }
         }
 
-        public Byte[] FlyerBackside { get; private set; }
-        public FontFamilyWithName DefaultFont { get; set; }
+        public byte[] FlyerBackside { get; private set; }
 
-        public LogoModel LogoModel { get; private set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [Contracts.Properties.NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public void AddNewMaterialField()
         {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            var materialField = new MaterialFieldModel("CustomField", Resources.CustomFieldText, DefaultFont);
+            AddMaterialField(materialField);
+        }
+
+        private void AddMaterialField(MaterialFieldModel materialField)
+        {
+            materialField.PropertyChanged += (s, e) => OnPropertyChanged("MaterialField");
+            this.MaterialFields.Add(materialField);
         }
 
         protected bool Equals(MaterialModel other)

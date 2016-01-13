@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -15,27 +16,6 @@ using FontWeightConverter = FMA.View.Helpers.FontWeightConverter;
 
 namespace FMA.View
 {
-    //public class MyWeakEventManager : PropertyChangedEventManager
-    //{
-
-    //    public static PropertyChangedEventManager CurrentManager
-    //    {
-    //        get
-    //        {
-    //            var manager_type = typeof(PropertyChangedEventManager);
-    //            var manager = WeakEventManager.GetCurrentManager(manager_type) as PropertyChangedEventManager;
-
-    //            if (manager == null)
-    //            {
-    //                manager = new PropertyChangedEventManager();
-    //                WeakEventManager.SetCurrentManager(manager_type, manager);
-    //            }
-
-    //            return manager;
-    //        }
-    //    }
-    //}
-
     public class MaterialCanvas : LayoutCanvas
     {
         public static readonly DependencyProperty MaterialModelProperty = DependencyProperty.Register(
@@ -55,17 +35,17 @@ namespace FMA.View
             set { SetValue(FontServiceProperty, value); }
         }
 
-        public static readonly DependencyProperty CanManipulateTextsAndLogosProperty = DependencyProperty.Register(
-            "CanManipulateTextsAndLogos", typeof(bool), typeof(MaterialCanvas), new PropertyMetadata(default(bool)));
+        public static readonly DependencyProperty CanManipulateTextsProperty = DependencyProperty.Register(
+            "CanManipulateTexts", typeof(bool), typeof(MaterialCanvas), new PropertyMetadata(default(bool)));
 
-        public bool CanManipulateTextsAndLogos
+        public bool CanManipulateTexts
         {
-            get { return (bool)GetValue(CanManipulateTextsAndLogosProperty); }
-            set { SetValue(CanManipulateTextsAndLogosProperty, value); }
+            get { return (bool)GetValue(CanManipulateTextsProperty); }
+            set { SetValue(CanManipulateTextsProperty, value); }
         }
 
         public static readonly DependencyProperty CanManipulateLogosProperty = DependencyProperty.Register(
-            "CanManipulateLogos", typeof(bool), typeof(MaterialCanvas), new PropertyMetadata(default(bool)));
+            "CanManipulateLogos", typeof(bool), typeof(MaterialCanvas), new PropertyMetadata(true));
 
         public bool CanManipulateLogos
         {
@@ -78,6 +58,9 @@ namespace FMA.View
             DefaultStyleKeyProperty.OverrideMetadata(typeof(MaterialCanvas), new FrameworkPropertyMetadata(typeof(MaterialCanvas)));
         }
 
+        private Image backgroundImage;
+        private Image logoImage;
+
         public MaterialCanvas()
         {
             this.AllowDrop = true;
@@ -85,8 +68,67 @@ namespace FMA.View
             SelectedChilds.CollectionChanged += SelectedElements_CollectionChanged;
         }
 
+        private void MaterialModelChanged()
+        {
+            if (MaterialModel == null) return;
 
-        private void SelectedElements_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+            CreateChildren();
+            PropertyChangedEventManager.AddHandler(MaterialModel, MaterialModel_PropertyChanged, "");
+
+            if (CanManipulateLogos)
+            {
+                PropertyChangedEventManager.AddHandler(MaterialModel.LogoModel, MaterialChild_IsSelectedChanged,"IsSelected");
+            }
+            if (CanManipulateTexts)
+            {
+                foreach (var materialField in MaterialModel.MaterialFields)
+                {
+                    PropertyChangedEventManager.AddHandler(materialField, MaterialChild_IsSelectedChanged, "IsSelected");
+                }
+
+                CollectionChangedEventManager.AddHandler(MaterialModel.MaterialFields, MaterialFields_CollectionChanged);
+            }
+        }
+
+        private void CreateChildren()
+        {
+            this.ClearChildren();
+
+            backgroundImage = new Image { Source = MaterialModel.FlyerFrontSideImage, Cursor = Cursors.Arrow };
+            this.Children.Add(backgroundImage);
+
+            logoImage = CreateLogoImage();
+
+            foreach (var materialField in MaterialModel.MaterialFields)
+            {
+                CreateTextBlock(materialField);
+            }
+
+            CreateSelectionBorder();
+        }
+
+        private void MaterialFields_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (MaterialModel == null) return;
+            CreateChildren();
+            HighlightCollisions();
+        }
+
+        private void MaterialModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            HighlightCollisions();
+        }
+
+        private void MaterialChild_IsSelectedChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var materialChildModel = sender as MaterialChildModel;
+            if (materialChildModel != null )
+            {
+                MaterialChildIsSelectedChanged(materialChildModel);
+            }
+        }
+
+        private void SelectedElements_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (MaterialModel == null) { return; }
 
@@ -123,71 +165,9 @@ namespace FMA.View
             }
         }
 
-
-        private Image backgroundImage;
-        private Image logoImage;
-
-
-
-
-        private void MaterialModelChanged()
-        {
-            if (MaterialModel == null) return;
-
-            CreateChildren();
-
-
-         //   EventHandler<PropertyChangedEventArgs> handler = MaterialModel_PropertyChanged;
-
-        //    PropertyChangedEventManager.AddHandler(MaterialModel, handler, "");
-
-
-             MaterialModel.PropertyChanged += MaterialModel_PropertyChanged;
-
-            // TODO WIeder einbauen    
-            MaterialModel.MaterialFields.CollectionChanged += MaterialFields_CollectionChanged;
-        }
-
-        private void CreateChildren()
-        {
-            this.ClearChildren();
-
-            backgroundImage = new Image { Source = MaterialModel.FlyerFrontSideImage, Cursor = Cursors.Arrow };
-            this.Children.Add(backgroundImage);
-
-            logoImage = CreateLogoImage();
-
-            foreach (var materialField in MaterialModel.MaterialFields)
-            {
-                CreateTextBlock(materialField);
-            }
-
-            CreateSelectionBorder();
-
-        }
-
-        private void MaterialFields_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            if (MaterialModel == null) return;
-            CreateChildren();
-            HighlightCollisions();
-        }
-
-
-        private void MaterialModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            HighlightCollisions();
-
-            var materialChildModel = sender as MaterialChildModel;
-            if (materialChildModel != null && e.PropertyName == "IsSelected")
-            {
-                MaterialChildIsSelectedChanged(materialChildModel);
-            }
-        }
-
         private void HighlightCollisions()
         {
-            if (CanManipulateTextsAndLogos == false)
+            if (CanManipulateTexts == false)
             {
                 return;
             }
@@ -213,8 +193,8 @@ namespace FMA.View
                     }
                 }
 
-                if (childRect.Top < 0 || childRect.Left < 0 || childRect.Right > this.ActualWidth ||
-                    childRect.Bottom > this.ActualHeight)
+                if (childRect.Top < 0 || childRect.Left < 0 || childRect.Right > ActualWidth ||
+                    childRect.Bottom > ActualHeight)
                 {
                     childItem.Foreground = Brushes.Red;
                 }
@@ -223,7 +203,7 @@ namespace FMA.View
 
         private static Rect GetRectFromElement(UIElement element)
         {
-            return new Rect(new Point(Canvas.GetLeft(element), Canvas.GetTop(element)), element.RenderSize);
+            return new Rect(new Point(GetLeft(element), GetTop(element)), element.RenderSize);
         }
 
         private void CreateTextBlock(MaterialFieldModel materialField)
@@ -236,9 +216,10 @@ namespace FMA.View
                 Focusable = true
             };
 
-            if (CanManipulateTextsAndLogos)
+            if (CanManipulateTexts)
             {
                 textBlock.Cursor = Cursors.Hand;
+                textBlock.PreviewKeyUp += element_PreviewKeyUp;
             }
 
             var fontFamilyBinding = new Binding("FontFamilyWithName.FontFamily") { Mode = BindingMode.OneWay };
@@ -257,17 +238,12 @@ namespace FMA.View
             textBlock.SetBinding(TextBlock.TextProperty, textBinding);
 
             var topBinding = new Binding("TopMargin") { Mode = BindingMode.TwoWay };
-            textBlock.SetBinding(Canvas.TopProperty, topBinding);
+            textBlock.SetBinding(TopProperty, topBinding);
 
             var leftBinding = new Binding("LeftMargin") { Mode = BindingMode.TwoWay };
-            textBlock.SetBinding(Canvas.LeftProperty, leftBinding);
+            textBlock.SetBinding(LeftProperty, leftBinding);
 
-            this.Children.Add(textBlock);
-
-            if (CanManipulateTextsAndLogos)
-            {
-                textBlock.PreviewKeyUp += element_PreviewKeyUp;
-            }
+            Children.Add(textBlock);
         }
 
         private Image CreateLogoImage()
@@ -281,10 +257,10 @@ namespace FMA.View
                 Tag = logoModel
             };
 
-
-            if (CanManipulateTextsAndLogos || CanManipulateLogos)
+            if ( CanManipulateLogos)
             {
                 createdLogoImage.Cursor = Cursors.Hand;
+                createdLogoImage.PreviewKeyUp += element_PreviewKeyUp;
             }
 
             var sourceBinding = new Binding("LogoImage") { Mode = BindingMode.OneWay };
@@ -297,18 +273,12 @@ namespace FMA.View
             createdLogoImage.SetBinding(WidthProperty, widthBinding);
 
             var topBinding = new Binding("TopMargin") { Mode = BindingMode.TwoWay };
-            createdLogoImage.SetBinding(Canvas.TopProperty, topBinding);
+            createdLogoImage.SetBinding(TopProperty, topBinding);
 
             var leftBinding = new Binding("LeftMargin") { Mode = BindingMode.TwoWay };
-            createdLogoImage.SetBinding(Canvas.LeftProperty, leftBinding);
-
+            createdLogoImage.SetBinding(LeftProperty, leftBinding);
 
             this.Children.Add(createdLogoImage);
-
-            if (CanManipulateTextsAndLogos || CanManipulateLogos)
-            {
-                createdLogoImage.PreviewKeyUp += element_PreviewKeyUp;
-            }
 
             return createdLogoImage;
         }
@@ -359,7 +329,7 @@ namespace FMA.View
 
         protected override bool CanManipulateElements
         {
-            get { return CanManipulateLogos || CanManipulateTextsAndLogos; }
+            get { return CanManipulateLogos || CanManipulateTexts; }
         }
 
         protected override bool CanManipulateElement(UIElement source)
@@ -370,15 +340,15 @@ namespace FMA.View
             }
 
             var isLogo = ReferenceEquals(source, logoImage);
-            if (CanManipulateTextsAndLogos == false && CanManipulateLogos == false)
+            if (CanManipulateTexts == false && CanManipulateLogos == false)
             {
                 //In PreviewMode Nothing can be selected
                 return false;
             }
 
-            if (CanManipulateTextsAndLogos == false && isLogo == false)
+            if (CanManipulateTexts == false && isLogo == false)
             {
-                //Is DefaultMode only Logo can be manipulated
+                //In DefaultMode only Logo can be manipulated
                 return false;
             }
             return base.CanManipulateElement(source);
