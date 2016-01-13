@@ -1,4 +1,4 @@
-Dispos
+Dispos   ok
 Listbox
 Backside
 
@@ -6,9 +6,9 @@ External Edit , delete selected
 Preview Delete selected
 
 
-Links Baum seletekt sync.
+ok Links Baum seletekt sync.
 
-EIne Art Property Grid für seletiertes Elelemtn Vertical ausgerichtet
+ok EIne Art Property Grid für seletiertes Elelemtn Vertical ausgerichtet
 
 
 Expert Mode Vorschau weg 
@@ -19,7 +19,7 @@ Textfelder löschen über entfernen in Layoutview
 
 Nicte to have
 
-Markierung in Textmode wenn Selektiert
+ok Markierung in Textmode wenn Selektiert
 
 
 Ja in Reousrcen ! Lokalisierung?

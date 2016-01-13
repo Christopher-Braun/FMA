@@ -20,6 +20,7 @@ namespace FMA.View
     {
         public static readonly DependencyProperty MaterialModelProperty = DependencyProperty.Register(
             "MaterialModel", typeof(MaterialModel), typeof(MaterialCanvas), new PropertyMetadata(null, (d, e) => ((MaterialCanvas)d).MaterialModelChanged()));
+        
         public MaterialModel MaterialModel
         {
             get { return (MaterialModel)GetValue(MaterialModelProperty); }
@@ -60,72 +61,13 @@ namespace FMA.View
 
         private Image backgroundImage;
         private Image logoImage;
+        private MaterialModel currentModel;
 
         public MaterialCanvas()
         {
             this.AllowDrop = true;
             this.Drop += (sender, e) => this.DropLogo(this.MaterialModel, e);
             SelectedChilds.CollectionChanged += SelectedElements_CollectionChanged;
-        }
-
-        private void MaterialModelChanged()
-        {
-            if (MaterialModel == null) return;
-
-            CreateChildren();
-            PropertyChangedEventManager.AddHandler(MaterialModel, MaterialModel_PropertyChanged, "");
-
-            if (CanManipulateLogos)
-            {
-                PropertyChangedEventManager.AddHandler(MaterialModel.LogoModel, MaterialChild_IsSelectedChanged,"IsSelected");
-            }
-            if (CanManipulateTexts)
-            {
-                foreach (var materialField in MaterialModel.MaterialFields)
-                {
-                    PropertyChangedEventManager.AddHandler(materialField, MaterialChild_IsSelectedChanged, "IsSelected");
-                }
-
-                CollectionChangedEventManager.AddHandler(MaterialModel.MaterialFields, MaterialFields_CollectionChanged);
-            }
-        }
-
-        private void CreateChildren()
-        {
-            this.ClearChildren();
-
-            backgroundImage = new Image { Source = MaterialModel.FlyerFrontSideImage, Cursor = Cursors.Arrow };
-            this.Children.Add(backgroundImage);
-
-            logoImage = CreateLogoImage();
-
-            foreach (var materialField in MaterialModel.MaterialFields)
-            {
-                CreateTextBlock(materialField);
-            }
-
-            CreateSelectionBorder();
-        }
-
-        private void MaterialFields_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (MaterialModel == null) return;
-            CreateChildren();
-            HighlightCollisions();
-        }
-
-        private void MaterialModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            HighlightCollisions();
-        }
-
-        private void MaterialChild_IsSelectedChanged(object sender, PropertyChangedEventArgs e)
-        {
-            var materialChildModel = sender as MaterialChildModel;
-            if (materialChildModel != null )
-            {
-                MaterialChildIsSelectedChanged(materialChildModel);
-            }
         }
 
         private void SelectedElements_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -142,68 +84,36 @@ namespace FMA.View
             MaterialModel.LogoModel.IsSelected = selectedMaterialChilds.Contains(MaterialModel.LogoModel);
         }
 
-
-        private void MaterialChildIsSelectedChanged(MaterialChildModel materialChild)
+        private void MaterialModelChanged()
         {
-            var frameworkElement = this.Children.OfType<FrameworkElement>().FirstOrDefault(f => f.Tag == materialChild);
-            if (frameworkElement == null)
+            if (MaterialModel == null)
             {
-                return;
-            }
-            if (CanManipulateElement(frameworkElement) == false)
-            {
+                //this means view is killed
+                RemoveEvents();
                 return;
             }
 
-            if (materialChild.IsSelected)
-            {
-                AddSelectedElement(frameworkElement, true);
-            }
-            else
-            {
-                UnSelectElement(frameworkElement);
-            }
+            currentModel = MaterialModel;
+            CreateChildren();
+            AddEvents();
         }
 
-        private void HighlightCollisions()
+        
+        private void CreateChildren()
         {
-            if (CanManipulateTexts == false)
+            ClearChildren();
+
+            backgroundImage = new Image { Source = MaterialModel.FlyerFrontSideImage, Cursor = Cursors.Arrow };
+            Children.Add(backgroundImage);
+
+            logoImage = CreateLogoImage(MaterialModel.LogoModel);
+
+            foreach (var materialField in MaterialModel.MaterialFields)
             {
-                return;
+                CreateTextBlock(materialField);
             }
 
-            var children = this.Children.OfType<TextBlock>().Where(CanManipulateElement).ToList();
-            children.ForEach(c => c.Foreground = Brushes.Black);
-
-            var childrenWithRects = children.Select(c => new Tuple<TextBlock, Rect>(c, GetRectFromElement(c))).ToArray();
-            var childrenWithRectsToCompare = childrenWithRects.ToList();
-
-            foreach (var child in childrenWithRects)
-            {
-                childrenWithRectsToCompare.Remove(child);
-                var childRect = child.Item2;
-                var childItem = child.Item1;
-
-                foreach (var otherChild in childrenWithRectsToCompare)
-                {
-                    if (childRect.IntersectsWith(otherChild.Item2))
-                    {
-                        childItem.Foreground = Brushes.Red;
-                        otherChild.Item1.Foreground = Brushes.Red;
-                    }
-                }
-
-                if (childRect.Top < 0 || childRect.Left < 0 || childRect.Right > ActualWidth ||
-                    childRect.Bottom > ActualHeight)
-                {
-                    childItem.Foreground = Brushes.Red;
-                }
-            }
-        }
-
-        private static Rect GetRectFromElement(UIElement element)
-        {
-            return new Rect(new Point(GetLeft(element), GetTop(element)), element.RenderSize);
+            CreateSelectionBorder();
         }
 
         private void CreateTextBlock(MaterialFieldModel materialField)
@@ -246,9 +156,8 @@ namespace FMA.View
             Children.Add(textBlock);
         }
 
-        private Image CreateLogoImage()
+        private Image CreateLogoImage(LogoModel logoModel)
         {
-            var logoModel = MaterialModel.LogoModel;
             var createdLogoImage = new Image
             {
                 DataContext = logoModel,
@@ -257,7 +166,7 @@ namespace FMA.View
                 Tag = logoModel
             };
 
-            if ( CanManipulateLogos)
+            if (CanManipulateLogos)
             {
                 createdLogoImage.Cursor = Cursors.Hand;
                 createdLogoImage.PreviewKeyUp += element_PreviewKeyUp;
@@ -278,10 +187,134 @@ namespace FMA.View
             var leftBinding = new Binding("LeftMargin") { Mode = BindingMode.TwoWay };
             createdLogoImage.SetBinding(LeftProperty, leftBinding);
 
-            this.Children.Add(createdLogoImage);
+            Children.Add(createdLogoImage);
 
             return createdLogoImage;
         }
+
+      
+        private void AddEvents()
+        {
+            PropertyChangedEventManager.AddHandler(MaterialModel, MaterialModel_PropertyChanged, "");
+
+            if (CanManipulateLogos)
+            {
+                PropertyChangedEventManager.AddHandler(MaterialModel.LogoModel, MaterialChild_IsSelectedChanged, "IsSelected");
+            }
+            if (CanManipulateTexts)
+            {
+                foreach (var materialField in MaterialModel.MaterialFields)
+                {
+                    PropertyChangedEventManager.AddHandler(materialField, MaterialChild_IsSelectedChanged, "IsSelected");
+                }
+
+                CollectionChangedEventManager.AddHandler(MaterialModel.MaterialFields, MaterialFields_CollectionChanged);
+            }
+        }
+       
+        private void RemoveEvents()
+        {
+            PropertyChangedEventManager.RemoveHandler(currentModel, MaterialModel_PropertyChanged, "");
+            if (CanManipulateLogos)
+            {
+                PropertyChangedEventManager.RemoveHandler(currentModel.LogoModel, MaterialChild_IsSelectedChanged, "IsSelected");
+            }
+            if (CanManipulateTexts)
+            {
+                foreach (var materialField in currentModel.MaterialFields)
+                {
+                    PropertyChangedEventManager.RemoveHandler(materialField, MaterialChild_IsSelectedChanged, "IsSelected");
+                }
+
+                CollectionChangedEventManager.RemoveHandler(currentModel.MaterialFields, MaterialFields_CollectionChanged);
+            }
+        }
+
+        private void MaterialFields_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (MaterialModel == null) return;
+            CreateChildren();
+            HighlightCollisions();
+        }
+
+        private void MaterialModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            HighlightCollisions();
+        }
+
+        private void MaterialChild_IsSelectedChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var materialChildModel = sender as MaterialChildModel;
+            if (materialChildModel != null )
+            {
+                MaterialChildIsSelectedChanged(materialChildModel);
+            }
+        }
+ 
+        private void MaterialChildIsSelectedChanged(MaterialChildModel materialChild)
+        {
+            var frameworkElement = this.Children.OfType<FrameworkElement>().FirstOrDefault(f => f.Tag == materialChild);
+            if (frameworkElement == null)
+            {
+                return;
+            }
+            if (CanManipulateElement(frameworkElement) == false)
+            {
+                return;
+            }
+
+            if (materialChild.IsSelected)
+            {
+                AddSelectedElement(frameworkElement, true);
+            }
+            else
+            {
+                UnSelectElement(frameworkElement);
+            }
+        }
+
+
+        private void HighlightCollisions()
+        {
+            if (CanManipulateTexts == false)
+            {
+                return;
+            }
+
+            var children = this.Children.OfType<TextBlock>().Where(CanManipulateElement).ToList();
+            children.ForEach(c => c.Foreground = Brushes.Black);
+
+            var childrenWithRects = children.Select(c => new Tuple<TextBlock, Rect>(c, GetRectFromElement(c))).ToArray();
+            var childrenWithRectsToCompare = childrenWithRects.ToList();
+
+            foreach (var child in childrenWithRects)
+            {
+                childrenWithRectsToCompare.Remove(child);
+                var childRect = child.Item2;
+                var childItem = child.Item1;
+
+                foreach (var otherChild in childrenWithRectsToCompare)
+                {
+                    if (childRect.IntersectsWith(otherChild.Item2))
+                    {
+                        childItem.Foreground = Brushes.Red;
+                        otherChild.Item1.Foreground = Brushes.Red;
+                    }
+                }
+
+                if (childRect.Top < 0 || childRect.Left < 0 || childRect.Right > ActualWidth ||
+                    childRect.Bottom > ActualHeight)
+                {
+                    childItem.Foreground = Brushes.Red;
+                }
+            }
+        }
+
+        private static Rect GetRectFromElement(UIElement element)
+        {
+            return new Rect(new Point(GetLeft(element), GetTop(element)), element.RenderSize);
+        }
+
 
         void element_PreviewKeyUp(object sender, KeyEventArgs e)
         {
@@ -307,6 +340,7 @@ namespace FMA.View
 
             UnSelectAllElements();
         }
+
 
         protected override void OnRender(DrawingContext dc)
         {
