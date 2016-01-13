@@ -19,7 +19,7 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <view:GraphicalLayout  Margin="8">
+        <view:GraphicalLayout Margin="8">
             <view:GraphicalLayout.Style>
                 <Style TargetType="FrameworkElement">
                     <Style.Triggers>
@@ -42,7 +42,8 @@
                       HorizontalAlignment="Stretch"
                       Background="Transparent" />
 
-        <ScrollViewer Grid.Column="2" Margin="4"
+        <ScrollViewer Grid.Column="2"
+                      Margin="4"
                       HorizontalScrollBarVisibility="Auto"
                       VerticalScrollBarVisibility="Auto">
 
@@ -55,8 +56,8 @@
                 </Grid.RowDefinitions>
 
                 <view:TextualLayout Grid.Row="0"
-                                      MinWidth="400"
-                                 HorizontalAlignment="Left"/>
+                                    MinWidth="400"
+                                    HorizontalAlignment="Left" />
 
 
             </Grid>

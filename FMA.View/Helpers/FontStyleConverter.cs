@@ -9,7 +9,7 @@ namespace FMA.View.Helpers
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is bool && (bool) value)
+            if (value is bool && (bool)value)
             {
                 return FontStyles.Italic;
             }

@@ -32,7 +32,7 @@ namespace FMA.Core
             var typeface = new Typeface(fontFamily, fontStyle, fontWeight, FontStretches.Normal);
             var value =  materialField.Uppper ? materialField.DefaultValue.ToUpper() : materialField.DefaultValue;
 
-            var formattedText = new FormattedText(value, CultureInfo.InvariantCulture, FlowDirection.LeftToRight, typeface, materialField.FontSize, Brushes.Black);
+            var formattedText = new FormattedText(value, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, materialField.FontSize, Brushes.Black);
 
             return new TextField(formattedText, origin);
         }

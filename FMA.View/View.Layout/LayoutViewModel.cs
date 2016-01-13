@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FMA.Contracts;
 using FMA.View.Models;
@@ -23,16 +24,10 @@ namespace FMA.View
             get { return this.SelectedMaterialProvider.MaterialModel; }
         }
 
-        private IMaterialChild SelectedMaterialChild
-        {
-            get { return SelectedMaterialProvider.SelectedMaterialChild; }
-            set { this.SelectedMaterialProvider.SelectedMaterialChild = value; }
-        }
-
         public void AddField()
         {
-            MaterialModel.AddMaterialField();
-            SelectedMaterialChild = MaterialModel.MaterialFields.Last();
+            MaterialModel.AddNewMaterialField();
+            this.SelectedMaterialProvider.SetSelectedChilds(MaterialModel.MaterialFields.Last());
         }
 
         public void DeleteSelectedChild()
@@ -40,35 +35,38 @@ namespace FMA.View
             int index = int.MaxValue;
             var materialFieldModels = MaterialModel.MaterialFields;
 
-            if (SelectedMaterialChild is LogoModel)
+            foreach (var selectedChild in SelectedMaterialProvider.SelectedMaterialChilds.ToArray())
             {
-                MaterialModel.LogoModel.DeleteLogo();
-            }
-            else
-            {
-                var selectedFieldModel = SelectedMaterialChild as MaterialFieldModel;
- 
-                index = materialFieldModels.IndexOf(selectedFieldModel);
-
-                if (index == -1)
+                if (selectedChild is LogoModel)
                 {
-                    return;
+                    MaterialModel.LogoModel.DeleteLogo();
                 }
+                else
+                {
+                    var selectedFieldModel = selectedChild as MaterialFieldModel;
 
-                materialFieldModels.Remove(selectedFieldModel);
+                    index = materialFieldModels.IndexOf(selectedFieldModel);
+
+                    if (index == -1)
+                    {
+                        return;
+                    }
+
+                    materialFieldModels.Remove(selectedFieldModel);
+                }
             }
 
             if (materialFieldModels.Count > index)
             {
-                SelectedMaterialChild = materialFieldModels[index];
+                this.SelectedMaterialProvider.SetSelectedChilds(materialFieldModels[index]);
             }
             else if (materialFieldModels.Any())
             {
-                SelectedMaterialChild = materialFieldModels[materialFieldModels.Count - 1];
+                this.SelectedMaterialProvider.SetSelectedChilds(materialFieldModels[materialFieldModels.Count - 1]);
             }
             else
             {
-                SelectedMaterialChild = null;
+                this.SelectedMaterialProvider.SetSelectedChilds();
             }
         }
     }

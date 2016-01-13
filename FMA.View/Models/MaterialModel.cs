@@ -16,27 +16,23 @@ namespace FMA.View.Models
 
         public MaterialModel(int id, string title, string description, IEnumerable<MaterialFieldModel> materialFields, byte[] flyerFrontSide, byte[] flyerBackside, FontFamilyWithName defaultFont)
         {
+            MaterialFields = new ObservableCollection<MaterialFieldModel>();
+            PropertyChanged += (s, e) => { };
+
             Id = id;
             Title = title;
             Description = description;
 
+            materialFields.ToList().ForEach(AddMaterialField);
 
-            var materialFieldModels = materialFields.ToList();
-            materialFieldModels.ForEach(m =>
-            {
-                m.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
-            });
-
-            MaterialFields = new ObservableCollection<MaterialFieldModel>(materialFieldModels);
-            MaterialFields.CollectionChanged += (s, e) => { OnPropertyChanged("MaterialFields"); };
+            MaterialFields.CollectionChanged += (s, e) => OnPropertyChanged("MaterialFields");
 
             FlyerFrontSide = flyerFrontSide;
             FlyerBackside = flyerBackside;
             DefaultFont = defaultFont;
 
             LogoModel = new LogoModel();
-            LogoModel.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
-
+            LogoModel.PropertyChanged += (s, e) => PropertyChanged(s, e);
         }
 
         public Int32 Id { get; private set; }
@@ -51,11 +47,16 @@ namespace FMA.View.Models
             private set;
         }
 
-        public void AddMaterialField()
+        public void AddNewMaterialField()
         {
             var materialField = new MaterialFieldModel("CustomField", Resources.CustomFieldText, DefaultFont);
 
-            materialField.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
+            AddMaterialField(materialField);
+        }
+
+        private void AddMaterialField(MaterialFieldModel materialField)
+        {
+            materialField.PropertyChanged += (s, e) => PropertyChanged(s, e);
             this.MaterialFields.Add(materialField);
         }
 

@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using System.Diagnostics;
+using System.Windows.Media;
 
 namespace FMA.Contracts
 {
@@ -6,6 +7,7 @@ namespace FMA.Contracts
     /// Wird verwendet wegen Problemen beim SourceName von Schriftarten die nicht installiert sind. Dort wird immer der FullPath mit # etc. angezeigt. 
     /// Deshalb hier mit Property Name zum Binden
     /// </summary>
+    [DebuggerDisplay("{Name}")]
     public class FontFamilyWithName
     {
         public FontFamilyWithName(FontFamily fontFamily)

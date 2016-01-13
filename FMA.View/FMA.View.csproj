@@ -48,6 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\InverseBooleanToVisibilityConverter.cs" />
+    <Compile Include="Helpers\TextPropertiesCaptionVisibilityConverter.cs" />
+    <Compile Include="Helpers\TextPropertiesCaptionsVisibilityConverter.cs" />
     <Compile Include="View.Default\DefaultView.xaml.cs">
       <DependentUpon>DefaultView.xaml</DependentUpon>
     </Compile>
@@ -77,7 +79,7 @@
     <Compile Include="View.Common\LogoProperties.xaml.cs">
       <DependentUpon>LogoProperties.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\IMaterialChild.cs" />
+    <Compile Include="Models\MaterialChildModel.cs" />
     <Compile Include="View.Common\SelectedMaterialProvider.cs" />
     <Compile Include="Models\LogoExtensions.cs" />
     <Compile Include="Models\NotifyPropertyChangedBase.cs" />
@@ -86,9 +88,6 @@
     <Compile Include="Helpers\WindowService.cs" />
     <Compile Include="View.Layout\TextualLayout.xaml.cs">
       <DependentUpon>TextualLayout.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View.Layout\TextFieldProperties.xaml.cs">
-      <DependentUpon>TextFieldProperties.xaml</DependentUpon>
     </Compile>
     <Page Include="View.Default\DefaultView.xaml">
       <SubType>Designer</SubType>
@@ -137,10 +136,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View.Layout\TextualLayout.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View.Layout\TextFieldProperties.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

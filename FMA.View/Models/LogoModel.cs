@@ -4,7 +4,7 @@ using FMA.Contracts;
 
 namespace FMA.View.Models
 {
-    public class LogoModel : NotifyPropertyChangedBase, IMaterialChild
+    public class LogoModel : MaterialChildModel
     {
         private byte[] logo = new byte[0];
         private double leftMargin;
@@ -89,7 +89,5 @@ namespace FMA.View.Models
         {
             Logo = new byte[0];
         }
-
-        public string FieldName { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,6 +15,27 @@ using FontWeightConverter = FMA.View.Helpers.FontWeightConverter;
 
 namespace FMA.View
 {
+    //public class MyWeakEventManager : PropertyChangedEventManager
+    //{
+
+    //    public static PropertyChangedEventManager CurrentManager
+    //    {
+    //        get
+    //        {
+    //            var manager_type = typeof(PropertyChangedEventManager);
+    //            var manager = WeakEventManager.GetCurrentManager(manager_type) as PropertyChangedEventManager;
+
+    //            if (manager == null)
+    //            {
+    //                manager = new PropertyChangedEventManager();
+    //                WeakEventManager.SetCurrentManager(manager_type, manager);
+    //            }
+
+    //            return manager;
+    //        }
+    //    }
+    //}
+
     public class MaterialCanvas : LayoutCanvas
     {
         public static readonly DependencyProperty MaterialModelProperty = DependencyProperty.Register(
@@ -23,16 +45,6 @@ namespace FMA.View
             get { return (MaterialModel)GetValue(MaterialModelProperty); }
             set { SetValue(MaterialModelProperty, value); }
         }
-
-        public static readonly DependencyProperty SelectedMaterialChildProperty = DependencyProperty.Register(
-            "SelectedMaterialChild", typeof(IMaterialChild), typeof(MaterialCanvas), new PropertyMetadata(default(IMaterialChild), (d, e) => ((MaterialCanvas)d).SelectedMaterialFieldChanged()));
-
-        public IMaterialChild SelectedMaterialChild
-        {
-            get { return (IMaterialChild)GetValue(SelectedMaterialChildProperty); }
-            set { SetValue(SelectedMaterialChildProperty, value); }
-        }
-
 
         public static readonly DependencyProperty FontServiceProperty = DependencyProperty.Register(
             "FontService", typeof(FontService), typeof(MaterialCanvas), new PropertyMetadata(default(FontService)));
@@ -73,53 +85,50 @@ namespace FMA.View
             SelectedChilds.CollectionChanged += SelectedElements_CollectionChanged;
         }
 
-        private bool selectedMaterialChangedInternal = false;
 
-        private void SelectedElements_CollectionChanged(object sender,System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void SelectedElements_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            selectedMaterialChangedInternal = true;
-            try
-            {
-                if (SelectedElements.Count() != 1)
-                {
-                    this.SelectedMaterialChild = null;
-                    return;
-                }
+            if (MaterialModel == null) { return; }
 
-                var selectedMaterialFieldModel = SelectedElements.Single().Tag as IMaterialChild;
+            var selectedMaterialChilds = SelectedElements.Select(s => s.Tag).OfType<MaterialChildModel>().ToList();
 
-                SelectedMaterialChild = selectedMaterialFieldModel;
-            }
-            finally
+            foreach (var materialField in MaterialModel.MaterialFields)
             {
-                selectedMaterialChangedInternal = false;
+                materialField.IsSelected = selectedMaterialChilds.Contains(materialField);
             }
+
+            MaterialModel.LogoModel.IsSelected = selectedMaterialChilds.Contains(MaterialModel.LogoModel);
         }
 
-        private void SelectedMaterialFieldChanged()
-       {
-           if (selectedMaterialChangedInternal)
-           {
-               return;
-           }
 
-           if (this.SelectedMaterialChild == null)
-           {
-               UnSelectAllElements();
-               return;
-           }
-
-           var elementToSelect = Children.OfType<FrameworkElement>().FirstOrDefault(t => SelectedMaterialChild.Equals(t.Tag));
-            if (elementToSelect == null)
+        private void MaterialChildIsSelectedChanged(MaterialChildModel materialChild)
+        {
+            var frameworkElement = this.Children.OfType<FrameworkElement>().FirstOrDefault(f => f.Tag == materialChild);
+            if (frameworkElement == null)
+            {
+                return;
+            }
+            if (CanManipulateElement(frameworkElement) == false)
             {
                 return;
             }
 
-           SetSelectedElement(elementToSelect);
-       }
+            if (materialChild.IsSelected)
+            {
+                AddSelectedElement(frameworkElement, true);
+            }
+            else
+            {
+                UnSelectElement(frameworkElement);
+            }
+        }
 
-       private Image backgroundImage;
+
+        private Image backgroundImage;
         private Image logoImage;
+
+
+
 
         private void MaterialModelChanged()
         {
@@ -127,7 +136,15 @@ namespace FMA.View
 
             CreateChildren();
 
-            MaterialModel.PropertyChanged += MaterialModel_PropertyChanged;
+
+         //   EventHandler<PropertyChangedEventArgs> handler = MaterialModel_PropertyChanged;
+
+        //    PropertyChangedEventManager.AddHandler(MaterialModel, handler, "");
+
+
+             MaterialModel.PropertyChanged += MaterialModel_PropertyChanged;
+
+            // TODO WIeder einbauen    
             MaterialModel.MaterialFields.CollectionChanged += MaterialFields_CollectionChanged;
         }
 
@@ -139,18 +156,17 @@ namespace FMA.View
             this.Children.Add(backgroundImage);
 
             logoImage = CreateLogoImage();
-            this.Children.Add(logoImage);
 
-            foreach (var textBlock in MaterialModel.MaterialFields.Select(CreateTextBlock))
+            foreach (var materialField in MaterialModel.MaterialFields)
             {
-                this.Children.Add(textBlock);
+                CreateTextBlock(materialField);
             }
 
             CreateSelectionBorder();
-       
+
         }
 
-       private void MaterialFields_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void MaterialFields_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (MaterialModel == null) return;
             CreateChildren();
@@ -158,13 +174,24 @@ namespace FMA.View
         }
 
 
-        private void MaterialModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void MaterialModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             HighlightCollisions();
+
+            var materialChildModel = sender as MaterialChildModel;
+            if (materialChildModel != null && e.PropertyName == "IsSelected")
+            {
+                MaterialChildIsSelectedChanged(materialChildModel);
+            }
         }
 
         private void HighlightCollisions()
         {
+            if (CanManipulateTextsAndLogos == false)
+            {
+                return;
+            }
+
             var children = this.Children.OfType<TextBlock>().Where(CanManipulateElement).ToList();
             children.ForEach(c => c.Foreground = Brushes.Black);
 
@@ -199,26 +226,24 @@ namespace FMA.View
             return new Rect(new Point(Canvas.GetLeft(element), Canvas.GetTop(element)), element.RenderSize);
         }
 
-        private TextBlock CreateTextBlock(MaterialFieldModel materialFieldModel)
+        private void CreateTextBlock(MaterialFieldModel materialField)
         {
             var textBlock = new TextBlock
             {
-                Tag = materialFieldModel,
-                DataContext = materialFieldModel,
+                Tag = materialField,
+                DataContext = materialField,
                 Margin = new Thickness(0),
                 Focusable = true
             };
-
-            textBlock.PreviewKeyUp += element_PreviewKeyUp;
 
             if (CanManipulateTextsAndLogos)
             {
                 textBlock.Cursor = Cursors.Hand;
             }
 
-            var fontFamilyBinding = new Binding("FontFamily") { Mode = BindingMode.OneWay };
-            textBlock.SetBinding(TextBlock.FontFamilyProperty, fontFamilyBinding); 
-            
+            var fontFamilyBinding = new Binding("FontFamilyWithName.FontFamily") { Mode = BindingMode.OneWay };
+            textBlock.SetBinding(TextBlock.FontFamilyProperty, fontFamilyBinding);
+
             var fontStyleBinding = new Binding("Italic") { Mode = BindingMode.OneWay, Converter = new FontStyleConverter() };
             textBlock.SetBinding(TextBlock.FontStyleProperty, fontStyleBinding);
 
@@ -237,7 +262,55 @@ namespace FMA.View
             var leftBinding = new Binding("LeftMargin") { Mode = BindingMode.TwoWay };
             textBlock.SetBinding(Canvas.LeftProperty, leftBinding);
 
-            return textBlock;
+            this.Children.Add(textBlock);
+
+            if (CanManipulateTextsAndLogos)
+            {
+                textBlock.PreviewKeyUp += element_PreviewKeyUp;
+            }
+        }
+
+        private Image CreateLogoImage()
+        {
+            var logoModel = MaterialModel.LogoModel;
+            var createdLogoImage = new Image
+            {
+                DataContext = logoModel,
+                Stretch = Stretch.Fill,
+                Focusable = true,
+                Tag = logoModel
+            };
+
+
+            if (CanManipulateTextsAndLogos || CanManipulateLogos)
+            {
+                createdLogoImage.Cursor = Cursors.Hand;
+            }
+
+            var sourceBinding = new Binding("LogoImage") { Mode = BindingMode.OneWay };
+            createdLogoImage.SetBinding(Image.SourceProperty, sourceBinding);
+
+            var heightBinding = new Binding("Height") { Mode = BindingMode.TwoWay };
+            createdLogoImage.SetBinding(HeightProperty, heightBinding);
+
+            var widthBinding = new Binding("Width") { Mode = BindingMode.TwoWay };
+            createdLogoImage.SetBinding(WidthProperty, widthBinding);
+
+            var topBinding = new Binding("TopMargin") { Mode = BindingMode.TwoWay };
+            createdLogoImage.SetBinding(Canvas.TopProperty, topBinding);
+
+            var leftBinding = new Binding("LeftMargin") { Mode = BindingMode.TwoWay };
+            createdLogoImage.SetBinding(Canvas.LeftProperty, leftBinding);
+
+
+            this.Children.Add(createdLogoImage);
+
+            if (CanManipulateTextsAndLogos || CanManipulateLogos)
+            {
+                createdLogoImage.PreviewKeyUp += element_PreviewKeyUp;
+            }
+
+            return createdLogoImage;
         }
 
         void element_PreviewKeyUp(object sender, KeyEventArgs e)
@@ -265,45 +338,11 @@ namespace FMA.View
             UnSelectAllElements();
         }
 
-        private Image CreateLogoImage()
+        protected override void OnRender(DrawingContext dc)
         {
-            var logo = new Image
-            {
-                DataContext = MaterialModel.LogoModel,
-                Stretch = Stretch.Fill,
-                Focusable = true,
-                Tag = MaterialModel.LogoModel
-            };
-
-            logo.PreviewKeyUp += element_PreviewKeyUp;
-
-            if (CanManipulateTextsAndLogos || CanManipulateLogos)
-            {
-                logo.Cursor = Cursors.Hand;
-            }
-
-            var sourceBinding = new Binding("LogoImage") { Mode = BindingMode.OneWay };
-            logo.SetBinding(Image.SourceProperty, sourceBinding);
-
-            var heightBinding = new Binding("Height") { Mode = BindingMode.TwoWay };
-            logo.SetBinding(HeightProperty, heightBinding);
-
-            var widthBinding = new Binding("Width") { Mode = BindingMode.TwoWay };
-            logo.SetBinding(WidthProperty, widthBinding);
-
-            var topBinding = new Binding("TopMargin") { Mode = BindingMode.TwoWay };
-            logo.SetBinding(Canvas.TopProperty, topBinding);
-
-            var leftBinding = new Binding("LeftMargin") { Mode = BindingMode.TwoWay };
-            logo.SetBinding(Canvas.LeftProperty, leftBinding);
-            return logo;
+            base.OnRender(dc);
+            HighlightCollisions();
         }
-
-        //protected override void OnRender(DrawingContext dc)
-        //{
-        //    base.OnRender(dc);
-        //    HighlightCollisions();
-        //}
 
         protected override Size MeasureOverride(Size constraint)
         {

@@ -25,17 +25,18 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <Viewbox
-                 Margin="4"
+        <Viewbox Margin="4"
                  HorizontalAlignment="Stretch"
                  VerticalAlignment="Stretch"
                  Stretch="Uniform">
             <view:MaterialCanvas Margin="8"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               CanManipulateLogos="True"
-                               FontService="{Binding FontService}"
-                               MaterialModel="{Binding SelectedMaterialProvider.MaterialModel}" />
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 CanManipulateLogos="True"
+                                 FontService="{Binding FontService}"
+                                 MaterialModel="{Binding SelectedMaterialProvider.MaterialModel}"
+                                 Visibility="{Binding Visibility,
+                                                      RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
             <Viewbox.Style>
                 <Style TargetType="FrameworkElement">
                     <Style.Triggers>
@@ -57,7 +58,7 @@
                       HorizontalAlignment="Stretch"
                       Background="Transparent" />
 
-        <Grid Margin="4,0"  Grid.Column="2">
+        <Grid Grid.Column="2" Margin="4,0">
             <Grid.Style>
                 <Style TargetType="FrameworkElement">
                     <Style.Triggers>
@@ -72,7 +73,7 @@
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
-            <ScrollViewer  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <StackPanel>
                     <TextBlock FontWeight="Bold" Text="{x:Static properties:Resources.TextFields}" />
                     <ItemsControl Margin="8"
@@ -106,13 +107,13 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
-                    <view:LogoLayout/>
+                    <view:LogoLayout />
                 </StackPanel>
             </ScrollViewer>
         </Grid>
 
 
-     
+
     </Grid>
 
 </UserControl>

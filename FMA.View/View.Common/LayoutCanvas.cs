@@ -299,29 +299,42 @@ namespace FMA.View
 
         }
 
-        protected void AddSelectedElement(FrameworkElement child)
+        protected void AddSelectedElement(FrameworkElement child, bool focus = false)
         {
             if (!CanManipulateElement(child))
             {
                 throw new InvalidOperationException("child");
             }
-            child.Focus();
+
+            if (AdornerLayer == null)
+            {
+                return;
+            }
+
+            if (focus)
+            {
+                child.Focus();
+            }
 
             SelectedChilds.Add(new SelectedChild(child));
 
             AdornerLayer.Add(CreateAdornerForElement(child));
         }
 
-        protected void SetSelectedElement(FrameworkElement child)
-        {
-            UnSelectAllElements();
-            AddSelectedElement(child);
-        }
-
         protected void UnSelectAllElements()
         {
             SelectedChilds.ToList().ForEach(RemoveAdorner);
             SelectedChilds.Clear();
+        }
+
+        protected void UnSelectElement(FrameworkElement child)
+        {
+            var selectedChild = this.selectedChilds.FirstOrDefault(s => s.Element == child);
+            if (selectedChild == null)
+            {
+                return;
+            }
+            UnSelectElement(selectedChild);
         }
 
         private void UnSelectElement(SelectedChild selectedChild)
@@ -365,7 +378,7 @@ namespace FMA.View
 
         protected IEnumerable<FrameworkElement> SelectedElements
         {
-            get { return SelectedChilds.Select(s=>s.Element); }
+            get { return SelectedChilds.Select(s => s.Element); }
         }
 
         protected ObservableCollection<SelectedChild> SelectedChilds

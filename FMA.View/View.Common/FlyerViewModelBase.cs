@@ -20,7 +20,7 @@ namespace FMA.View
         }
 
         public SelectedMaterialProvider SelectedMaterialProvider { get; private set; }
-       
+
         public FontService FontService { get; private set; }
 
         public abstract bool CanCreate { get; }
@@ -28,13 +28,14 @@ namespace FMA.View
         public void AddLogo()
         {
             SelectedMaterialProvider.MaterialModel.AddLogo();
-            SelectedMaterialProvider.SelectedMaterialChild = SelectedMaterialProvider.MaterialModel.LogoModel;
+            //TODO Only in override
+      //      SelectedMaterialProvider.SetSelectedChilds(SelectedMaterialProvider.MaterialModel.LogoModel);
         }
 
         public void DeleteLogo()
         {
             SelectedMaterialProvider.MaterialModel.LogoModel.DeleteLogo();
-            SelectedMaterialProvider.SelectedMaterialChild = SelectedMaterialProvider.MaterialModel.MaterialFields.Last();
+         //   SelectedMaterialProvider.SetSelectedChilds(SelectedMaterialProvider.MaterialModel.MaterialFields.Last());
         }
 
         public void ToggleViews()

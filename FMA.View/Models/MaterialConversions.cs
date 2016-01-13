@@ -43,7 +43,7 @@ namespace FMA.View.Models
 
         public static MaterialField ToMaterialField(this MaterialFieldModel fieldModel)
         {
-            var fontName = fieldModel.FontFamilyWithNameWithName.Name;
+            var fontName = fieldModel.FontFamilyWithName.Name;
             return new MaterialField(fieldModel.FieldName, fontName, fieldModel.FontSize, fieldModel.Bold,
                 fieldModel.Italic, fieldModel.Uppper, fieldModel.MaxLength, fieldModel.MaxRows, fieldModel.LeftMargin,
                 fieldModel.TopMargin, fieldModel.Value);
@@ -51,7 +51,7 @@ namespace FMA.View.Models
 
         public static MaterialFieldModel Clone(this MaterialFieldModel field)
         {
-            return new MaterialFieldModel(field.FieldName, field.Value, field.FontFamilyWithNameWithName, field.FontSize, field.Bold, field.Italic, field.Uppper, field.MaxLength, field.MaxRows, field.LeftMargin, field.TopMargin);
+            return new MaterialFieldModel(field.FieldName, field.Value, field.FontFamilyWithName, field.FontSize, field.Bold, field.Italic, field.Uppper, field.MaxLength, field.MaxRows, field.LeftMargin, field.TopMargin);
         }
     }
 }

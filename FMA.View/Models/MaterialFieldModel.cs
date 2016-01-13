@@ -1,15 +1,16 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using System.Windows;
+using System.Windows.Media;
 using FMA.Contracts;
-using FMA.Contracts.Properties;
 
 namespace FMA.View.Models
 {
     [DebuggerDisplay("Name: {FieldName}, Value {Value}")]
-    public class MaterialFieldModel : INotifyPropertyChanged, IDataErrorInfo, IMaterialChild
+    public class MaterialFieldModel : MaterialChildModel, IDataErrorInfo
     {
         private string value;
         private string error = string.Empty;
@@ -21,14 +22,15 @@ namespace FMA.View.Models
         private bool italic;
         private bool bold;
         private int fontSize = 12;
-        private FontFamilyWithName fontFamilyWithNameWithName;
-        private string fieldName;
+        private FontFamilyWithName fontFamilyWithName;
 
         public MaterialFieldModel(string fieldName, string value, FontFamilyWithName fontFamilyWithName)
         {
-            this.fieldName = fieldName;
+            this.FieldName = fieldName;
             this.value = value;
-            FontFamilyWithNameWithName = fontFamilyWithName;
+
+         
+            this.FontFamilyWithName = fontFamilyWithName;
         }
 
         public MaterialFieldModel(string fieldName, string value, FontFamilyWithName fontFamilyWithName, int fontSize, bool bold, bool italic, bool uppper, int maxLength, int maxRows, int leftMargin, int topMargin)
@@ -44,22 +46,44 @@ namespace FMA.View.Models
             TopMargin = topMargin;
         }
 
-        public string FieldName
+        public double Width
         {
-            get { return fieldName; }
-            set
-            {
-                fieldName = value;
-                OnPropertyChanged();
-            }
+            get { return Math.Round( GetFormattedText().Width); }
+        }
+        public double Height
+        {
+            get { return Math.Round( GetFormattedText().Height); }
         }
 
-        public FontFamilyWithName FontFamilyWithNameWithName
+        private FormattedText GetFormattedText()
         {
-            get { return fontFamilyWithNameWithName; }
+            var fontStyle = Italic ? FontStyles.Italic : FontStyles.Normal;
+            var fontWeight = Bold ? FontWeights.Bold : FontWeights.Normal;
+
+            var typeface = new Typeface(FontFamilyWithName.FontFamily, fontStyle, fontWeight, FontStretches.Normal);
+
+            var formattedText = new FormattedText(DisplayValue, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,typeface, FontSize, Brushes.Black);
+
+            return formattedText;
+        }
+
+
+
+        public FontFamilyWithName FontFamilyWithName
+        {
+            get { return fontFamilyWithName; }
             set
             {
-                fontFamilyWithNameWithName = value;
+                if(Equals(value, FontFamilyWithName)) { return; }
+
+                if (value == null)
+                {
+                    //TODO Hack weil das Binding an die ComboBox beim switchen der View da null reinsetzt
+                    return;
+                   // throw new ArgumentNullException("fontFamilyWithName");
+                }
+
+                fontFamilyWithName = value;
                 OnPropertyChanged();
                 OnPropertyChanged("FontFamily");
             }
@@ -70,6 +94,7 @@ namespace FMA.View.Models
             get { return fontSize; }
             set
             {
+                if (value == FontSize) { return; }
                 fontSize = value;
                 OnPropertyChanged();
             }
@@ -166,14 +191,7 @@ namespace FMA.View.Models
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         public string this[string columnName]
         {
