@@ -7,15 +7,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:FMA.View.Models"
              xmlns:properties="clr-namespace:FMA.View.Properties"
-             xmlns:common="clr-namespace:FMA.View.View.Common"
              xmlns:defaultView="clr-namespace:FMA.View.DefaultView"
+             xmlns:common="clr-namespace:FMA.View.Common"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../View.Common/Resources.xaml" />
+                <ResourceDictionary Source="../Common/Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>

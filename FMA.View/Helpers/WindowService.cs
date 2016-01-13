@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using FMA.Contracts;
+using FMA.View.Common;
 using FMA.View.ExternalView;
-using FMA.View.View.Common;
 
 namespace FMA.View.Helpers
 {

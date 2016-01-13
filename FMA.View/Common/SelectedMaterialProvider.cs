@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using FMA.View.Models;
 
-namespace FMA.View.View.Common
+namespace FMA.View.Common
 {
     public class SelectedMaterialProvider : NotifyPropertyChangedBase
     {

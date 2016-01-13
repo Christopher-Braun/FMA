@@ -8,8 +8,8 @@ using System.Windows;
 using FMA.Core;
 using FMA.TestData;
 using FMA.View;
+using FMA.View.Common;
 using FMA.View.Helpers;
-using FMA.View.View.Common;
 
 namespace FMA
 {

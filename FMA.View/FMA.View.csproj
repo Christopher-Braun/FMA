@@ -61,14 +61,14 @@
       <DependentUpon>DefaultView.xaml</DependentUpon>
     </Compile>
     <Compile Include="DefaultView\DefaultViewModel.cs" />
-    <Compile Include="View.Common\FlyerViewModelBase.cs" />
+    <Compile Include="Common\FlyerViewModelBase.cs" />
     <Compile Include="Helpers\FontInfo.cs" />
     <Compile Include="Helpers\FontStyleConverter.cs" />
     <Compile Include="Helpers\FontWeightConverter.cs" />
     <Compile Include="LayoutView\GraphicalLayout.xaml.cs">
       <DependentUpon>GraphicalLayout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View.Common\LayoutCanvas.cs" />
+    <Compile Include="Common\LayoutCanvas.cs" />
     <Compile Include="LayoutView\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
@@ -77,7 +77,7 @@
       <DependentUpon>LogoLayout.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\MaterialChildModel.cs" />
-    <Compile Include="View.Common\SelectedMaterialProvider.cs" />
+    <Compile Include="Common\SelectedMaterialProvider.cs" />
     <Compile Include="Models\LogoExtensions.cs" />
     <Compile Include="Models\NotifyPropertyChangedBase.cs" />
     <Compile Include="Helpers\SelectionAdorner.cs" />
@@ -98,13 +98,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View.Common\FlyerMakerView.xaml">
+    <Page Include="Common\FlyerMakerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Helpers\ResizingAdorner.cs" />
-    <Compile Include="View.Common\FlyerMakerViewModel.cs" />
-    <Compile Include="View.Common\FlyerMakerView.xaml.cs">
+    <Compile Include="Common\FlyerMakerViewModel.cs" />
+    <Compile Include="Common\FlyerMakerView.xaml.cs">
       <DependentUpon>FlyerMakerView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -120,11 +120,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View.Common\NumericUpDown.xaml">
+    <Page Include="Common\NumericUpDown.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View.Common\Resources.xaml">
+    <Page Include="Common\Resources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -134,12 +134,12 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="View.Common\MaterialCanvas.cs" />
+    <Compile Include="Common\MaterialCanvas.cs" />
     <Compile Include="Models\LogoModel.cs" />
     <Compile Include="Models\MaterialConversions.cs" />
     <Compile Include="Models\MaterialModel.cs" />
     <Compile Include="Models\MaterialFieldModel.cs" />
-    <Compile Include="View.Common\NumericUpDown.xaml.cs">
+    <Compile Include="Common\NumericUpDown.xaml.cs">
       <DependentUpon>NumericUpDown.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Annotations.cs" />

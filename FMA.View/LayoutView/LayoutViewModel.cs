@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using FMA.Contracts;
+using FMA.View.Common;
 using FMA.View.Models;
-using FMA.View.View.Common;
 
 namespace FMA.View.LayoutView
 {

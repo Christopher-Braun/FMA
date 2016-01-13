@@ -1,6 +1,6 @@
 ﻿using UserControl = System.Windows.Controls.UserControl;
 
-namespace FMA.View.View.Common
+namespace FMA.View.Common
 {
     /// <summary>
     /// Interaction logic for UserControl1.xaml

@@ -14,7 +14,7 @@ using FMA.View.Models;
 using FontStyleConverter = FMA.View.Helpers.FontStyleConverter;
 using FontWeightConverter = FMA.View.Helpers.FontWeightConverter;
 
-namespace FMA.View.View.Common
+namespace FMA.View.Common
 {
     public class MaterialCanvas : LayoutCanvas
     {

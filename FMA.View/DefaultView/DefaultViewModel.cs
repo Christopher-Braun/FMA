@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using FMA.Contracts;
-using FMA.View.View.Common;
+using FMA.View.Common;
 
 namespace FMA.View.DefaultView
 {

@@ -1,7 +1,7 @@
 ﻿<Window x:Class="FMA.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:common="clr-namespace:FMA.View.View.Common;assembly=FMA.View"
+        xmlns:common="clr-namespace:FMA.View.Common;assembly=FMA.View"
         Title="MainWindow"
         Width="860"
         Height="530">

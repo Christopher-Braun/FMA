@@ -9,7 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using FMA.View.Helpers;
 
-namespace FMA.View.View.Common
+namespace FMA.View.Common
 {
     public class LayoutCanvas : Canvas
     {

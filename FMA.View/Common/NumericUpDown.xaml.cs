@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace FMA.View.View.Common
+namespace FMA.View.Common
 {
     public partial class NumericUpDown : UserControl, INotifyPropertyChanged
     {

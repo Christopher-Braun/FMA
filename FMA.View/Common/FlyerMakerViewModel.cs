@@ -11,7 +11,7 @@ using FMA.View.LayoutView;
 using FMA.View.Models;
 using FMA.View.Properties;
 
-namespace FMA.View.View.Common
+namespace FMA.View.Common
 {
     public class FlyerMakerViewModel : INotifyPropertyChanged
     {
