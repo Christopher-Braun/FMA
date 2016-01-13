@@ -54,9 +54,48 @@
             </Button>
         </StackPanel>
 
-        <view:LogoProperties Margin="8"
+        <Grid Name="Logo" Margin="8"
                              DataContext="{Binding SelectedMaterialProvider.MaterialModel.LogoModel}"
                              Visibility="{Binding HasLogo,
-                                                  Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                                  Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="10" />
+
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+                   Margin="4"
+                   Text="{x:Static properties:Resources.Position}" />
+
+            <view:NumericUpDown Grid.Row="0"
+                            Grid.Column="2"
+                            Value="{Binding TopMargin}" />
+
+            <view:NumericUpDown Grid.Row="0"
+                            Grid.Column="3"
+                            Value="{Binding LeftMargin}" />
+            <TextBlock Grid.Row="1"
+                   Grid.Column="0"
+                   Margin="4"
+                   Text="{x:Static properties:Resources.Size}" />
+            <view:NumericUpDown Grid.Row="1"
+                            Grid.Column="2"
+                            Value="{Binding Width}" />
+
+            <view:NumericUpDown Grid.Row="1"
+                            Grid.Column="3"
+                            Value="{Binding Height}" />
+
+
+        </Grid>
     </StackPanel>
 </UserControl>

@@ -76,9 +76,6 @@
     <Compile Include="View.Default\LogoLayout.xaml.cs">
       <DependentUpon>LogoLayout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View.Common\LogoProperties.xaml.cs">
-      <DependentUpon>LogoProperties.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Models\MaterialChildModel.cs" />
     <Compile Include="View.Common\SelectedMaterialProvider.cs" />
     <Compile Include="Models\LogoExtensions.cs" />
@@ -120,10 +117,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View.Default\LogoLayout.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View.Common\LogoProperties.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
