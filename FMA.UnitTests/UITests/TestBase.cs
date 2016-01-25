@@ -24,14 +24,14 @@ namespace FMA.UnitTests.CodedUITests
         protected Application application;
         protected Window mainWindow;
 
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize()
         {
             application = Application.Launch("FMA.exe");
             mainWindow = application.GetWindow(SearchCriteria.ByControlType(ControlType.Window), InitializeOption.NoCache);
         }
 
-        [TestCleanup()]
+        [TestCleanup]
         public void MyTestCleanUp()
         {
             application.KillAndSaveState();
@@ -52,7 +52,7 @@ namespace FMA.UnitTests.CodedUITests
         protected int GetValueFromNumericUpDown(IUIItem numericUpDown)
         {
             var logoWidthValue = numericUpDown.Get<TextBox>("Value");
-            return Int32.Parse(logoWidthValue.Text);
+            return int.Parse(logoWidthValue.Text);
         }
 
         protected void SetValueToNumericUpDown(IUIItem numericUpDown, int value)

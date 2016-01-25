@@ -24,7 +24,7 @@ namespace FMA.TestData
             }
             else
             {
-                flyerFileName = String.Format("Flyer_01.jpg", id.ToString("00"));
+                flyerFileName = String.Format("Flyer_{0}_hinten.jpg", id.ToString("00"));
             }
             if (dir == null)
             {

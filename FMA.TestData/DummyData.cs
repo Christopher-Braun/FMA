@@ -21,7 +21,7 @@ namespace FMA.TestData
             };
 
             var material1 = new Material(1, "Gefährlicher Glaube", "ZumThema Gefährlicher Glaube (Islamische Welt)",
-                material1Fields, Helper.GetBackground(1), Helper.GetBackground(1));
+                material1Fields, Helper.GetBackground(1), Helper.GetBackground(1,false));
 
             var material2Fields = new List<MaterialField>
             {

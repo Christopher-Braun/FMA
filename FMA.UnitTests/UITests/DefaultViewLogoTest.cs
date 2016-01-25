@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Diagnostics.Eventing.Reader;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows.Automation;
 using FMA.TestData;
@@ -190,10 +192,24 @@ namespace FMA.UnitTests.CodedUITests
             var lastwindow = application.GetWindows().Last();
             //    lastwindow  =application.GetWindow(SearchCriteria.All.("Select logo file"), InitializeOption.WithCache);
 
-            //TODO nicht gut da nicht lokalisiert
-            var textField = lastwindow.Get<TextBox>(SearchCriteria.ByControlType(ControlType.Edit).AndByText("File name:"));
+            //TODO nicht schön
+            string fileNameText;
+            string openButtonText;
+            if (Equals(CultureInfo.CurrentUICulture, new CultureInfo("en-Us")))
+            {
+                fileNameText = "File name:";
+                openButtonText = "Open";
+            }
+            else
+            {
+                fileNameText = "Dateiname:";
+                openButtonText = "Öffnen";
+            }
+
+
+            var textField = lastwindow.Get<TextBox>(SearchCriteria.ByControlType(ControlType.Edit).AndByText(fileNameText));
             textField.Text = logoFile;
-            var openButton = lastwindow.Get<Button>(SearchCriteria.ByText("Open"));
+            var openButton = lastwindow.Get<Button>(SearchCriteria.ByText(openButtonText));
             openButton.Click();
         }
 
