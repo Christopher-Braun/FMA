@@ -225,7 +225,7 @@
                                     </Style>
                                 </Grid.Resources>
 
-                                <TextBlock Grid.Row="0"
+                                <TextBox Grid.Row="0"
                                            Grid.Column="0"
                                            Grid.ColumnSpan="2"
                                            Margin="4"

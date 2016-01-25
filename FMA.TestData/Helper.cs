@@ -6,7 +6,7 @@ namespace FMA.TestData
 {
     public static class Helper
     {
-        public static byte[] GetFrontSide(int id)
+        public static byte[] GetBackground(int id, bool frontSide= true)
         {
             var entryAssembly = Assembly.GetEntryAssembly();
             if (entryAssembly == null)
@@ -16,7 +16,16 @@ namespace FMA.TestData
 
             var location = entryAssembly.Location;
             var dir = Path.GetDirectoryName(location);
-            var flyerFileName = String.Format("Flyer_{0}.jpg", id.ToString("00"));
+            string flyerFileName;
+
+            if (frontSide)
+            {
+                flyerFileName = String.Format("Flyer_{0}.jpg", id.ToString("00"));
+            }
+            else
+            {
+                flyerFileName = String.Format("Flyer_01.jpg", id.ToString("00"));
+            }
             if (dir == null)
             {
                 throw new InvalidOperationException("Location");

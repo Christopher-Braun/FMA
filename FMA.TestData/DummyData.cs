@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using FMA.Contracts;
 
 namespace FMA.TestData
@@ -20,7 +21,7 @@ namespace FMA.TestData
             };
 
             var material1 = new Material(1, "Gefährlicher Glaube", "ZumThema Gefährlicher Glaube (Islamische Welt)",
-                material1Fields, Helper.GetFrontSide(1), Helper.GetFrontSide(1));
+                material1Fields, Helper.GetBackground(1), Helper.GetBackground(1));
 
             var material2Fields = new List<MaterialField>
             {
@@ -30,7 +31,7 @@ namespace FMA.TestData
                 new MaterialField("Ort", "Bakery", 46, false, true, false, 80, 3, 60, 520, "Hamburg")
             };
 
-            var material2 = new Material(2, "Nordkorea", "Zum Thema Nordkorea…", material2Fields, Helper.GetFrontSide(2), Helper.GetFrontSide(2),"Bakery");
+            var material2 = new Material(2, "Nordkorea", "Zum Thema Nordkorea…", material2Fields, Helper.GetBackground(2), Helper.GetBackground(2, false), "Bakery");
 
             materials.Add(material1);
             materials.Add(material2);
@@ -48,7 +49,22 @@ namespace FMA.TestData
                     "Untertitel Nordkorea"),
                 new MaterialField("Ort", "Times New Roman", 16, false, true, false, 80, 3, 7, 83, "Hamburg")
             };
-            return new CustomMaterial(2, "Nordkorea", "Zum Thema Nordkorea…", material2Fields , Helper.GetFrontSide(2), Helper.GetFrontSide(2), new CustomLogo());
+            return new CustomMaterial(2, "Nordkorea", "Zum Thema Nordkorea…", material2Fields, Helper.GetBackground(2), Helper.GetBackground(2, false), new CustomLogo());
+        }
+
+        public static Material GetDefaultSelectedMaterial()
+        {
+            return GetDummyMaterials().Single(m => m.Id.Equals(DummyData.DefaultSelectedMaterialId));
+        }
+
+        public static Material GetNotDefaultSelectedMaterial()
+        {
+            return GetDummyMaterials().First(m => m.Id.Equals(DummyData.DefaultSelectedMaterialId) == false);
+        }
+
+        public static int DefaultSelectedMaterialId
+        {
+            get { return 2; }
         }
     }
 }

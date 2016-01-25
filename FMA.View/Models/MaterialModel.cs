@@ -10,6 +10,7 @@ namespace FMA.View.Models
     public class MaterialModel : NotifyPropertyChangedBase
     {
         private byte[] flyerFrontSide;
+        private byte[] flyerBackside;
 
         public MaterialModel(int id, string title, string description, IEnumerable<MaterialFieldModel> materialFields, byte[] flyerFrontSide, byte[] flyerBackside, FontFamilyWithName defaultFont)
         {
@@ -24,7 +25,7 @@ namespace FMA.View.Models
             MaterialFields.CollectionChanged += (s, e) => OnPropertyChanged("MaterialFields");
 
             FlyerFrontSide = flyerFrontSide;
-            FlyerBackside = flyerBackside;
+            this.FlyerBackside = flyerBackside;
             DefaultFont = defaultFont;
 
             LogoModel = new LogoModel();
@@ -37,7 +38,7 @@ namespace FMA.View.Models
 
         public string Description { get; private set; }
 
-        public ObservableCollection<MaterialFieldModel> MaterialFields{ get; private set; }
+        public ObservableCollection<MaterialFieldModel> MaterialFields { get; private set; }
 
         public LogoModel LogoModel { get; private set; }
 
@@ -55,7 +56,17 @@ namespace FMA.View.Models
             }
         }
 
-        public byte[] FlyerBackside { get; private set; }
+        public BitmapImage FlyerBackSideImage { get; private set; }
+
+        public byte[] FlyerBackside
+        {
+            get { return flyerBackside; }
+            private set
+            {
+                flyerBackside = value;
+                FlyerBackSideImage = FlyerBackside.GetBitmapImage();
+            }
+        }
 
         public void AddNewMaterialField()
         {

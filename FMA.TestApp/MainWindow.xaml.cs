@@ -26,42 +26,7 @@ namespace FMA
             InitializeComponent();
             this.DataContext = this;
 
-            var dummyMaterials = DummyData.GetDummyMaterials();
-
-            //Dummy wird später ersetzt durch WCF Connection
-            Func<string, FontInfo> getFont = name =>
-            {
-                if (name == "Signarita Anne")
-                {
-                    return new FontInfo("SignaritaAnne.ttf", Helper.GetByteArrayFromFile("SignaritaAnneDemo.ttf"));
-                }
-                if (name == "Bakery")
-                {
-                    return new FontInfo("Bakery.ttf", Helper.GetByteArrayFromFile("bakery.ttf"));
-                }
-
-                return null;
-            };
-
-            var exeDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            var customFontsDir = string.Format(@"{0}\CustomFonts\", exeDir);
-            var viewModel = new FlyerMakerViewModel(dummyMaterials, 2, getFont, new FontService(customFontsDir),new WindowService(this));
-           
-            var flyerCreator = new FlyerCreator(customFontsDir);
-
-            viewModel.FlyerCreated += cm =>
-            {
-                var flyer = flyerCreator.CreateFlyer(cm);
-
-                var flyerJpg = "TestAppFlyer.jpg";
-                using (var fileStream = new FileStream(flyerJpg, FileMode.Create))
-                {
-                    flyer.WriteTo(fileStream);
-                    Process.Start(flyerJpg);
-                }
-            };
-
-            FlyerMakerViewModel = viewModel;
+            FlyerMakerViewModel = MainViewModelFactory.CreateFlyerViewModel(this);
         }
 
         public FlyerMakerViewModel FlyerMakerViewModel

@@ -29,7 +29,6 @@ namespace FMA.View.Models
             this.FieldName = fieldName;
             this.value = value;
 
-         
             this.FontFamilyWithName = fontFamilyWithName;
         }
 

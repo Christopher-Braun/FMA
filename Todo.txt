@@ -1,9 +1,17 @@
 
+
+Restore Preview Position
+
+
 TODO 
+
+Zoom
+Backside Dateien hinterlegen
+
+Selection wird nicht angezeigt in External View
 
 Dispose   ok
 Listbox
-Backside anstelle von FlyerPreview auch in External Views. Knopf zum drehen
 
 
 Admin Mode
@@ -12,9 +20,6 @@ Layout Mode auf basis von ... FrontSide BackSide konfigurierbar
 
 DONE
 
-
-
-NEIN Expert Mode Vorschau weg 
 
 
 Ja in Reousrcen ! Lokalisierung?

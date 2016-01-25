@@ -82,6 +82,7 @@
                      Margin="0"
                      VerticalAlignment="Stretch"
                      VerticalContentAlignment="Center"
+                     AutomationProperties.AutomationId="Value"
                      BorderThickness="1,1,0,1"
                      MouseWheel="textBox1_MouseWheel"
                      PreviewKeyDown="textBox1_PreviewKeyDown"

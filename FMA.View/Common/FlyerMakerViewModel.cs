@@ -24,23 +24,23 @@ namespace FMA.View.Common
         private bool layoutButtonsVisible;
         private FlyerViewModelBase flyerViewModel;
 
-        private readonly SelectedMaterialProvider selectedMaterialProvider;
+        public SelectedMaterialProvider SelectedMaterialProvider { get; private set; }
         private readonly IWindowService windowService;
         private readonly IFontService fontService;
 
-        public FlyerMakerViewModel(List<Material> materials, int selectedMateriaId, Func<string, FontInfo> getFont,IFontService fontService , IWindowService windowService)
+        public FlyerMakerViewModel(List<Material> materials, int selectedMateriaId, Func<string, FontInfo> getFont, IFontService fontService, IWindowService windowService)
         {
             this.fontService = fontService;
             UpdateFonts(materials, getFont);
 
             this.windowService = windowService;
 
-            this.selectedMaterialProvider = new SelectedMaterialProvider();
-            this.selectedMaterialProvider.PropertyChanged += (s, e) => OnPropertyChanged("CanCreate");
+            this.SelectedMaterialProvider = new SelectedMaterialProvider();
+            this.SelectedMaterialProvider.PropertyChanged += (s, e) => OnPropertyChanged("CanCreate");
 
             this.SetMaterials(materials, selectedMateriaId);
 
-            this.LayoutMode = true;
+            this.LayoutMode = false;
         }
 
         private void UpdateFonts(IEnumerable<Material> materials, Func<string, FontInfo> getFont)
@@ -89,7 +89,7 @@ namespace FMA.View.Common
 
                 if (value)
                 {
-                    windowService.OpenExternalPreviewWindow(this.selectedMaterialProvider, this.fontService);
+                    windowService.OpenExternalPreviewWindow(this.SelectedMaterialProvider, this.fontService);
                 }
                 else
                 {
@@ -107,7 +107,7 @@ namespace FMA.View.Common
 
                 if (value)
                 {
-                    windowService.OpenExternalEditWindow(this.selectedMaterialProvider, this.fontService);
+                    windowService.OpenExternalEditWindow(this.SelectedMaterialProvider, this.fontService);
                 }
                 else
                 {
@@ -151,11 +151,11 @@ namespace FMA.View.Common
 
                 if (layoutMode)
                 {
-                    this.FlyerViewModel = new LayoutViewModel(this.selectedMaterialProvider, fontService, viewState);
+                    this.FlyerViewModel = new LayoutViewModel(this.SelectedMaterialProvider, fontService, viewState);
                 }
                 else
                 {
-                    this.FlyerViewModel = new DefaultViewModel(this.selectedMaterialProvider, fontService, viewState);
+                    this.FlyerViewModel = new DefaultViewModel(this.SelectedMaterialProvider, fontService, viewState);
                 }
 
                 OnPropertyChanged("CanCreate");
@@ -174,8 +174,8 @@ namespace FMA.View.Common
 
         public MaterialModel SelectedMaterial
         {
-            get { return selectedMaterialProvider.MaterialModel; }
-            set { this.selectedMaterialProvider.MaterialModel = value.Clone(); }
+            get { return SelectedMaterialProvider.MaterialModel; }
+            set { this.SelectedMaterialProvider.MaterialModel = value.Clone(); }
         }
 
         public bool CanCreate
@@ -192,16 +192,6 @@ namespace FMA.View.Common
         {
             this.SelectedMaterial = this.Materials.Single(m => m.Id.Equals(this.SelectedMaterial.Id));
         }
-
-        //public void AddLogo()
-        //{
-        //    this.selectedMaterialProvider.MaterialModel.AddLogo();
-        //}
-
-        //public void DeleteLogo()
-        //{
-        //    this.selectedMaterialProvider.MaterialModel.LogoModel.DeleteLogo();
-        //}
 
         public event PropertyChangedEventHandler PropertyChanged;
 

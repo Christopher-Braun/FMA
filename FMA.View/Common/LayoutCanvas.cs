@@ -354,7 +354,11 @@ namespace FMA.View.Common
         protected void ClearChildren()
         {
             this.Children.Clear();
-            this.SelectedChilds.Clear();
+            if (this.SelectedChilds.Any())
+            {
+                //If.. damit kein Event fliegt
+                this.SelectedChilds.Clear();
+            }
         }
 
         protected virtual Adorner CreateAdornerForElement(UIElement child)

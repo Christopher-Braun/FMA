@@ -1,8 +1,8 @@
 ﻿<Window x:Class="FMA.View.ExternalView.ExternalEditView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:view="clr-namespace:FMA.View"
         xmlns:layoutView="clr-namespace:FMA.View.LayoutView"
+        xmlns:view="clr-namespace:FMA.View"
         Height="800"
         SizeToContent="Width"
         SourceInitialized="FlyerPreviewView_OnSourceInitialized"
@@ -11,6 +11,6 @@
     <Viewbox HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch"
              Stretch="Uniform">
-        <layoutView:GraphicalLayout></layoutView:GraphicalLayout>
+        <layoutView:GraphicalLayout />
     </Viewbox>
 </Window>

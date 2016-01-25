@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
@@ -15,8 +16,8 @@ namespace FMA.View.Helpers
         private readonly Thumb topLeft;
         private readonly Thumb topRight;
         private readonly Thumb bottomLeft;
-        private readonly Thumb bottomRight;       
-        
+        private readonly Thumb bottomRight;
+
         private readonly Thumb left;
         private readonly Thumb right;
         private readonly Thumb bottom;
@@ -30,9 +31,11 @@ namespace FMA.View.Helpers
             visualChildren = new VisualCollection(this);
 
             topLeft = CreateAdornerCorner(Cursors.SizeNWSE);
+
             topRight = CreateAdornerCorner(Cursors.SizeNESW);
             bottomLeft = CreateAdornerCorner(Cursors.SizeNESW);
             bottomRight = CreateAdornerCorner(Cursors.SizeNWSE);
+            // TODO  bottomRight.SetValue(AutomationProperties.AutomationIdProperty, "AdornerBottomRight");
 
             left = CreateAdornerCorner(Cursors.SizeWE);
             right = CreateAdornerCorner(Cursors.SizeWE);
@@ -59,16 +62,16 @@ namespace FMA.View.Helpers
 
             if (ReferenceEquals(hitThumb, bottomRight))
             {
-                HandleBottomRight(hitThumb,args);
+                HandleBottomRight(hitThumb, args);
             }
             else if (ReferenceEquals(hitThumb, bottomLeft))
             {
                 HandleBottomLeft(hitThumb, args);
-            }     
+            }
             else if (ReferenceEquals(hitThumb, topLeft))
             {
                 HandleTopLeft(hitThumb, args);
-            }     
+            }
             else if (ReferenceEquals(hitThumb, topRight))
             {
                 HandleTopRight(hitThumb, args);
@@ -171,7 +174,7 @@ namespace FMA.View.Helpers
 
             if (Keyboard.Modifiers == ModifierKeys.Shift)
             {
-                var scaleFactor = Math.Max(newWidth/Adorned.Width, newHeight/Adorned.Height);
+                var scaleFactor = Math.Max(newWidth / Adorned.Width, newHeight / Adorned.Height);
 
                 Adorned.Height *= scaleFactor;
                 Adorned.Width *= scaleFactor;
@@ -202,12 +205,12 @@ namespace FMA.View.Helpers
             topLeft.Arrange(new Rect(-adornerWidth / 2, -adornerHeight / 2, adornerWidth, adornerHeight));
             topRight.Arrange(new Rect(desiredWidth - adornerWidth / 2, -adornerHeight / 2, adornerWidth, adornerHeight));
             bottomLeft.Arrange(new Rect(-adornerWidth / 2, desiredHeight - adornerHeight / 2, adornerWidth, adornerHeight));
-            bottomRight.Arrange(new Rect(desiredWidth - adornerWidth / 2, desiredHeight - adornerHeight / 2, adornerWidth,adornerHeight));
+            bottomRight.Arrange(new Rect(desiredWidth - adornerWidth / 2, desiredHeight - adornerHeight / 2, adornerWidth, adornerHeight));
 
             left.Arrange(new Rect(-adornerWidth / 2, 0, adornerWidth, adornerHeight));
             right.Arrange(new Rect(desiredWidth - adornerWidth / 2, 0, adornerWidth, adornerHeight));
-            bottom.Arrange(new Rect(0,desiredHeight - adornerHeight / 2,adornerWidth, adornerHeight));
-            top.Arrange(new Rect(0, -adornerHeight / 2,  adornerWidth, adornerHeight));
+            bottom.Arrange(new Rect(0, desiredHeight - adornerHeight / 2, adornerWidth, adornerHeight));
+            top.Arrange(new Rect(0, -adornerHeight / 2, adornerWidth, adornerHeight));
 
             // Return the final size.
             return finalSize;

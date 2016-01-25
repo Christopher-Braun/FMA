@@ -201,4 +201,7 @@
   <data name="Elements" xml:space="preserve">
     <value>Elemente</value>
   </data>
+  <data name="ShowBackSide" xml:space="preserve">
+    <value>Rückseite anzeigen</value>
+  </data>
 </root>

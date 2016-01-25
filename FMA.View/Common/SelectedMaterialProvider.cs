@@ -9,6 +9,7 @@ namespace FMA.View.Common
     public class SelectedMaterialProvider : NotifyPropertyChangedBase
     {
         private MaterialModel materialModel;
+        private bool showBackSide;
 
         public SelectedMaterialProvider()
         {
@@ -33,7 +34,7 @@ namespace FMA.View.Common
                 var materialFields = materialModel.MaterialFields;
                 InitMaterialFields(materialFields);
 
-             //   SetSelectedChilds(MaterialChilds.First());
+                //   SetSelectedChilds(MaterialChilds.First());
             }
         }
 
@@ -72,7 +73,7 @@ namespace FMA.View.Common
         {
             if (logoModel.HasLogo)
             {
-               AddChildToMaterialChilds(logoModel);
+                AddChildToMaterialChilds(logoModel);
             }
             logoModel.PropertyChanged += (s, e) =>
             {
@@ -95,7 +96,7 @@ namespace FMA.View.Common
             materialChild.PropertyChanged += materialChild_PropertyChanged;
             this.MaterialChilds.Insert(this.MaterialChilds.Count - this.MaterialChilds.OfType<LogoModel>().Count(), materialChild);
         }
-        
+
         private void RemoveChildFromMaterialChilds(MaterialChildModel materialChild)
         {
             materialChild.PropertyChanged -= materialChild_PropertyChanged;
@@ -123,6 +124,16 @@ namespace FMA.View.Common
             get
             {
                 return this.MaterialChilds.Where(s => s.IsSelected).ToList();
+            }
+        }
+
+        public bool ShowBackSide
+        {
+            get { return showBackSide; }
+            set
+            {
+                showBackSide = value;
+                OnPropertyChanged();
             }
         }
     }

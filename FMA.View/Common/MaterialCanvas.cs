@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -20,7 +21,7 @@ namespace FMA.View.Common
     {
         public static readonly DependencyProperty MaterialModelProperty = DependencyProperty.Register(
             "MaterialModel", typeof(MaterialModel), typeof(MaterialCanvas), new PropertyMetadata(null, (d, e) => ((MaterialCanvas)d).MaterialModelChanged(e)));
-        
+
         public MaterialModel MaterialModel
         {
             get { return (MaterialModel)GetValue(MaterialModelProperty); }
@@ -48,6 +49,22 @@ namespace FMA.View.Common
         public static readonly DependencyProperty CanManipulateLogosProperty = DependencyProperty.Register(
             "CanManipulateLogos", typeof(bool), typeof(MaterialCanvas), new PropertyMetadata(true));
 
+        public static readonly DependencyProperty ShowBackSideProperty = DependencyProperty.Register(
+            "ShowBackSide", typeof (bool), typeof (MaterialCanvas), 
+            new FrameworkPropertyMetadata(
+                default(bool),
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                (d,e) => ((MaterialCanvas)d).ShowBackSidePropertyChanged()
+                )
+            );
+
+
+        public bool ShowBackSide
+        {
+            get { return (bool) GetValue(ShowBackSideProperty); }
+            set { SetValue(ShowBackSideProperty, value); }
+        }
+
         public bool CanManipulateLogos
         {
             get { return (bool)GetValue(CanManipulateLogosProperty); }
@@ -59,13 +76,14 @@ namespace FMA.View.Common
             DefaultStyleKeyProperty.OverrideMetadata(typeof(MaterialCanvas), new FrameworkPropertyMetadata(typeof(MaterialCanvas)));
         }
 
-        private Image backgroundImage;
+        private Image flyerFrontSideImage;
+        private Image flyerBackSideImage;
         private Image logoImage;
 
         public MaterialCanvas()
         {
-            this.AllowDrop = true;
-            this.Drop += (sender, e) => this.DropLogo(this.MaterialModel, e);
+            AllowDrop = true;
+            Drop += (sender, e) => this.DropLogo(this.MaterialModel, e);
             SelectedChilds.CollectionChanged += SelectedElements_CollectionChanged;
         }
 
@@ -81,6 +99,19 @@ namespace FMA.View.Common
             }
 
             MaterialModel.LogoModel.IsSelected = selectedMaterialChilds.Contains(MaterialModel.LogoModel);
+
+            if (SelectedElements.Any())
+            {
+                this.ShowBackSide = false;
+            }
+        }
+
+        private void ShowBackSidePropertyChanged()
+        {
+            if (ShowBackSide)
+            {
+                this.UnSelectAllElements();
+            }
         }
 
         private void MaterialModelChanged(DependencyPropertyChangedEventArgs e)
@@ -91,30 +122,56 @@ namespace FMA.View.Common
                 RemoveEvents(e.OldValue as MaterialModel);
                 return;
             }
-           
+
             CreateChildren();
             AddEvents();
         }
 
-        
+
         private void CreateChildren()
         {
             ClearChildren();
 
-            backgroundImage = new Image { Source = MaterialModel.FlyerFrontSideImage, Cursor = Cursors.Arrow };
-            Children.Add(backgroundImage);
+            flyerFrontSideImage = new Image {Source = MaterialModel.FlyerFrontSideImage, Cursor = Cursors.Arrow};
+            Children.Add(flyerFrontSideImage);
+
+            flyerBackSideImage = new Image
+            {
+                Source = MaterialModel.FlyerBackSideImage,
+                Cursor = Cursors.Arrow,
+                DataContext = this
+            };
+            SetZIndex(flyerBackSideImage, int.MaxValue);
+            flyerBackSideImage.SetValue(AutomationProperties.AutomationIdProperty, "CanvasBackSideImage");
+            var visibilityBinding = new Binding("ShowBackSide")
+            {
+                Mode = BindingMode.OneWay,
+                Converter = new BooleanToVisibilityConverter()
+            };
+            flyerBackSideImage.SetBinding(VisibilityProperty, visibilityBinding);
+            Children.Add(flyerBackSideImage);
 
             logoImage = CreateLogoImage(MaterialModel.LogoModel);
+            Children.Add(logoImage);
+            if (MaterialModel.LogoModel.IsSelected && CanManipulateLogos)
+            {
+                AddSelectedElement(logoImage);
+            }
 
             foreach (var materialField in MaterialModel.MaterialFields)
             {
-                CreateTextBlock(materialField);
+                var textBlock = CreateTextBlock(materialField);
+                Children.Add(textBlock);
+                if (materialField.IsSelected && CanManipulateTexts)
+                {
+                    AddSelectedElement(textBlock);
+                }
             }
 
             CreateSelectionBorder();
         }
 
-        private void CreateTextBlock(MaterialFieldModel materialField)
+        private TextBlock CreateTextBlock(MaterialFieldModel materialField)
         {
             var textBlock = new TextBlock
             {
@@ -123,6 +180,8 @@ namespace FMA.View.Common
                 Margin = new Thickness(0),
                 Focusable = true
             };
+
+            textBlock.SetValue(AutomationProperties.AutomationIdProperty, "CanvasTextBlock");
 
             if (CanManipulateTexts)
             {
@@ -151,7 +210,7 @@ namespace FMA.View.Common
             var leftBinding = new Binding("LeftMargin") { Mode = BindingMode.TwoWay };
             textBlock.SetBinding(LeftProperty, leftBinding);
 
-            Children.Add(textBlock);
+            return textBlock;
         }
 
         private Image CreateLogoImage(LogoModel logoModel)
@@ -161,8 +220,11 @@ namespace FMA.View.Common
                 DataContext = logoModel,
                 Stretch = Stretch.Fill,
                 Focusable = true,
-                Tag = logoModel
+                Tag = logoModel,
+
             };
+
+            createdLogoImage.SetValue(AutomationProperties.AutomationIdProperty, "CanvasLogoImage");
 
             if (CanManipulateLogos)
             {
@@ -185,12 +247,10 @@ namespace FMA.View.Common
             var leftBinding = new Binding("LeftMargin") { Mode = BindingMode.TwoWay };
             createdLogoImage.SetBinding(LeftProperty, leftBinding);
 
-            Children.Add(createdLogoImage);
-
             return createdLogoImage;
         }
 
-      
+
         private void AddEvents()
         {
             PropertyChangedEventManager.AddHandler(MaterialModel, MaterialModel_PropertyChanged, "");
@@ -209,7 +269,7 @@ namespace FMA.View.Common
                 CollectionChangedEventManager.AddHandler(MaterialModel.MaterialFields, MaterialFields_CollectionChanged);
             }
         }
-       
+
         private void RemoveEvents(MaterialModel materialModel)
         {
             PropertyChangedEventManager.RemoveHandler(materialModel, MaterialModel_PropertyChanged, "");
@@ -243,12 +303,12 @@ namespace FMA.View.Common
         private void MaterialChild_IsSelectedChanged(object sender, PropertyChangedEventArgs e)
         {
             var materialChildModel = sender as MaterialChildModel;
-            if (materialChildModel != null )
+            if (materialChildModel != null)
             {
                 MaterialChildIsSelectedChanged(materialChildModel);
             }
         }
- 
+
         private void MaterialChildIsSelectedChanged(MaterialChildModel materialChild)
         {
             var frameworkElement = this.Children.OfType<FrameworkElement>().FirstOrDefault(f => f.Tag == materialChild);
@@ -388,7 +448,7 @@ namespace FMA.View.Common
 
         protected override bool IsBackground(UIElement source)
         {
-            return ReferenceEquals(source, backgroundImage);
+            return ReferenceEquals(source, flyerFrontSideImage) || ReferenceEquals(source, flyerBackSideImage);
         }
 
         protected override Adorner CreateAdornerForElement(UIElement element)

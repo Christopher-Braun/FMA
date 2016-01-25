@@ -1,14 +1,14 @@
 ﻿<UserControl x:Class="FMA.View.DefaultView.DefaultView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:common="clr-namespace:FMA.View.Common"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:defaultView="clr-namespace:FMA.View.DefaultView"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:FMA.View.Models"
              xmlns:properties="clr-namespace:FMA.View.Properties"
-             xmlns:defaultView="clr-namespace:FMA.View.DefaultView"
-             xmlns:common="clr-namespace:FMA.View.Common"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
@@ -31,12 +31,13 @@
                  VerticalAlignment="Stretch"
                  Stretch="Uniform">
             <common:MaterialCanvas Margin="8"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 FontService="{Binding FontService}"
-                                 MaterialModel="{Binding SelectedMaterialProvider.MaterialModel}"
-                                 Visibility="{Binding Visibility,
-                                                      RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   FontService="{Binding FontService}"
+                                   MaterialModel="{Binding SelectedMaterialProvider.MaterialModel}"
+                                   ShowBackSide="{Binding SelectedMaterialProvider.ShowBackSide}"
+                                   Visibility="{Binding Visibility,
+                                                        RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
             <Viewbox.Style>
                 <Style TargetType="FrameworkElement">
                     <Style.Triggers>
@@ -91,6 +92,7 @@
                                                Text="{Binding FieldName}" />
                                     <TextBox Grid.Column="1"
                                              AcceptsReturn="True"
+                                             AutomationProperties.AutomationId="MaterialFieldValue"
                                              Style="{StaticResource TextBoxWithValidation}"
                                              Text="{Binding Value,
                                                             UpdateSourceTrigger=PropertyChanged,

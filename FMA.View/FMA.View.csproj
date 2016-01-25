@@ -56,6 +56,7 @@
     <Compile Include="ExternalView\ExternalViewModel.cs" />
     <Compile Include="Helpers\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Helpers\IWindowService.cs" />
+    <Compile Include="Helpers\NullToVisibleConverter.cs" />
     <Compile Include="Helpers\TextPropertiesCaptionVisibilityConverter.cs" />
     <Compile Include="Helpers\TextPropertiesCaptionsVisibilityConverter.cs" />
     <Compile Include="DefaultView\DefaultView.xaml.cs">

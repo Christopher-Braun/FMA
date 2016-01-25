@@ -4,12 +4,12 @@
              xmlns:Properties="clr-namespace:FMA.View.Properties"
              xmlns:contracts="clr-namespace:FMA.Contracts;assembly=FMA.Contracts"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:defaultView="clr-namespace:FMA.View.DefaultView"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:layoutView="clr-namespace:FMA.View.LayoutView"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:si="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
              xmlns:view="clr-namespace:FMA.View"
-             xmlns:defaultView="clr-namespace:FMA.View.DefaultView"
-             xmlns:layoutView="clr-namespace:FMA.View.LayoutView"
              d:DesignHeight="300"
              d:DesignWidth="640"
              mc:Ignorable="d">
@@ -37,7 +37,9 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid x:Name="Menu" Margin="4,0">
+        <Grid Name="Menu"
+              Margin="4,0"
+              AutomationProperties.AutomationId="Test">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -60,6 +62,7 @@
                 <ComboBox Grid.Column="1"
                           Margin="4,0"
                           VerticalAlignment="Center"
+                          AutomationProperties.AutomationId="MaterialComboBox"
                           ItemsSource="{Binding Materials}"
                           SelectedItem="{Binding SelectedMaterial}">
                     <ComboBox.ItemTemplate>
@@ -80,7 +83,8 @@
                         </Style>
                     </StackPanel.Resources>
 
-                    <Button IsEnabled="{Binding CanCreate}"
+                    <Button AutomationProperties.AutomationId="Create"
+                            IsEnabled="{Binding CanCreate}"
                             Style="{StaticResource ImageButton}"
                             ToolTip="{x:Static Properties:Resources.Create}">
                         <i:Interaction.Triggers>
@@ -92,7 +96,9 @@
                         <Path Data="M58.087635,37.91074L47.872219,48.125874 43.038265,43.283699 41.153744,45.166451 47.872219,51.884777 59.972256,39.793491z M50.563049,31.73C57.949932,31.73 64,37.779644 64,45.166451 64,52.553158 57.949932,58.603001 50.563049,58.603001 43.176067,58.603001 37.125999,52.553158 37.125999,45.166451 37.125999,37.779644 43.176067,31.73 50.563049,31.73z M33.032001,0L40.381001,0 40.381001,16.236 33.032001,16.236z M5.0388451,0L13.576872,0 13.576872,15.676368C13.576872,17.995482,15.456882,19.875292,17.775993,19.875292L39.191006,19.875292C41.510117,19.875292,43.389931,17.995482,43.389931,15.676368L43.389931,0 49.177559,0 56.966999,7.789382 56.966999,30.375652C55.002491,29.522047 52.83918,29.042944 50.564068,29.042944 41.672218,29.042944 34.440281,36.274784 34.440281,45.166538 34.440281,49.536861 36.193592,53.500183 39.026005,56.407002L5.0388451,56.407002C2.255872,56.407002,0,54.150986,0,51.368172L0,5.038847C0,2.2558709,2.255872,4.6670634E-08,5.0388451,0z" />
                     </Button>
 
-                    <Button Style="{StaticResource ImageButtonCritical}" ToolTip="{x:Static Properties:Resources.Reset}">
+                    <Button AutomationProperties.AutomationId="Reset"
+                            Style="{StaticResource ImageButtonCritical}"
+                            ToolTip="{x:Static Properties:Resources.Reset}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <si:CallMethodAction MethodName="Reset" TargetObject="{Binding}" />
@@ -121,23 +127,32 @@
                         </i:Interaction.Triggers>
                     </Button>
 
-                    <ToggleButton Background="Transparent"
+                    <ToggleButton AutomationProperties.AutomationId="ShowBackSide"
+                                  Background="Transparent"
+                                  BorderBrush="Transparent"
+                                  IsChecked="{Binding SelectedMaterialProvider.ShowBackSide}"
+                                  ToolTip="{x:Static Properties:Resources.ShowBackSide}">
+                        <Path Data="M1.1212257,9.3630001L6.5977538,11.580556 4.2506914,12.856734C5.4929478,15.192778 7.9304001,16.795777 10.761055,16.795777 13.75407,16.795777 16.324983,15.014366 17.488389,12.45831L19.643999,12.45831C18.371294,16.144636 14.875176,18.804999 10.761055,18.804999 7.1745365,18.804999 4.0586705,16.782776 2.4753525,13.820294L0,15.164176z M10.760896,0C14.30653,1.3528629E-07,17.389073,1.977851,18.989344,4.8840143L21.333,3.5363943 20.353317,9.3630001 14.824021,7.2771222 17.239375,5.8891636C15.988099,3.5858327 13.567544,2.0091001 10.760896,2.0091001 7.7688711,2.0091001 5.1979985,3.7902967 4.0345705,6.3461806L1.879,6.3461806C3.1517664,2.6600806,6.6478317,1.3528629E-07,10.760896,0z" />
+                    </ToggleButton>
+
+                    <ToggleButton AutomationProperties.AutomationId="ShowExternalPreview"
+                                  Background="Transparent"
                                   BorderBrush="Transparent"
                                   IsChecked="{Binding ExternalPreviewVisible}"
                                   ToolTip="{x:Static Properties:Resources.ExternalPreview}">
                         <Path Data="M26.039215,27.629606C24.107988,27.5842 22.149706,28.184616 20.511932,29.472662 16.77305,32.416664 16.125353,37.835873 19.06934,41.576878 22.011927,45.318378 27.430601,45.964779 31.172083,43.021477 34.913666,40.078873 35.559963,34.660168 32.615376,30.918665 30.960508,28.813955 28.522223,27.687988 26.039215,27.629606z M26.175369,21.674006C30.374353,21.772219 34.498257,23.675474 37.298256,27.23436 41.403736,32.454266 41.370037,39.598373 37.681053,44.73708L49.014999,59.141796 42.839928,64 31.546482,49.648384C25.63571,52.165989 18.550442,50.550785 14.386461,45.260479 9.4086151,38.932873 10.50158,29.769463 16.82905,24.790958 19.598192,22.613169 22.909492,21.597618 26.175369,21.674006z M17.5919,3.8808338E-30L35.9291,3.8808338E-30C38.934898,-3.5527137E-15,41.373001,2.4387343,41.373001,5.4433918L41.373001,24.876833 41.308846,24.805635C40.161221,23.562506,38.841671,22.462914,37.384888,21.539429L37.016998,21.312212 37.016998,5.4433918C37.016998,4.8445082,36.527302,4.3547654,35.9291,4.3547649L17.877001,4.3547649 17.584,13.852381C17.584,13.852381,17.205099,20.131718,10.2845,19.373112L4.3529701,19.213013 4.3529701,46.19437C4.3529696,46.795174,4.8424096,47.281574,5.4440298,47.281574L9.5967226,47.281574 9.7358932,47.479958C10.809489,48.970966,12.10646,50.308796,13.581778,51.45116L13.827712,51.637001 5.4440298,51.637001C2.4367697,51.637001,-2.9663937E-07,49.200287,2.7083472E-14,46.19437L2.7083472E-14,18.560608 2.156249,16.286495 2.15833,16.225395 13.4551,4.3547649 13.4238,4.3547649 10.4036,7.5417938 13.5677,4.1882553 13.6134,4.1882553 13.7129,4.0832739 13.7227,4.0832739z" />
                     </ToggleButton>
-                    <ToggleButton IsChecked="{Binding ExternalEditVisible}"
-                                    BorderBrush="Transparent"
-                                  Background="Transparent"
+                    <ToggleButton Background="Transparent"
+                                  BorderBrush="Transparent"
+                                  IsChecked="{Binding ExternalEditVisible}"
                                   ToolTip="{x:Static Properties:Resources.ExternalEdit}"
                                   Visibility="{Binding LayoutButtonsVisible,
                                                        Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Path Data="M28.360707,24.709001L34.156,30.052878 27.491,31.461999z M21.804573,9.387001L35.635192,9.387001 30.593621,14.785474 22.158771,14.785474 21.794172,26.55598C21.794173,26.55598,21.325376,34.340182,12.747326,33.399682L5.3957787,33.199483 5.3957787,66.6419C5.3957787,67.386998,6.0025845,67.990499,6.7473412,67.990499L44.53104,67.990499C45.273136,67.990499,45.879932,67.386998,45.879931,66.6419L45.879931,26.531579 51.281,21.086177 51.281,66.6419C51.281,70.368501,48.257519,73.387002,44.53104,73.387002L6.7473412,73.387002C3.020792,73.387002,0,70.368501,0,66.6419L0,32.391881 2.6718655,29.573581 2.6744843,29.496381 16.677003,14.785474 16.637903,14.785474 12.895725,18.732677 16.817602,14.579372 16.872302,14.579372 16.997301,14.449473 17.007701,14.449473z M43.026355,5.7090011L52.444,14.399388 40.819316,27.001 40.62142,25.005898 37.518604,23.951198 37.431366,21.838895 34.335141,21.018596 33.96271,18.635791 31.399,18.307692z M49.489491,0.0016288757C49.907602,0.01820612,50.297243,0.16148186,50.600458,0.44016027L57.272148,6.5981974C58.081923,7.3442663,57.977726,8.7787967,57.035154,9.7963381L55.756496,11.185001 46.15,2.3229249 47.42996,0.93428278C48.016691,0.29831791,48.792635,-0.025998116,49.489491,0.0016288757z" Fill="Red" />
                     </ToggleButton>
-                    <ToggleButton IsChecked="{Binding LayoutMode}"
-                                    BorderBrush="Transparent"
-                                  Background="Transparent"
+                    <ToggleButton Background="Transparent"
+                                  BorderBrush="Transparent"
+                                  IsChecked="{Binding LayoutMode}"
                                   ToolTip="{x:Static Properties:Resources.LayoutMode}"
                                   Visibility="{Binding LayoutButtonsVisible,
                                                        Converter={StaticResource BooleanToVisibilityConverter}}">

@@ -4,6 +4,7 @@
         xmlns:common="clr-namespace:FMA.View.Common"
         Height="800"
         AllowsTransparency="True"
+        AutomationProperties.AutomationId="ExternalPreview"
         BorderThickness="1"
         PreviewMouseLeftButtonDown="ExternalPreviewView_OnPreviewMouseLeftButtonDown"
         ResizeMode="CanResizeWithGrip"
@@ -16,9 +17,10 @@
              VerticalAlignment="Stretch"
              Stretch="Uniform">
         <common:MaterialCanvas HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           CanManipulateTexts="{Binding CanEdit}"
-                           FontService="{Binding FontService}"
-                           MaterialModel="{Binding SelectedMaterialProvider.MaterialModel}" />
+                               VerticalAlignment="Top"
+                               CanManipulateTexts="{Binding CanEdit}"
+                               FontService="{Binding FontService}"
+                               MaterialModel="{Binding SelectedMaterialProvider.MaterialModel}"
+                               ShowBackSide="{Binding SelectedMaterialProvider.ShowBackSide}" />
     </Viewbox>
 </Window>
