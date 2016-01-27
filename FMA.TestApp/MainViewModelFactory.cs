@@ -6,6 +6,7 @@ using System.Windows;
 using FMA.Contracts;
 using FMA.Core;
 using FMA.TestData;
+using FMA.View.AdminView;
 using FMA.View.Common;
 using FMA.View.Helpers;
 
@@ -13,6 +14,11 @@ namespace FMA
 {
     public class MainViewModelFactory
     {
+        public static AdminViewModel CreateAdminViewModel(Window mainWindow)
+        {
+            return new AdminViewModel();
+        }
+
         public static FlyerMakerViewModel CreateFlyerViewModel(Window mainWindow)
         {
             var dummyMaterials = DummyData.GetDummyMaterials();

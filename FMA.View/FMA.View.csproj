@@ -47,6 +47,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminView\AdminView.xaml.cs">
+      <DependentUpon>AdminView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AdminView\AdminViewModel.cs" />
     <Compile Include="ExternalView\ExternalEditView.xaml.cs">
       <DependentUpon>ExternalEditView.xaml</DependentUpon>
     </Compile>
@@ -88,6 +92,10 @@
     <Compile Include="LayoutView\TextualLayout.xaml.cs">
       <DependentUpon>TextualLayout.xaml</DependentUpon>
     </Compile>
+    <Page Include="AdminView\AdminView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ExternalView\ExternalEditView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -11,6 +11,7 @@ namespace FMA.UnitTests.CodedUITests
     [TestClass]
     public class DefaultViewMaterialFieldsTests : TestBase
     {
+
         [TestMethod]
         public void PerDefault_InTextInput_MaterialFieldValuesAreCorrect()
         {
@@ -137,6 +138,10 @@ namespace FMA.UnitTests.CodedUITests
 
                 textBox.Text += "Y";
                 Assert.IsFalse(createButton.Enabled);
+
+              //  var uiItems2 = mainWindow.GetMultiple(SearchCriteria.ByAutomationId("ErrorT"));
+              //  var uiItems = mainWindow.GetMultiple(SearchCriteria.ByAutomationId("Error"));
+             //   Assert.IsTrue(uiItems.Any());
 
                 textBox.Text = "E";
             }

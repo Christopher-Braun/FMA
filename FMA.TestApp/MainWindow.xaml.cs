@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -19,17 +20,25 @@ namespace FMA
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        private FlyerMakerViewModel flyerMakerViewModel;
+        private object flyerMakerViewModel;
 
         public MainWindow()
         {
             InitializeComponent();
             this.DataContext = this;
+            var commandLineStrings = Environment.CommandLine.Split(' ');
+            if (String.Equals(commandLineStrings.Last(), "admin", StringComparison.InvariantCultureIgnoreCase))
+            {
+                FlyerMakerViewModel = MainViewModelFactory.CreateAdminViewModel(this);
+            }
+            else
 
-            FlyerMakerViewModel = MainViewModelFactory.CreateFlyerViewModel(this);
+            {
+                FlyerMakerViewModel = MainViewModelFactory.CreateFlyerViewModel(this);
+            }
         }
 
-        public FlyerMakerViewModel FlyerMakerViewModel
+        public object FlyerMakerViewModel
         {
             get { return flyerMakerViewModel; }
             set

@@ -210,6 +210,9 @@ namespace FMA.View.Common
             var leftBinding = new Binding("LeftMargin") { Mode = BindingMode.TwoWay };
             textBlock.SetBinding(LeftProperty, leftBinding);
 
+         //   textBlock.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
+         //   textBlock.LineHeight = 60;
+
             return textBlock;
         }
 

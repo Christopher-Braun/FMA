@@ -20,7 +20,6 @@ namespace FMA.UnitTests.CodedUITests
             }
 
             var create = mainWindow.Get<Button>(SearchCriteria.ByAutomationId("Create"));
-
             create.Click();
 
             Assert.IsTrue(File.Exists(FlyerTestAppSettings.TestappflyerJpg));

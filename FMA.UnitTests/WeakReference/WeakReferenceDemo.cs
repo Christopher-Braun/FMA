@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Windows;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FMA.UnitTests.WeakReference
@@ -106,6 +107,7 @@ namespace FMA.UnitTests.WeakReference
             Action create = () =>
             {
                 var a = new GuiElement();
+            //    WeakEventManager<Model,PropertyChangedEventArgs>.
                 PropertyChangedEventManager.AddHandler(model, a.SomethingHappened, "");
             };
 

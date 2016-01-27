@@ -1,4 +1,19 @@
+Schriftfarbe invertieren?
 
+
+
+AdminMode
+
+Max Beschränkungen festlegen für TextFields - Alle  Textfield Eigenschaften
+
+Deselektion geht nicht mehr
+
+Farbraum
+
+
+Markus die UnitTest csproj schicken
+
+Ohne Maus, TabStops
 
 Restore Preview Position
 

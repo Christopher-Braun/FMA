@@ -34,6 +34,7 @@
                         <Grid ToolTip="{Binding AdornedElement.(Validation.Errors)[0].ErrorContent, ElementName=ErrorAdorner}">
                             <Rectangle Width="16"
                                        Margin="0,0,0,0"
+                                       AutomationProperties.AutomationId="Error"
                                        Fill="{StaticResource ErrorColor}" />
                             <TextBlock Width="16"
                                        Height="22"
@@ -41,6 +42,7 @@
                                        FontSize="16"
                                        FontWeight="Bold"
                                        Foreground="White"
+                                        AutomationProperties.AutomationId="ErrorT"
                                        Text="!"
                                        TextAlignment="Center" />
                         </Grid>

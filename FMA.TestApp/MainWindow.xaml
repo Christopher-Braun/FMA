@@ -2,11 +2,15 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:common="clr-namespace:FMA.View.Common;assembly=FMA.View"
+        xmlns:adminView="clr-namespace:FMA.View.AdminView;assembly=FMA.View"
         Title="MainWindow"
         Width="860"
         Height="530">
     <Window.Resources>
         <DataTemplate DataType="{x:Type common:FlyerMakerViewModel}">
+            <common:FlyerMakerView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type adminView:AdminViewModel}">
             <common:FlyerMakerView />
         </DataTemplate>
     </Window.Resources>
