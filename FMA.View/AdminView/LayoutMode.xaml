@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="FMA.View.AdminView.LayoutMode"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:helpers="clr-namespace:FMA.View.Helpers"
+             xmlns:layoutView="clr-namespace:FMA.View.LayoutView"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="300"
+            
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Common/Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <DataTemplate DataType="{x:Type layoutView:LayoutViewModel}">
+                <layoutView:LayoutView />
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <ContentControl Content="{Binding FlyerViewModel}" Visibility="Collapsed">
+        <ContentControl.Style>
+            <Style TargetType="FrameworkElement">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding ViewState}" Value="LayoutMode">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard Storyboard="{StaticResource FadeIn}" />
+                        </DataTrigger.EnterActions>
+                        <DataTrigger.ExitActions>
+                            <BeginStoryboard Storyboard="{StaticResource FadeOut}" />
+                        </DataTrigger.ExitActions>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ContentControl.Style>
+    </ContentControl>
+</UserControl>

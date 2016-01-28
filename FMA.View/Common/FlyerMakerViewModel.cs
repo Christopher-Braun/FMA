@@ -2,63 +2,22 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using FMA.Contracts;
-using FMA.View.DefaultView;
 using FMA.View.Helpers;
-using FMA.View.LayoutView;
 using FMA.View.Models;
-using FMA.View.Properties;
 
 namespace FMA.View.Common
 {
-    public class FlyerMakerViewModel : INotifyPropertyChanged
+    public class FlyerMakerViewModel : FlyerMakerViewModelBase
     {
         public event Action<CustomMaterial> FlyerCreated = m => { };
 
-        private List<MaterialModel> materials;
-        private bool externalPreviewVisible;
-        private bool externalEditVisible;
-        private bool layoutMode;
-        private bool layoutButtonsVisible;
-        private FlyerViewModelBase flyerViewModel;
-
-        public SelectedMaterialProvider SelectedMaterialProvider { get; private set; }
-        private readonly IWindowService windowService;
-        private readonly IFontService fontService;
-
         public FlyerMakerViewModel(List<Material> materials, int selectedMateriaId, Func<string, FontInfo> getFont, IFontService fontService, IWindowService windowService)
+            : base(materials, getFont, fontService, windowService)
         {
-            this.fontService = fontService;
-            UpdateFonts(materials, getFont);
-
-            this.windowService = windowService;
-
-            this.SelectedMaterialProvider = new SelectedMaterialProvider();
-            this.SelectedMaterialProvider.PropertyChanged += (s, e) => OnPropertyChanged("CanCreate");
-
             this.SetMaterials(materials, selectedMateriaId);
-
             this.LayoutMode = false;
-        }
-
-        private void UpdateFonts(IEnumerable<Material> materials, Func<string, FontInfo> getFont)
-        {
-            var requiredFonts = materials.SelectMany(m => m.MaterialFields).Select(f => f.FontName);
-
-            foreach (var requiredFontName in requiredFonts)
-            {
-                if (fontService.IsFontAvailable(requiredFontName))
-                {
-                    continue;
-                }
-                var fontInfo = getFont(requiredFontName);
-                if (fontInfo != null)
-                {
-                    fontService.InstallFont(fontInfo.FileName, fontInfo.Buffer);
-                }
-            }
         }
 
         private void SetMaterials(IEnumerable<Material> materials, int selectedMateriaId = -1)
@@ -70,52 +29,8 @@ namespace FMA.View.Common
             }
         }
 
-        public FlyerViewModelBase FlyerViewModel
-        {
-            get { return flyerViewModel; }
-            private set
-            {
-                flyerViewModel = value;
-                OnPropertyChanged();
-            }
-        }
 
-        public bool ExternalPreviewVisible
-        {
-            get { return externalPreviewVisible; }
-            set
-            {
-                externalPreviewVisible = value;
-
-                if (value)
-                {
-                    windowService.OpenExternalPreviewWindow(this.SelectedMaterialProvider, this.fontService);
-                }
-                else
-                {
-                    windowService.CloseExternalPreviewWindow();
-                }
-            }
-        }
-
-        public bool ExternalEditVisible
-        {
-            get { return externalEditVisible; }
-            set
-            {
-                externalEditVisible = value;
-
-                if (value)
-                {
-                    windowService.OpenExternalEditWindow(this.SelectedMaterialProvider, this.fontService);
-                }
-                else
-                {
-                    windowService.CloseExternalEditWindow();
-                }
-            }
-        }
-
+        private bool layoutButtonsVisible;
         public bool LayoutButtonsVisible
         {
             get { return layoutButtonsVisible; }
@@ -134,72 +49,11 @@ namespace FMA.View.Common
             }
         }
 
-        public bool LayoutMode
-        {
-            get { return layoutMode; }
-            set
-            {
-                layoutMode = value;
-
-                var viewState = FlyerViewModelBase.ViewStates.Both;
-
-                if (FlyerViewModel != null)
-                {
-                    viewState = FlyerViewModel.ViewState;
-
-                }
-
-                if (layoutMode)
-                {
-                    this.FlyerViewModel = new LayoutViewModel(this.SelectedMaterialProvider, fontService, viewState);
-                }
-                else
-                {
-                    this.FlyerViewModel = new DefaultViewModel(this.SelectedMaterialProvider, fontService, viewState);
-                }
-
-                OnPropertyChanged("CanCreate");
-            }
-        }
-
-        public List<MaterialModel> Materials
-        {
-            get { return materials; }
-            set
-            {
-                materials = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public MaterialModel SelectedMaterial
-        {
-            get { return SelectedMaterialProvider.MaterialModel; }
-            set { this.SelectedMaterialProvider.MaterialModel = value.Clone(); }
-        }
-
-        public bool CanCreate
-        {
-            get { return this.FlyerViewModel.CanCreate; }
-        }
-
         public void Create()
         {
             FlyerCreated(SelectedMaterial.ToCustomMaterial());
         }
 
-        public void Reset()
-        {
-            this.SelectedMaterial = this.Materials.Single(m => m.Id.Equals(this.SelectedMaterial.Id));
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
+        public override event PropertyChangedEventHandler PropertyChanged;
     }
 }

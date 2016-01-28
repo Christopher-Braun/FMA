@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="FMA.View.AdminView.MaterialTemplateSelector"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:adminView="clr-namespace:FMA.View.AdminView"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:FMA.View.Models"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+           
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Common/Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Name="TemplateSelection">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.Style>
+            <Style TargetType="FrameworkElement">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding ViewState}" Value="SelectTemplate">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard Storyboard="{StaticResource FadeIn}" />
+                        </DataTrigger.EnterActions>
+                        <DataTrigger.ExitActions>
+                            <BeginStoryboard Storyboard="{StaticResource FadeOut}" />
+                        </DataTrigger.ExitActions>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
+        <TextBlock Margin="4" Text="Neues Material anlegen auf Basis von" />
+        <ItemsControl Grid.Row="1"
+                      Margin="4"
+                      ItemsSource="{Binding Materials}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="models:MaterialModel">
+                    <Button Margin="4"
+                            Padding="8"
+                            HorizontalAlignment="Stretch"
+                            Content="{Binding Title}"
+                            Tag="{Binding Id}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <ei:CallMethodAction MethodName="OpenTemplate" TargetObject="{Binding RelativeSource={RelativeSource AncestorType={x:Type adminView:AdminView}}, Path=DataContext}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</UserControl>

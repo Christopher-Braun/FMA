@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
@@ -47,10 +48,22 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminView\LayoutMode.xaml.cs">
+      <DependentUpon>LayoutMode.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AdminView\AdminView.xaml.cs">
       <DependentUpon>AdminView.xaml</DependentUpon>
     </Compile>
     <Compile Include="AdminView\AdminViewModel.cs" />
+    <Compile Include="AdminView\MaterialProperties.xaml.cs">
+      <DependentUpon>MaterialProperties.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AdminView\MaterialTemplateSelector.xaml.cs">
+      <DependentUpon>MaterialTemplateSelector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\FlyerMakerViewModelBase.cs" />
+    <Compile Include="Helpers\ImageHelper.cs" />
+    <Compile Include="Common\FontHelper.cs" />
     <Compile Include="ExternalView\ExternalEditView.xaml.cs">
       <DependentUpon>ExternalEditView.xaml</DependentUpon>
     </Compile>
@@ -92,7 +105,19 @@
     <Compile Include="LayoutView\TextualLayout.xaml.cs">
       <DependentUpon>TextualLayout.xaml</DependentUpon>
     </Compile>
+    <Page Include="AdminView\LayoutMode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="AdminView\AdminView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AdminView\MaterialProperties.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AdminView\MaterialTemplateSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -182,6 +207,9 @@
       <Project>{3eee4f9d-e4bb-48bb-85df-87f57935c843}</Project>
       <Name>FMA.Contracts</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AdminView\flyer_sample.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

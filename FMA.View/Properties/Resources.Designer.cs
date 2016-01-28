@@ -196,6 +196,16 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap flyer_sample {
+            get {
+                object obj = ResourceManager.GetObject("flyer_sample", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FontName.
         /// </summary>
         public static string FontName {

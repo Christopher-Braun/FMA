@@ -24,11 +24,11 @@ namespace FMA.View.Common
             set
             {
                 materialModel = value;
-                materialModel.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
                 OnPropertyChanged();
-
                 this.MaterialChilds.Clear();
 
+                if (materialModel == null) return;
+                materialModel.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
                 InitLogo(materialModel.LogoModel);
 
                 var materialFields = materialModel.MaterialFields;

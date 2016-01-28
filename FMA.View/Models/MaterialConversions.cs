@@ -11,9 +11,14 @@ namespace FMA.View.Models
     {
         public static MaterialModel ToMaterialModel(this Material material, IFontService fontService)
         {
-            var defaultFontFamily = new FontFamilyWithName( fontService.GetFontFamily(material.DefaultFont));
+            var defaultFontFamily = new FontFamilyWithName(fontService.GetFontFamily(material.DefaultFont));
 
             return new MaterialModel(material.Id, material.Title, material.Description, material.MaterialFields.Select(f => f.ToMaterialFieldModel(fontService)), material.FlyerFrontSide, material.FlyerBackside, defaultFontFamily);
+        }
+
+        public static Material ToNewMaterial(this MaterialModel material)
+        {
+            return new Material(-1, material.Title, material.Description, material.MaterialFields.Select(f => f.ToMaterialField()), material.FlyerFrontSide, material.FlyerBackside, material.DefaultFont.Name);
         }
 
         public static CustomMaterial ToCustomMaterial(this MaterialModel material)
@@ -31,6 +36,7 @@ namespace FMA.View.Models
 
         public static MaterialModel Clone(this MaterialModel material)
         {
+            if(material == null) return null;
             return new MaterialModel(material.Id, material.Title, material.Description, material.MaterialFields.Select(f => f.Clone()), material.FlyerFrontSide, material.FlyerBackside, material.DefaultFont);
         }
 

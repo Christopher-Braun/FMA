@@ -11,6 +11,13 @@ namespace FMA.View.Models
     {
         public static void AddLogo(this MaterialModel materialModel)
         {
+            var fileName = ShowFileOpenDialog();
+
+            materialModel.SetLogo(fileName, new Point(25, 75));
+        }
+
+        public static string ShowFileOpenDialog()
+        {
             var dialog = new OpenFileDialog
             {
                 //TODO Remove when going productive
@@ -22,13 +29,11 @@ namespace FMA.View.Models
             var result = dialog.ShowDialog();
             if (result != true)
             {
-                return;
+                return string.Empty;
             }
 
             var fileName = dialog.FileName;
-
-            materialModel.SetLogo(fileName, new Point(25, 75));
-
+            return fileName;
         }
 
         public static bool DropLogo(this FrameworkElement frameworkElement, MaterialModel materialModel, DragEventArgs e)
@@ -50,16 +55,7 @@ namespace FMA.View.Models
 
         public static void SetLogo(this MaterialModel materialModel, string logoFile, Point position)
         {
-            byte[] logoData;
-
-            using (var fileStream = new FileStream(logoFile, FileMode.Open))
-            {
-                using (var ms = new MemoryStream())
-                {
-                    fileStream.CopyTo(ms);
-                    logoData = ms.ToArray();
-                }
-            }
+            var logoData = GetByteArrayFromFile(logoFile);
 
             var logoModel = materialModel.LogoModel;
 
@@ -75,8 +71,8 @@ namespace FMA.View.Models
             var logoWidth = logoModel.LogoImage.PixelWidth;
             var logoHeight = logoModel.LogoImage.PixelHeight;
 
-            var widthRatio = (materialModel.FlyerFrontSideImage.Width/2)/logoWidth;
-            var heigthRatio = (materialModel.FlyerFrontSideImage.Height/2)/logoHeight;
+            var widthRatio = (materialModel.FlyerFrontSideImage.Width / 2) / logoWidth;
+            var heigthRatio = (materialModel.FlyerFrontSideImage.Height / 2) / logoHeight;
 
             var minRatio = Math.Min(widthRatio, heigthRatio);
 
@@ -85,12 +81,27 @@ namespace FMA.View.Models
                 minRatio = 1; //Only want to scale down
             }
 
-            logoModel.Width = logoWidth*minRatio;
-            logoModel.Height = logoHeight*minRatio;
+            logoModel.Width = logoWidth * minRatio;
+            logoModel.Height = logoHeight * minRatio;
 
 
-            logoModel.LeftMargin = (int) position.X;
-            logoModel.TopMargin = (int) position.Y;
+            logoModel.LeftMargin = (int)position.X;
+            logoModel.TopMargin = (int)position.Y;
+        }
+
+        public static byte[] GetByteArrayFromFile(string logoFile)
+        {
+            byte[] logoData;
+
+            using (var fileStream = new FileStream(logoFile, FileMode.Open))
+            {
+                using (var ms = new MemoryStream())
+                {
+                    fileStream.CopyTo(ms);
+                    logoData = ms.ToArray();
+                }
+            }
+            return logoData;
         }
     }
 }

@@ -11,6 +11,8 @@ namespace FMA.View.Models
     {
         private byte[] flyerFrontSide;
         private byte[] flyerBackside;
+        private BitmapImage flyerFrontSideImage;
+        private BitmapImage flyerBackSideImage;
 
         public MaterialModel(int id, string title, string description, IEnumerable<MaterialFieldModel> materialFields, byte[] flyerFrontSide, byte[] flyerBackside, FontFamilyWithName defaultFont)
         {
@@ -44,27 +46,47 @@ namespace FMA.View.Models
 
         public FontFamilyWithName DefaultFont { get; set; }
 
-        public BitmapImage FlyerFrontSideImage { get; private set; }
+        public BitmapImage FlyerFrontSideImage
+        {
+            get { return flyerFrontSideImage; }
+            private set
+            {
+                flyerFrontSideImage = value;
+                OnPropertyChanged();
+            }
+        }
 
         public byte[] FlyerFrontSide
         {
             get { return flyerFrontSide; }
-            private set
+            set
             {
                 flyerFrontSide = value;
                 FlyerFrontSideImage = FlyerFrontSide.GetBitmapImage();
+                OnPropertyChanged();
+
             }
         }
 
-        public BitmapImage FlyerBackSideImage { get; private set; }
+        public BitmapImage FlyerBackSideImage
+        {
+            get { return flyerBackSideImage; }
+            set
+            {
+                flyerBackSideImage = value;
+                OnPropertyChanged();
+            }
+        }
 
         public byte[] FlyerBackside
         {
             get { return flyerBackside; }
-            private set
+            set
             {
                 flyerBackside = value;
                 FlyerBackSideImage = FlyerBackside.GetBitmapImage();
+                OnPropertyChanged();
+
             }
         }
 
