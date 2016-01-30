@@ -84,9 +84,6 @@
     <Compile Include="FlyerMakerViewModelTest.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WeakReference\WeakReferenceDemo.cs" />
-    <Compile Include="WeakReference\Model.cs" />
-    <Compile Include="WeakReference\GuiElement.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
