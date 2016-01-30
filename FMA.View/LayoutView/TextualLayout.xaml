@@ -36,9 +36,9 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal">
+        <StackPanel Grid.ColumnSpan="1" Orientation="Horizontal">
             <TextBlock Margin="4,0"
                        FontWeight="Bold"
                        Text="{x:Static properties:Resources.Elements}" />
@@ -56,7 +56,8 @@
                      BorderBrush="CadetBlue"
                      BorderThickness="1,1,1,0"
                      ItemsSource="{Binding SelectedMaterialProvider.MaterialChilds}"
-                     SelectionMode="Extended">
+                     SelectionMode="Extended"
+                     SnapsToDevicePixels="True">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}">
                         <Setter Property="IsSelected" Value="{Binding Mode=TwoWay, Path=IsSelected}" />
@@ -77,7 +78,8 @@
                     Margin="4,0,8,8"
                     Background="White"
                     BorderBrush="CadetBlue"
-                    BorderThickness="1,0,1,1">
+                    BorderThickness="1,0,1,1"
+                    SnapsToDevicePixels="True">
                 <StackPanel Orientation="Horizontal">
 
                     <Button Style="{StaticResource ImageButton}" ToolTip="{x:Static properties:Resources.AddTextField}">
@@ -94,7 +96,10 @@
                               Stretch="Uniform" />
 
                     </Button>
-                    <Button Style="{StaticResource ImageButton}" ToolTip="{x:Static properties:Resources.AddLogo}">
+                    <Button Style="{StaticResource ImageButton}"
+                            ToolTip="{x:Static properties:Resources.AddLogo}"
+                            Visibility="{Binding CanAddLogo,
+                                                 Converter={StaticResource BooleanToVisibilityConverter}}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <ei:CallMethodAction MethodName="AddLogo" TargetObject="{Binding}" />
@@ -138,8 +143,10 @@
             <Grid Grid.IsSharedSizeScope="True">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
+
+
                 <Grid Name="TextFieldCaptions" Visibility="{Binding Path=SelectedItems.Count, ElementName=ListBox, Converter={StaticResource TextPropertiesCaptionsVisibilityConverter}}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" SharedSizeGroup="A" />
@@ -150,6 +157,8 @@
                         <RowDefinition Height="Auto" SharedSizeGroup="F" />
                         <RowDefinition Height="Auto" SharedSizeGroup="G" />
                         <RowDefinition Height="Auto" SharedSizeGroup="H" />
+                        <RowDefinition Height="Auto" SharedSizeGroup="I" />
+                        <RowDefinition Height="Auto" SharedSizeGroup="J" />
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0"
@@ -168,17 +177,27 @@
                                                     Converter={StaticResource TextPropertiesCaptionVisibilityConverter}}" />
                     <TextBlock Grid.Row="4"
                                Grid.Column="0"
-                               Text="{x:Static properties:Resources.FontSize}"
+                               Text="{x:Static properties:Resources.FontName}"
                                Visibility="{Binding Path=SelectedMaterialProvider.SelectedMaterialChilds,
                                                     Converter={StaticResource TextPropertiesCaptionVisibilityConverter}}" />
                     <TextBlock Grid.Row="5"
                                Grid.Column="0"
-                               Text="{x:Static properties:Resources.FontStyle}"
+                               Text="{x:Static properties:Resources.FontSize}"
                                Visibility="{Binding Path=SelectedMaterialProvider.SelectedMaterialChilds,
                                                     Converter={StaticResource TextPropertiesCaptionVisibilityConverter}}" />
                     <TextBlock Grid.Row="6"
                                Grid.Column="0"
-                               Text="{x:Static properties:Resources.FontName}"
+                               Text="{x:Static properties:Resources.FontStyle}"
+                               Visibility="{Binding Path=SelectedMaterialProvider.SelectedMaterialChilds,
+                                                    Converter={StaticResource TextPropertiesCaptionVisibilityConverter}}" />
+                    <TextBlock Grid.Row="7"
+                               Grid.Column="0"
+                               Text="{x:Static properties:Resources.MaxLength}"
+                               Visibility="{Binding Path=SelectedMaterialProvider.SelectedMaterialChilds,
+                                                    Converter={StaticResource TextPropertiesCaptionVisibilityConverter}}" />
+                    <TextBlock Grid.Row="8"
+                               Grid.Column="0"
+                               Text="{x:Static properties:Resources.MaxLength}"
                                Visibility="{Binding Path=SelectedMaterialProvider.SelectedMaterialChilds,
                                                     Converter={StaticResource TextPropertiesCaptionVisibilityConverter}}" />
 
@@ -209,6 +228,8 @@
                                     <RowDefinition Height="Auto" SharedSizeGroup="F" />
                                     <RowDefinition Height="Auto" SharedSizeGroup="G" />
                                     <RowDefinition Height="Auto" SharedSizeGroup="H" />
+                                    <RowDefinition Height="Auto" SharedSizeGroup="I" />
+                                    <RowDefinition Height="Auto" SharedSizeGroup="J" />
                                 </Grid.RowDefinitions>
                                 <Grid.Resources>
                                     <Style TargetType="Path">
@@ -235,9 +256,11 @@
 
                                 <common:NumericUpDown Grid.Row="1"
                                                       Grid.Column="0"
+                                                      Margin="4"
                                                       Value="{Binding TopMargin}" />
                                 <common:NumericUpDown Grid.Row="1"
                                                       Grid.Column="1"
+                                                      Margin="4"
                                                       Value="{Binding LeftMargin}" />
 
 
@@ -260,30 +283,7 @@
                                          Text="{Binding Value,
                                                         UpdateSourceTrigger=PropertyChanged}" />
 
-                                <common:NumericUpDown Grid.Row="4"
-                                                      Grid.Column="0"
-                                                      Grid.ColumnSpan="2"
-                                                      Margin="4"
-                                                      Minimum="1"
-                                                      Value="{Binding FontSize}" />
-
-                                <StackPanel Grid.Row="5"
-                                            Grid.Column="0"
-                                            Grid.ColumnSpan="2"
-                                            Orientation="Horizontal">
-                                    <ToggleButton IsChecked="{Binding Uppper, Mode=TwoWay}" ToolTip="{x:Static properties:Resources.Versal}">
-                                        <Path Data="M1.03125,27.2356262207031L22.21875,27.2356262207031 22.21875,29.5325012207031 20.3203125,29.9543800354004 18.9375,30.4700012207031 17.25,32.0637512207031 16.6875,34.8293762207031 17.0625,38.2746887207031 18.140625,42.4231262207031 29.109375,80.6731262207031 42.5625,42.1418762207031 43.125,40.2668762207031 43.6171875,38.3450012207031 43.8984375,36.7043762207031 43.96875,35.3918762207031 43.646484375,32.9602394104004 42.6796875,31.2903137207031 40.939453125,30.2063331604004 38.296875,29.5325012207031 38.296875,27.2356262207031 57.984375,27.2356262207031 57.984375,29.5325012207031 56.2499961853027,30.1067237854004 54.890625,30.8918762207031 53.7246055603027,32.0520362854004 52.5703125,33.7512512207031 51.2988243103027,36.3059425354004 49.78125,40.0325012207031 30.328125,91.9700012207031 24.1875,91.9700012207031 8.390625,39.7043762207031 7.20703077316284,36.0539894104004 6.1875,33.6340637207031 5.203125,32.0520362854004 4.12499952316284,30.9153137207031 2.7890625,30.1125831604004 1.03125,29.5325012207031 1.03125,27.2356262207031z" />
-                                    </ToggleButton>
-                                    <ToggleButton IsChecked="{Binding Bold, Mode=TwoWay}">
-                                        <Path Data="M355.855,399.674C330.622,399.674 309.055,400.03 291.197,400.749 277.365,401.469 265.726,402.188 256.159,403.627L256.159,697.99C300.644,706.975 344.933,711.648 387.786,711.648 459.378,711.648 514.388,696.911 551.46,668.16 588.095,640.124 606.671,604.542 606.671,562.848 606.671,535.172 598.141,508.215 581.477,482.698 564.935,457.54 537.429,437.051 499.678,422.318 461.331,407.581 412.977,399.674 355.855,399.674z M357.728,53.1934C320.576,53.1934,286.414,56.7867,256.159,63.6136L256.159,338.93C269.193,341.089 283.703,342.523 299.688,343.603 319.021,345.042 340.15,345.402 363.229,345.402 421.508,345.402 465.677,340.009 494.457,328.506 522.6,317.726 544.446,300.834 559.433,278.55 574.501,255.907 582.075,230.745 582.075,204.148 582.075,162.094 563.579,127.591 525.59,97.7611 487.761,68.2862 431.235,53.1934 357.728,53.1934z M0,0L368.73,0C436.417,-6E-06 491.428,4.66824 532.327,13.6537 595.231,26.9565 644.142,51.7543 677.667,86.617 711.271,121.839 728.332,162.814 728.332,208.461 728.332,247.636 714.899,283.218 688.35,314.492 666.983,339.65 637.047,359.42 599.177,374.153 644.461,385.656 679.859,401.829 704.573,423.033 745.991,458.26 767,502.108 767,553.503 767,591.963 753.246,629.699 726.14,664.926 698.953,700.508 661.324,726.745 614.125,742.917 567.645,758.734 496.211,767 401.975,767L0,767 0,730.339 40.3007,730.339C72.1515,730.339 94.275,721.713 107.749,703.742 113.45,696.195 120.386,676.066 120.386,625.746L120.386,140.89C120.386,85.8974 111.895,65.4124 104.759,58.2258 90.5281,43.8481 69.3608,36.6571 40.3007,36.6571L0,36.6571z" />
-                                    </ToggleButton>
-
-                                    <ToggleButton IsChecked="{Binding Italic, Mode=TwoWay}">
-                                        <Path Data="M316.192,0L767,0 749.878,39.1939 738.741,39.1939C704.077,39.1939 682.646,41.3535 669.096,46.0239 647.139,52.8584 630.543,62.2081 619.512,74.0729 607.538,86.6576 591.782,116.506 572.349,162.175L382.949,613.455C362.044,663.798 357.738,683.217 357.738,690.407 357.738,697.602 360.101,703.352 365.195,708.387 370.238,713.062 378.8,717.017 390.774,719.896 400.071,722.051 423.024,725.286 479.381,727.806L496.609,728.526 479.958,767 0,767 21.5877,727.806 30.8844,727.806C84.5105,727.086 106.255,723.491 115.081,720.972 136.614,715.221 152.213,707.667 161.722,698.317 178.526,681.778 196.386,651.574 214.665,608.42L404.85,156.78C420.607,120.461 428.538,92.7722 428.538,74.4328 428.538,66.8829 425.964,60.7683 420.607,55.7336 415.407,50.6988 406.848,46.7438 395.345,43.8687 386.571,41.7091 365.878,39.1939 316.506,39.1939L297.598,39.1939z" />
-                                    </ToggleButton>
-                                </StackPanel>
-
-                                <ComboBox Grid.Row="6"
+                                <ComboBox Grid.Row="4"
                                           Grid.Column="0"
                                           Grid.ColumnSpan="2"
                                           Margin="4"
@@ -303,6 +303,41 @@
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
+
+                                <common:NumericUpDown Grid.Row="5"
+                                                      Grid.Column="0"
+                                                      Grid.ColumnSpan="2"
+                                                      Margin="4"
+                                                      Minimum="1"
+                                                      Value="{Binding FontSize}" />
+
+                                <StackPanel Grid.Row="6"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="2"
+                                            Orientation="Horizontal">
+                                    <ToggleButton IsChecked="{Binding Uppper, Mode=TwoWay}" ToolTip="{x:Static properties:Resources.Versal}">
+                                        <Path Data="M1.03125,27.2356262207031L22.21875,27.2356262207031 22.21875,29.5325012207031 20.3203125,29.9543800354004 18.9375,30.4700012207031 17.25,32.0637512207031 16.6875,34.8293762207031 17.0625,38.2746887207031 18.140625,42.4231262207031 29.109375,80.6731262207031 42.5625,42.1418762207031 43.125,40.2668762207031 43.6171875,38.3450012207031 43.8984375,36.7043762207031 43.96875,35.3918762207031 43.646484375,32.9602394104004 42.6796875,31.2903137207031 40.939453125,30.2063331604004 38.296875,29.5325012207031 38.296875,27.2356262207031 57.984375,27.2356262207031 57.984375,29.5325012207031 56.2499961853027,30.1067237854004 54.890625,30.8918762207031 53.7246055603027,32.0520362854004 52.5703125,33.7512512207031 51.2988243103027,36.3059425354004 49.78125,40.0325012207031 30.328125,91.9700012207031 24.1875,91.9700012207031 8.390625,39.7043762207031 7.20703077316284,36.0539894104004 6.1875,33.6340637207031 5.203125,32.0520362854004 4.12499952316284,30.9153137207031 2.7890625,30.1125831604004 1.03125,29.5325012207031 1.03125,27.2356262207031z" />
+                                    </ToggleButton>
+                                    <ToggleButton IsChecked="{Binding Bold, Mode=TwoWay}">
+                                        <Path Data="M355.855,399.674C330.622,399.674 309.055,400.03 291.197,400.749 277.365,401.469 265.726,402.188 256.159,403.627L256.159,697.99C300.644,706.975 344.933,711.648 387.786,711.648 459.378,711.648 514.388,696.911 551.46,668.16 588.095,640.124 606.671,604.542 606.671,562.848 606.671,535.172 598.141,508.215 581.477,482.698 564.935,457.54 537.429,437.051 499.678,422.318 461.331,407.581 412.977,399.674 355.855,399.674z M357.728,53.1934C320.576,53.1934,286.414,56.7867,256.159,63.6136L256.159,338.93C269.193,341.089 283.703,342.523 299.688,343.603 319.021,345.042 340.15,345.402 363.229,345.402 421.508,345.402 465.677,340.009 494.457,328.506 522.6,317.726 544.446,300.834 559.433,278.55 574.501,255.907 582.075,230.745 582.075,204.148 582.075,162.094 563.579,127.591 525.59,97.7611 487.761,68.2862 431.235,53.1934 357.728,53.1934z M0,0L368.73,0C436.417,-6E-06 491.428,4.66824 532.327,13.6537 595.231,26.9565 644.142,51.7543 677.667,86.617 711.271,121.839 728.332,162.814 728.332,208.461 728.332,247.636 714.899,283.218 688.35,314.492 666.983,339.65 637.047,359.42 599.177,374.153 644.461,385.656 679.859,401.829 704.573,423.033 745.991,458.26 767,502.108 767,553.503 767,591.963 753.246,629.699 726.14,664.926 698.953,700.508 661.324,726.745 614.125,742.917 567.645,758.734 496.211,767 401.975,767L0,767 0,730.339 40.3007,730.339C72.1515,730.339 94.275,721.713 107.749,703.742 113.45,696.195 120.386,676.066 120.386,625.746L120.386,140.89C120.386,85.8974 111.895,65.4124 104.759,58.2258 90.5281,43.8481 69.3608,36.6571 40.3007,36.6571L0,36.6571z" />
+                                    </ToggleButton>
+
+                                    <ToggleButton IsChecked="{Binding Italic, Mode=TwoWay}">
+                                        <Path Data="M316.192,0L767,0 749.878,39.1939 738.741,39.1939C704.077,39.1939 682.646,41.3535 669.096,46.0239 647.139,52.8584 630.543,62.2081 619.512,74.0729 607.538,86.6576 591.782,116.506 572.349,162.175L382.949,613.455C362.044,663.798 357.738,683.217 357.738,690.407 357.738,697.602 360.101,703.352 365.195,708.387 370.238,713.062 378.8,717.017 390.774,719.896 400.071,722.051 423.024,725.286 479.381,727.806L496.609,728.526 479.958,767 0,767 21.5877,727.806 30.8844,727.806C84.5105,727.086 106.255,723.491 115.081,720.972 136.614,715.221 152.213,707.667 161.722,698.317 178.526,681.778 196.386,651.574 214.665,608.42L404.85,156.78C420.607,120.461 428.538,92.7722 428.538,74.4328 428.538,66.8829 425.964,60.7683 420.607,55.7336 415.407,50.6988 406.848,46.7438 395.345,43.8687 386.571,41.7091 365.878,39.1939 316.506,39.1939L297.598,39.1939z" />
+                                    </ToggleButton>
+                                </StackPanel>
+
+                                <common:NumericUpDown Grid.Row="7"
+                                                      Grid.Column="0"
+                                                      Grid.ColumnSpan="2"
+                                                      Margin="4"
+                                                      Value="{Binding MaxLength}" />
+
+                                <common:NumericUpDown Grid.Row="8"
+                                                      Grid.Column="0"
+                                                      Grid.ColumnSpan="2"
+                                                      Margin="4"
+                                                      Value="{Binding MaxRows}" />
 
                             </Grid>
                         </DataTemplate>
@@ -344,13 +379,17 @@
                                            Grid.Column="0"
                                            Text="{Binding FieldName}" />
 
-                                <common:NumericUpDown Grid.Row="1" Value="{Binding TopMargin}" />
+                                <common:NumericUpDown Grid.Row="1"
+                                                      Grid.Column="0"
+                                                      Value="{Binding TopMargin}" />
 
                                 <common:NumericUpDown Grid.Row="1"
                                                       Grid.Column="1"
                                                       Value="{Binding LeftMargin}" />
 
-                                <common:NumericUpDown Grid.Row="2" Value="{Binding Width}" />
+                                <common:NumericUpDown Grid.Row="2"
+                                                      Grid.Column="0"
+                                                      Value="{Binding Width}" />
 
                                 <common:NumericUpDown Grid.Row="2"
                                                       Grid.Column="1"
@@ -363,7 +402,7 @@
                     </ItemsControl.Resources>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <ContentPresenter Content="{Binding}" />
+                            <ContentControl Content="{Binding}" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
 

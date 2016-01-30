@@ -6,8 +6,9 @@ using FMA.Contracts;
 using FMA.View.Common;
 using FMA.View.Helpers;
 using FMA.View.Models;
+using FMA.View.Properties;
 
-namespace FMA.View.AdminView
+namespace FMA.AdminView
 {
     public class AdminViewModel : FlyerMakerViewModelBase
     {
@@ -22,12 +23,13 @@ namespace FMA.View.AdminView
 
             this.ViewState = ViewStates.SelectTemplate;
             this.LayoutMode = true;
+            this.FlyerViewModel.CanAddLogo = false;
         }
 
-        private MaterialModel CreateEmptyMaterialTemplate(IFontService fontService)
+        private static MaterialModel CreateEmptyMaterialTemplate(IFontService fontService)
         {
-            var backgroundBytes = ImageHelper.ImageToByte(Properties.Resources.flyer_sample);
-            return new MaterialModel(-1, "Leeres Material (*)", "", Enumerable.Empty<MaterialFieldModel>(), backgroundBytes, backgroundBytes, fontService.AllFontFamilies.First());
+            var backgroundBytes = Properties.Resources.flyer_sample.ToByteArray();
+            return new MaterialModel(-1, Resources.EmptyMaterial, "", Enumerable.Empty<MaterialFieldModel>(), backgroundBytes, backgroundBytes, fontService.AllFontFamilies.First());
         }
 
         public void OpenTemplate(object sender, EventArgs args)
@@ -40,25 +42,24 @@ namespace FMA.View.AdminView
 
         public void SetFlyerFrontSideImage()
         {
-            var fileName = LogoExtensions.ShowFileOpenDialog();
-            if (string.IsNullOrEmpty(fileName))
-            {
-                return;
-            }
-
-            var byteArrayFromFile = LogoExtensions.GetByteArrayFromFile(fileName);
-            this.SelectedMaterial.FlyerFrontSide = byteArrayFromFile;
+            SetFlyerImage(b => this.SelectedMaterial.FlyerFrontSide = b);
         }
 
         public void SetFlyerBackSideImage()
         {
-            var fileName = LogoExtensions.ShowFileOpenDialog();
+            SetFlyerImage(b => this.SelectedMaterial.FlyerBackside = b);
+        }
+
+        private static void SetFlyerImage(Action<byte[]> setImage)
+        {
+            var fileName = FileHelper.ShowFileOpenDialogForImages();
             if (string.IsNullOrEmpty(fileName))
             {
                 return;
             }
 
-            this.SelectedMaterial.FlyerBackside = LogoExtensions.GetByteArrayFromFile(fileName);
+            var bytes = FileHelper.GetByteArrayFromFile(fileName);
+            setImage(bytes);
         }
 
         public void ApplyCommonProperties()
@@ -71,10 +72,17 @@ namespace FMA.View.AdminView
             MaterialCreated(this.SelectedMaterial.ToNewMaterial());
         }
 
-        public void CompleteReset()
+        public void Back()
         {
-            this.SelectedMaterial = null;
-            this.ViewState = ViewStates.SelectTemplate;
+            if (ViewState == ViewStates.LayoutMode)
+            {
+                this.ViewState = ViewStates.SetCommonProperties;
+            }
+            else if (ViewState == ViewStates.SetCommonProperties)
+            {
+                this.SelectedMaterial = null;
+                this.ViewState = ViewStates.SelectTemplate;
+            }
         }
 
         public ViewStates ViewState

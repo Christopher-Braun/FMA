@@ -21,7 +21,7 @@ namespace FMA.TestData
             };
 
             var material1 = new Material(1, "Gefährlicher Glaube", "ZumThema Gefährlicher Glaube (Islamische Welt)",
-                material1Fields, Helper.GetBackground(1), Helper.GetBackground(1,false));
+                material1Fields, Helper.GetBackground(1), Helper.GetBackground(1, false));
 
             var material2Fields = new List<MaterialField>
             {
@@ -54,12 +54,12 @@ namespace FMA.TestData
 
         public static Material GetDefaultSelectedMaterial()
         {
-            return GetDummyMaterials().Single(m => m.Id.Equals(DummyData.DefaultSelectedMaterialId));
+            return GetDummyMaterials().Single(m => m.Id.Equals(DefaultSelectedMaterialId));
         }
 
         public static Material GetNotDefaultSelectedMaterial()
         {
-            return GetDummyMaterials().First(m => m.Id.Equals(DummyData.DefaultSelectedMaterialId) == false);
+            return GetDummyMaterials().First(m => m.Id.Equals(DefaultSelectedMaterialId) == false);
         }
 
         public static int DefaultSelectedMaterialId

@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System;
+using System.IO;
 using System.Windows.Media.Imaging;
 
 namespace FMA.Contracts
@@ -8,22 +8,31 @@ namespace FMA.Contracts
     {
         public static BitmapImage GetBitmapImage(this byte[] bytes)
         {
-            var imageSource = new BitmapImage();
-            if (bytes == null || bytes.Count() == 0)
+            try
             {
+                var imageSource = new BitmapImage();
+                if (bytes == null || bytes.Length == 0)
+                {
+                    return imageSource;
+                }
+
+                using (var stream = new MemoryStream(bytes))
+                {
+                    stream.Seek(0, SeekOrigin.Begin);
+                    imageSource.BeginInit();
+                    imageSource.StreamSource = stream;
+                    imageSource.CacheOption = BitmapCacheOption.OnLoad;
+                    imageSource.EndInit();
+                }
+
                 return imageSource;
             }
-
-            using (var stream = new MemoryStream(bytes))
+            catch (Exception)
             {
-                stream.Seek(0, SeekOrigin.Begin);
-                imageSource.BeginInit();
-                imageSource.StreamSource = stream;
-                imageSource.CacheOption = BitmapCacheOption.OnLoad;
-                imageSource.EndInit();
+                return null;
             }
-
-            return imageSource;
         }
+
+
     }
 }

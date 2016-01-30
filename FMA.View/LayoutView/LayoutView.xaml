@@ -4,7 +4,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:layoutView="clr-namespace:FMA.View.LayoutView"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:view="clr-namespace:FMA.View"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -48,20 +47,10 @@
                       HorizontalScrollBarVisibility="Auto"
                       VerticalScrollBarVisibility="Auto">
 
-            <Grid>
+            <layoutView:TextualLayout Grid.Row="0"
+                                      MinWidth="400"
+                                      HorizontalAlignment="Left" />
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-
-                </Grid.RowDefinitions>
-
-                <layoutView:TextualLayout Grid.Row="0"
-                                          MinWidth="400"
-                                          HorizontalAlignment="Left" />
-
-
-            </Grid>
             <ScrollViewer.Style>
                 <Style TargetType="FrameworkElement">
                     <Style.Triggers>

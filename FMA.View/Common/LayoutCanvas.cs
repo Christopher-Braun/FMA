@@ -236,8 +236,8 @@ namespace FMA.View.Common
 
         private bool DragIsGreaterThanDragDelta(Point mousePosition)
         {
-            return ((Math.Abs(mousePosition.X - origMouseDownPoint.X) > SystemParameters.MinimumHorizontalDragDistance) ||
-                    (Math.Abs(mousePosition.Y - origMouseDownPoint.Y) > SystemParameters.MinimumVerticalDragDistance));
+            return (Math.Abs(mousePosition.X - origMouseDownPoint.X) > SystemParameters.MinimumHorizontalDragDistance) ||
+                   (Math.Abs(mousePosition.Y - origMouseDownPoint.Y) > SystemParameters.MinimumVerticalDragDistance);
         }
 
         private void ApplyDragSelectionRect()
@@ -329,7 +329,7 @@ namespace FMA.View.Common
 
         protected void UnSelectElement(FrameworkElement child)
         {
-            var selectedChild = this.selectedChilds.FirstOrDefault(s => s.Element == child);
+            var selectedChild = this.selectedChilds.FirstOrDefault(s => ReferenceEquals(s.Element, child));
             if (selectedChild == null)
             {
                 return;

@@ -48,21 +48,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdminView\LayoutMode.xaml.cs">
-      <DependentUpon>LayoutMode.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="AdminView\AdminView.xaml.cs">
-      <DependentUpon>AdminView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="AdminView\AdminViewModel.cs" />
-    <Compile Include="AdminView\MaterialProperties.xaml.cs">
-      <DependentUpon>MaterialProperties.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="AdminView\MaterialTemplateSelector.xaml.cs">
-      <DependentUpon>MaterialTemplateSelector.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Common\FlyerMakerViewModelBase.cs" />
-    <Compile Include="Helpers\ImageHelper.cs" />
     <Compile Include="Common\FontHelper.cs" />
     <Compile Include="ExternalView\ExternalEditView.xaml.cs">
       <DependentUpon>ExternalEditView.xaml</DependentUpon>
@@ -95,6 +81,7 @@
     <Compile Include="DefaultView\LogoLayout.xaml.cs">
       <DependentUpon>LogoLayout.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Models\MaterialChildModel.cs" />
     <Compile Include="Common\SelectedMaterialProvider.cs" />
     <Compile Include="Models\LogoExtensions.cs" />
@@ -105,22 +92,6 @@
     <Compile Include="LayoutView\TextualLayout.xaml.cs">
       <DependentUpon>TextualLayout.xaml</DependentUpon>
     </Compile>
-    <Page Include="AdminView\LayoutMode.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="AdminView\AdminView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="AdminView\MaterialProperties.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="AdminView\MaterialTemplateSelector.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ExternalView\ExternalEditView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -193,9 +164,10 @@
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -207,9 +179,6 @@
       <Project>{3eee4f9d-e4bb-48bb-85df-87f57935c843}</Project>
       <Name>FMA.Contracts</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="AdminView\flyer_sample.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

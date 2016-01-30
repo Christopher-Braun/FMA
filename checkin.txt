@@ -1,2 +1,5 @@
 MO 1 Z + 1,5H
 DI 1 Z + 0,5R
+
+Logo abschalten im Admin Mode
+Max Beschränkungen festlegen für TextFields - Alle  Textfield Eigenschaften

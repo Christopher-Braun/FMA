@@ -6,7 +6,7 @@ using TestStack.White.UIItems;
 using TestStack.White.UIItems.Finders;
 using TestStack.White.UIItems.ListBoxItems;
 
-namespace FMA.UnitTests.CodedUITests
+namespace FMA.UnitTests.UITests
 {
     [TestClass]
     public class MenuBarTests : TestBase

@@ -1,17 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using FMA.Contracts;
-using FMA.Core;
-using FMA.TestData;
-using FMA.View;
-using FMA.View.Common;
-using FMA.View.Helpers;
 
 namespace FMA
 {
@@ -32,7 +23,6 @@ namespace FMA
                 FlyerMakerViewModel = MainViewModelFactory.CreateAdminViewModel(this);
             }
             else
-
             {
                 FlyerMakerViewModel = MainViewModelFactory.CreateFlyerViewModel(this);
             }

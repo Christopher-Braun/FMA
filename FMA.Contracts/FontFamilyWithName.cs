@@ -37,7 +37,7 @@ namespace FMA.Contracts
 
         public override int GetHashCode()
         {
-            return (FontFamily != null ? FontFamily.GetHashCode() : 0);
+            return FontFamily != null ? FontFamily.GetHashCode() : 0;
         }
     }
 }

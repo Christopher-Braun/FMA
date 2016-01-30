@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestStack.White.UIItems;
 using TestStack.White.UIItems.Finders;
 
-namespace FMA.UnitTests.CodedUITests
+namespace FMA.UnitTests.UITests
 {
     [TestClass]
     public class DefaultViewMaterialFieldsTests : TestBase

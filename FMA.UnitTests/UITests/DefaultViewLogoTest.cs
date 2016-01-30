@@ -1,7 +1,7 @@
-﻿using System.Diagnostics.Eventing.Reader;
-using System.Globalization;
+﻿using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Automation;
 using FMA.TestData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,7 +9,7 @@ using TestStack.White.InputDevices;
 using TestStack.White.UIItems;
 using TestStack.White.UIItems.Finders;
 
-namespace FMA.UnitTests.CodedUITests
+namespace FMA.UnitTests.UITests
 {
     [TestClass]
     public class DefaultViewLogoTest : TestBase
@@ -84,26 +84,6 @@ namespace FMA.UnitTests.CodedUITests
 
 
             Assert.IsTrue(logoImage.Bounds.Width > oldWidth);
-        }
-
-        [TestMethod]
-        public void AddLogo_IncreasWidthAdorner_ImageWidthIsIncreased()
-        {
-            //TODO
-            //  AddLogo();
-
-            //  var logoImage = mainWindow.Get<Image>(SearchCriteria.ByAutomationId("LogoImage"));
-
-            ////  var adornerLayer = AdornerLayer.GetAdornerLayer(logoImage.);
-
-            //  logoImage.Click();
-
-
-
-            //  var adorner = logoImage.Get(SearchCriteria.ByAutomationId("AdornerBottomRight"));
-
-            //  //  adorne
-            //  var a = 9;
         }
 
         [TestMethod]
@@ -187,12 +167,14 @@ namespace FMA.UnitTests.CodedUITests
 
         private void AddLogo(string logoFile = "smallLogo.png")
         {
+            logoFile = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\Logos\" + logoFile;
+
             ClickButton("AddLogo");
 
             var lastwindow = application.GetWindows().Last();
             //    lastwindow  =application.GetWindow(SearchCriteria.All.("Select logo file"), InitializeOption.WithCache);
 
-            //TODO nicht schön
+            //nicht schön
             string fileNameText;
             string openButtonText;
             if (Equals(CultureInfo.CurrentUICulture, new CultureInfo("en-Us")))

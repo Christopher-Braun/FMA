@@ -16,11 +16,11 @@ namespace FMA.View.Common
         public FlyerMakerViewModel(List<Material> materials, int selectedMateriaId, Func<string, FontInfo> getFont, IFontService fontService, IWindowService windowService)
             : base(materials, getFont, fontService, windowService)
         {
-            this.SetMaterials(materials, selectedMateriaId);
+            this.SetMaterials(materials, selectedMateriaId, fontService);
             this.LayoutMode = false;
         }
 
-        private void SetMaterials(IEnumerable<Material> materials, int selectedMateriaId = -1)
+        private void SetMaterials(IEnumerable<Material> materials, int selectedMateriaId, IFontService fontService)
         {
             this.Materials = materials.Select(m => m.ToMaterialModel(fontService)).ToList();
             if (selectedMateriaId != -1)
@@ -53,7 +53,5 @@ namespace FMA.View.Common
         {
             FlyerCreated(SelectedMaterial.ToCustomMaterial());
         }
-
-        public override event PropertyChangedEventHandler PropertyChanged;
     }
 }

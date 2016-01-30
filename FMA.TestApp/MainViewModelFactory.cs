@@ -4,10 +4,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows;
+using FMA.AdminView;
 using FMA.Contracts;
 using FMA.Core;
 using FMA.TestData;
-using FMA.View.AdminView;
 using FMA.View.Common;
 using FMA.View.Helpers;
 
@@ -63,11 +63,11 @@ namespace FMA
             {
                 if (name == "Signarita Anne")
                 {
-                    return new FontInfo("SignaritaAnne.ttf", Helper.GetByteArrayFromFile("SignaritaAnneDemo.ttf"));
+                    return new FontInfo("SignaritaAnne.ttf", FileHelper.GetByteArrayFromFile("Fonts\\SignaritaAnneDemo.ttf"));
                 }
                 if (name == "Bakery")
                 {
-                    return new FontInfo("Bakery.ttf", Helper.GetByteArrayFromFile("bakery.ttf"));
+                    return new FontInfo("Bakery.ttf", FileHelper.GetByteArrayFromFile("Fonts\\bakery.ttf"));
                 }
 
                 return null;

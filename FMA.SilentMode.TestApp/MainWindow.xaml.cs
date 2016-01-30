@@ -20,7 +20,7 @@ namespace FMA.SilentMode.TestApp
             var exeDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             var customFontsDir = string.Format(@"{0}\CustomFonts\", exeDir);
 
-            var flyer = (new FlyerCreator(customFontsDir)).CreateFlyer(material);
+            var flyer = new FlyerCreator(customFontsDir).CreateFlyer(material);
 
             using (var fileStream = new FileStream("SilentFlyer.jpg", FileMode.Create))
             {

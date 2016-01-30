@@ -47,28 +47,27 @@ namespace FMA.View.Common
         }
 
         public static readonly DependencyProperty CanManipulateLogosProperty = DependencyProperty.Register(
-            "CanManipulateLogos", typeof(bool), typeof(MaterialCanvas), new PropertyMetadata(true));
-
-        public static readonly DependencyProperty ShowBackSideProperty = DependencyProperty.Register(
-            "ShowBackSide", typeof (bool), typeof (MaterialCanvas), 
-            new FrameworkPropertyMetadata(
-                default(bool),
-                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                (d,e) => ((MaterialCanvas)d).ShowBackSidePropertyChanged()
-                )
-            );
-
-
-        public bool ShowBackSide
-        {
-            get { return (bool) GetValue(ShowBackSideProperty); }
-            set { SetValue(ShowBackSideProperty, value); }
-        }
+            "CanManipulateLogos", typeof(bool), typeof(MaterialCanvas), new PropertyMetadata(true, (d, e) => ((MaterialCanvas)d).CanManipulateLogosChanged()));
 
         public bool CanManipulateLogos
         {
             get { return (bool)GetValue(CanManipulateLogosProperty); }
             set { SetValue(CanManipulateLogosProperty, value); }
+        }
+
+        public static readonly DependencyProperty ShowBackSideProperty = DependencyProperty.Register(
+            "ShowBackSide", typeof(bool), typeof(MaterialCanvas),
+            new FrameworkPropertyMetadata(
+                default(bool),
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                (d, e) => ((MaterialCanvas)d).ShowBackSidePropertyChanged()
+                )
+            );
+
+        public bool ShowBackSide
+        {
+            get { return (bool)GetValue(ShowBackSideProperty); }
+            set { SetValue(ShowBackSideProperty, value); }
         }
 
         static MaterialCanvas()
@@ -82,9 +81,24 @@ namespace FMA.View.Common
 
         public MaterialCanvas()
         {
-            AllowDrop = true;
-            Drop += (sender, e) => this.DropLogo(this.MaterialModel, e);
+            Drop += (sender, e) => DropLogo(e);
             SelectedChilds.CollectionChanged += SelectedElements_CollectionChanged;
+        }
+
+        public void DropLogo(DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                return;
+            }
+
+            var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            var logoFile = files.First();
+
+            var position = e.GetPosition(this);
+
+            MaterialModel.SetLogo(logoFile, position);
         }
 
         private void SelectedElements_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -102,15 +116,20 @@ namespace FMA.View.Common
 
             if (SelectedElements.Any())
             {
-                this.ShowBackSide = false;
+                ShowBackSide = false;
             }
+        }
+
+        private void CanManipulateLogosChanged()
+        {
+            AllowDrop = CanManipulateLogos;
         }
 
         private void ShowBackSidePropertyChanged()
         {
             if (ShowBackSide)
             {
-                this.UnSelectAllElements();
+                UnSelectAllElements();
             }
         }
 
@@ -132,27 +151,13 @@ namespace FMA.View.Common
         {
             ClearChildren();
 
-            flyerFrontSideImage = new Image {Source = MaterialModel.FlyerFrontSideImage, Cursor = Cursors.Arrow};
-            Children.Add(flyerFrontSideImage);
+            CreateFlyerFrontSide();
+            CreateFlyerBackSide();
 
-            flyerBackSideImage = new Image
-            {
-                Source = MaterialModel.FlyerBackSideImage,
-                Cursor = Cursors.Arrow,
-                DataContext = this
-            };
-            SetZIndex(flyerBackSideImage, int.MaxValue);
-            flyerBackSideImage.SetValue(AutomationProperties.AutomationIdProperty, "CanvasBackSideImage");
-            var visibilityBinding = new Binding("ShowBackSide")
-            {
-                Mode = BindingMode.OneWay,
-                Converter = new BooleanToVisibilityConverter()
-            };
-            flyerBackSideImage.SetBinding(VisibilityProperty, visibilityBinding);
-            Children.Add(flyerBackSideImage);
 
             logoImage = CreateLogoImage(MaterialModel.LogoModel);
             Children.Add(logoImage);
+
             if (MaterialModel.LogoModel.IsSelected && CanManipulateLogos)
             {
                 AddSelectedElement(logoImage);
@@ -169,6 +174,35 @@ namespace FMA.View.Common
             }
 
             CreateSelectionBorder();
+        }
+
+        private void CreateFlyerFrontSide()
+        {
+            flyerFrontSideImage = new Image { Cursor = Cursors.Arrow, DataContext = MaterialModel };
+            var sourceBinding = new Binding("FlyerFrontSideImage") { Mode = BindingMode.OneWay };
+            flyerFrontSideImage.SetBinding(Image.SourceProperty, sourceBinding);
+            Children.Add(flyerFrontSideImage);
+        }
+
+        private void CreateFlyerBackSide()
+        {
+            flyerBackSideImage = new Image
+            {
+                Cursor = Cursors.Arrow,
+                DataContext = this
+            };
+            var sourceBinding = new Binding("MaterialModel.FlyerBackSideImage") { Mode = BindingMode.OneWay };
+            flyerBackSideImage.SetBinding(Image.SourceProperty, sourceBinding);
+
+            SetZIndex(flyerBackSideImage, Int32.MaxValue);
+            flyerBackSideImage.SetValue(AutomationProperties.AutomationIdProperty, "CanvasBackSideImage");
+            var visibilityBinding = new Binding("ShowBackSide")
+            {
+                Mode = BindingMode.OneWay,
+                Converter = new BooleanToVisibilityConverter()
+            };
+            flyerBackSideImage.SetBinding(VisibilityProperty, visibilityBinding);
+            Children.Add(flyerBackSideImage);
         }
 
         private TextBlock CreateTextBlock(MaterialFieldModel materialField)
@@ -210,8 +244,8 @@ namespace FMA.View.Common
             var leftBinding = new Binding("LeftMargin") { Mode = BindingMode.TwoWay };
             textBlock.SetBinding(LeftProperty, leftBinding);
 
-         //   textBlock.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
-         //   textBlock.LineHeight = 60;
+            //   textBlock.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
+            //   textBlock.LineHeight = 60;
 
             return textBlock;
         }
@@ -314,7 +348,7 @@ namespace FMA.View.Common
 
         private void MaterialChildIsSelectedChanged(MaterialChildModel materialChild)
         {
-            var frameworkElement = this.Children.OfType<FrameworkElement>().FirstOrDefault(f => f.Tag == materialChild);
+            var frameworkElement = Children.OfType<FrameworkElement>().FirstOrDefault(f => f.Tag == materialChild);
             if (frameworkElement == null)
             {
                 return;
@@ -342,7 +376,7 @@ namespace FMA.View.Common
                 return;
             }
 
-            var children = this.Children.OfType<TextBlock>().Where(CanManipulateElement).ToList();
+            var children = Children.OfType<TextBlock>().Where(CanManipulateElement).ToList();
             children.ForEach(c => c.Foreground = Brushes.Black);
 
             var childrenWithRects = children.Select(c => new Tuple<TextBlock, Rect>(c, GetRectFromElement(c))).ToArray();
@@ -446,6 +480,12 @@ namespace FMA.View.Common
                 //In DefaultMode only Logo can be manipulated
                 return false;
             }
+
+            if (CanManipulateLogos == false && isLogo)
+            {
+                return false;
+            }
+
             return base.CanManipulateElement(source);
         }
 

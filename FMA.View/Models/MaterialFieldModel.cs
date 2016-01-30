@@ -16,8 +16,8 @@ namespace FMA.View.Models
         private string error = string.Empty;
         private int topMargin = 100;
         private int leftMargin = 20;
-        private int maxRows = int.MaxValue;
-        private int maxLength = int.MaxValue;
+        private int maxRows = 5;
+        private int maxLength = 200;
         private bool uppper;
         private bool italic;
         private bool bold;
@@ -47,11 +47,11 @@ namespace FMA.View.Models
 
         public double Width
         {
-            get { return Math.Round( GetFormattedText().Width); }
+            get { return Math.Round(GetFormattedText().Width); }
         }
         public double Height
         {
-            get { return Math.Round( GetFormattedText().Height); }
+            get { return Math.Round(GetFormattedText().Height); }
         }
 
         private FormattedText GetFormattedText()
@@ -61,7 +61,7 @@ namespace FMA.View.Models
 
             var typeface = new Typeface(FontFamilyWithName.FontFamily, fontStyle, fontWeight, FontStretches.Normal);
 
-            var formattedText = new FormattedText(DisplayValue, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,typeface, FontSize, Brushes.Black);
+            var formattedText = new FormattedText(DisplayValue, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, FontSize, Brushes.Black);
 
             return formattedText;
         }
@@ -73,13 +73,13 @@ namespace FMA.View.Models
             get { return fontFamilyWithName; }
             set
             {
-                if(Equals(value, FontFamilyWithName)) { return; }
+                if (Equals(value, FontFamilyWithName)) { return; }
 
                 if (value == null)
                 {
                     //TODO Hack weil das Binding an die ComboBox beim switchen der View da null reinsetzt
                     return;
-                   // throw new ArgumentNullException("fontFamilyWithName");
+                    // throw new ArgumentNullException("fontFamilyWithName");
                 }
 
                 fontFamilyWithName = value;

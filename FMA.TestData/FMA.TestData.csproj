@@ -43,6 +43,10 @@
       <Project>{3EEE4F9D-E4BB-48BB-85DF-87F57935C843}</Project>
       <Name>FMA.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FMA.View\FMA.View.csproj">
+      <Project>{ACB5A086-ECE7-4373-9FD8-0BF400A29E21}</Project>
+      <Name>FMA.View</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

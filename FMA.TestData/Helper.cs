@@ -1,12 +1,13 @@
 using System;
 using System.IO;
 using System.Reflection;
+using FMA.View.Helpers;
 
 namespace FMA.TestData
 {
     public static class Helper
     {
-        public static byte[] GetBackground(int id, bool frontSide= true)
+        public static byte[] GetBackground(int id, bool frontSide = true)
         {
             var entryAssembly = Assembly.GetEntryAssembly();
             if (entryAssembly == null)
@@ -16,17 +17,9 @@ namespace FMA.TestData
 
             var location = entryAssembly.Location;
             var dir = Path.GetDirectoryName(location);
-            string flyerFileName;
 
-            if (frontSide)
-            {
-                flyerFileName = String.Format("Flyer_{0}.jpg", id.ToString("00"));
-            }
-            else
-            {
-                flyerFileName = String.Format("Flyer_{0}_hinten.jpg", id.ToString("00"));
-            }
-            if (dir == null)
+            var flyerFileName = string.Format(frontSide ? "Backgrounds\\Flyer_{0}.jpg" : "Backgrounds\\Flyer_{0}_hinten.jpg", id.ToString("00"));
+            if (dir           == null)
             {
                 throw new InvalidOperationException("Location");
             }
@@ -36,23 +29,9 @@ namespace FMA.TestData
                 return new byte[0];
             }
 
-            return GetByteArrayFromFile(imagePath);
+            return FileHelper.GetByteArrayFromFile(imagePath);
         }
 
-        public static byte[] GetByteArrayFromFile(string filePath)
-        {
-            byte[] data;
 
-            using (var fileStream = new FileStream(filePath, FileMode.Open))
-            {
-                using (var ms = new MemoryStream())
-                {
-                    fileStream.CopyTo(ms);
-                    data = ms.ToArray();
-                }
-            }
-
-            return data;
-        }
     }
 }

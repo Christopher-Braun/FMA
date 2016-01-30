@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using FMA.Contracts;
 using FMA.View.Common;
 using FMA.View.Models;
@@ -7,10 +8,13 @@ namespace FMA.View.LayoutView
 {
     public class LayoutViewModel : FlyerViewModelBase
     {
-        public LayoutViewModel(SelectedMaterialProvider selectedMaterialProvider, IFontService fontService,ViewStates viewState)
+        public LayoutViewModel(SelectedMaterialProvider selectedMaterialProvider, IFontService fontService, ViewStates viewState)
             : base(selectedMaterialProvider, fontService, viewState)
         {
+         
         }
+
+     
 
         public override bool CanCreate
         {
@@ -30,7 +34,7 @@ namespace FMA.View.LayoutView
 
         public void DeleteSelectedChild()
         {
-            int index = int.MaxValue;
+            var index = int.MaxValue;
             var materialFieldModels = MaterialModel.MaterialFields;
 
             foreach (var selectedChild in SelectedMaterialProvider.SelectedMaterialChilds.ToArray())

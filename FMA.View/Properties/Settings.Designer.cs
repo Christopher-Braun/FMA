@@ -22,5 +22,17 @@ namespace FMA.View.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastLogoPath {
+            get {
+                return ((string)(this["LastLogoPath"]));
+            }
+            set {
+                this["LastLogoPath"] = value;
+            }
+        }
     }
 }

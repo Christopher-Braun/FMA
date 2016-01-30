@@ -19,8 +19,8 @@ namespace FMA.View.Common
         private bool externalEditVisible;
         private bool layoutMode;
 
-        protected IWindowService windowService;
-        protected IFontService fontService;
+        private readonly IWindowService windowService;
+        private readonly IFontService fontService;
         private FlyerViewModelBase flyerViewModel;
 
         public FlyerViewModelBase FlyerViewModel
@@ -45,7 +45,6 @@ namespace FMA.View.Common
 
         }
 
-        public virtual event Action<CustomMaterial> FlyerCreated;
         public SelectedMaterialProvider SelectedMaterialProvider { get; private set; }
 
         public bool ExternalPreviewVisible

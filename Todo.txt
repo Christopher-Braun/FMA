@@ -4,9 +4,9 @@ Schriftfarbe invertieren?
 
 AdminMode
 
-Max Beschränkungen festlegen für TextFields - Alle  Textfield Eigenschaften
+OK Max Beschränkungen festlegen für TextFields - Alle  Textfield Eigenschaften
 
-Deselektion geht nicht mehr
+Deselektion geht nicht mehr, manchmal
 
 Farbraum
 
@@ -21,9 +21,7 @@ Restore Preview Position
 TODO 
 
 Zoom
-Backside Dateien hinterlegen
 
-Selection wird nicht angezeigt in External View
 
 Dispose   ok
 Listbox

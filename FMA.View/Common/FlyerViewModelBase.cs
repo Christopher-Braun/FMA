@@ -10,12 +10,14 @@ namespace FMA.View.Common
     public abstract class FlyerViewModelBase : INotifyPropertyChanged
     {
         private ViewStates viewState;
+        private bool canAddLogo;
 
         protected FlyerViewModelBase(SelectedMaterialProvider selectedMaterialProvider, IFontService fontService, ViewStates viewState)
         {
             this.viewState = viewState;
             SelectedMaterialProvider = selectedMaterialProvider;
             FontService = fontService;
+            CanAddLogo = true;
         }
 
         public SelectedMaterialProvider SelectedMaterialProvider { get; private set; }
@@ -24,17 +26,27 @@ namespace FMA.View.Common
 
         public abstract bool CanCreate { get; }
 
+        public Boolean CanAddLogo
+        {
+            get { return canAddLogo; }
+            set
+            {
+                canAddLogo = value;
+                OnPropertyChanged();
+            }
+        }
+
         public void AddLogo()
         {
             SelectedMaterialProvider.MaterialModel.AddLogo();
             //TODO Only in override
-      //      SelectedMaterialProvider.SetSelectedChilds(SelectedMaterialProvider.MaterialModel.LogoModel);
+            //      SelectedMaterialProvider.SetSelectedChilds(SelectedMaterialProvider.MaterialModel.LogoModel);
         }
 
         public void DeleteLogo()
         {
             SelectedMaterialProvider.MaterialModel.LogoModel.DeleteLogo();
-         //   SelectedMaterialProvider.SetSelectedChilds(SelectedMaterialProvider.MaterialModel.MaterialFields.Last());
+            //   SelectedMaterialProvider.SetSelectedChilds(SelectedMaterialProvider.MaterialModel.MaterialFields.Last());
         }
 
         public void ToggleViews()

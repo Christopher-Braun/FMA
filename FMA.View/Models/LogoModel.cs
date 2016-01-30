@@ -33,7 +33,7 @@ namespace FMA.View.Models
             }
         }
 
-        public Byte[] Logo
+        public byte[] Logo
         {
             get { return logo; }
             set

@@ -5,7 +5,6 @@ using FMA.View.ExternalView;
 
 namespace FMA.View.Helpers
 {
-    //TODO mit Markus Ersetzen durch richtigen WindowService
     public class WindowService : IWindowService
     {
         private readonly Window mainWindow;
@@ -39,7 +38,7 @@ namespace FMA.View.Helpers
                 CloseExternalEditWindow();
             }
 
-            externalEditView = new ExternalView.ExternalEditView
+            externalEditView = new ExternalEditView
             {
                 DataContext = new ExternalViewModel(selectedMaterialProvider, fontService),
                 Owner = mainWindow

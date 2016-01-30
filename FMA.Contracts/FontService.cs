@@ -38,32 +38,38 @@ namespace FMA.Contracts
 
         internal static string GetFamilyName(FontFamily fontFamily)
         {
-            //TODO Potentiell gefährlich wenn auf dem Server andere Sprache ist.
-            var currentLanguage = CultureInfo.CurrentUICulture.IetfLanguageTag;
-            var currentXmlLanguage = XmlLanguage.GetLanguage(currentLanguage);
-
-            if (fontFamily.FamilyNames.ContainsKey(currentXmlLanguage))
+            try
             {
-                return fontFamily.FamilyNames[currentXmlLanguage];
+                //TODO Potentiell gefährlich wenn auf dem Server andere Sprache ist.
+                var currentLanguage = CultureInfo.CurrentUICulture.IetfLanguageTag;
+                var currentXmlLanguage = XmlLanguage.GetLanguage(currentLanguage);
+
+                if (fontFamily.FamilyNames.ContainsKey(currentXmlLanguage))
+                {
+                    return fontFamily.FamilyNames[currentXmlLanguage];
+                }
+
+                var defaultLanguage = CultureInfo.InvariantCulture.IetfLanguageTag;
+                var defaultXmlLanguage = XmlLanguage.GetLanguage(defaultLanguage);
+
+                if (fontFamily.FamilyNames.ContainsKey(defaultXmlLanguage))
+                {
+                    return fontFamily.FamilyNames[defaultXmlLanguage];
+                }
+
+                var fontName = fontFamily.FamilyNames.Values.FirstOrDefault();
+                if (string.IsNullOrEmpty(fontName))
+                {
+                    return fontFamily.Source;
+                    //   throw new InvalidOperationException("No FontName for Font available");
+                }
+
+                return fontName;
             }
-
-            var defaultLanguage = CultureInfo.InvariantCulture.IetfLanguageTag;
-            var defaultXmlLanguage = XmlLanguage.GetLanguage(defaultLanguage);
-
-            if (fontFamily.FamilyNames.ContainsKey(defaultXmlLanguage))
-            {
-                return fontFamily.FamilyNames[defaultXmlLanguage];
-            }
-
-
-            var fontName = fontFamily.FamilyNames.Values.FirstOrDefault();
-            if (fontName == null)
+            catch (Exception)
             {
                 return fontFamily.Source;
-                //   throw new InvalidOperationException("No FontName for Font available");
             }
-
-            return fontName;
 
         }
 
@@ -81,7 +87,7 @@ namespace FMA.Contracts
         }
 
 
-        public List<FontFamilyWithName> AllFontFamilies {get; private set; }
+        public List<FontFamilyWithName> AllFontFamilies { get; private set; }
 
         public void InstallFont(string fileName, byte[] font)
         {
@@ -107,7 +113,7 @@ namespace FMA.Contracts
             if (!directoryInfo.Exists)
             {
                 directoryInfo.Create();
-               // throw new ArgumentOutOfRangeException("location");
+                // throw new ArgumentOutOfRangeException("location");
             }
 
 

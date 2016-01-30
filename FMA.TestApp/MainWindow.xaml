@@ -1,7 +1,7 @@
 ﻿<Window x:Class="FMA.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:adminView="clr-namespace:FMA.View.AdminView;assembly=FMA.View"
+        xmlns:adminView1="clr-namespace:FMA.AdminView;assembly=FMA.AdminView"
         xmlns:common="clr-namespace:FMA.View.Common;assembly=FMA.View"
         Title="MainWindow"
         Width="860"
@@ -10,13 +10,10 @@
         <DataTemplate DataType="{x:Type common:FlyerMakerViewModel}">
             <common:FlyerMakerView />
         </DataTemplate>
-        <DataTemplate DataType="{x:Type adminView:AdminViewModel}">
-            <adminView:AdminView />
+        <DataTemplate DataType="{x:Type adminView1:AdminViewModel}">
+            <adminView1:AdminView />
         </DataTemplate>
     </Window.Resources>
 
     <ContentControl Content="{Binding FlyerMakerViewModel}" />
-
-    <!--<view:FlyerMakerView x:Name="FlyerMakerView" HorizontalAlignment="Stretch" />-->
-
 </Window>

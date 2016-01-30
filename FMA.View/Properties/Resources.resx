@@ -121,10 +121,10 @@
     <value>Logo</value>
   </data>
   <data name="Position" xml:space="preserve">
-    <value>Position (Top/Left)</value>
+    <value>Position (Oben/Links)</value>
   </data>
   <data name="Size" xml:space="preserve">
-    <value>Size (Width/Height)</value>
+    <value>Größe (Breite/Höhe)</value>
   </data>
   <data name="TextFields" xml:space="preserve">
     <value>Textfelder</value>
@@ -133,28 +133,28 @@
     <value>Layout</value>
   </data>
   <data name="AddLogo" xml:space="preserve">
-    <value>Add Logo</value>
+    <value>Logo hinzufügen</value>
   </data>
   <data name="ToggleViews" xml:space="preserve">
-    <value>Toogle Views</value>
+    <value>Ansicht umschalten</value>
   </data>
   <data name="LayoutMode" xml:space="preserve">
-    <value>Layout Mode</value>
+    <value>Layout Modus</value>
   </data>
   <data name="ExternalEdit" xml:space="preserve">
-    <value>External Edit</value>
+    <value>Editor in einem zweiten Fenster öffnen</value>
   </data>
   <data name="FieldName" xml:space="preserve">
-    <value>FieldName</value>
+    <value>Feldname</value>
   </data>
   <data name="Text" xml:space="preserve">
     <value>Text</value>
   </data>
   <data name="FontSize" xml:space="preserve">
-    <value>FontSize</value>
+    <value>Schriftgröße</value>
   </data>
   <data name="FontStyle" xml:space="preserve">
-    <value>FontStyle</value>
+    <value>Schriftstil</value>
   </data>
   <data name="Versal" xml:space="preserve">
     <value>Versalschrift (Alles Großgeschrieben)</value>
@@ -169,34 +169,34 @@
     <value>Textfeld löschen</value>
   </data>
   <data name="AlignTop" xml:space="preserve">
-    <value>Align Top</value>
+    <value>Nach oben ausrichten</value>
   </data>
   <data name="AlignRight" xml:space="preserve">
-    <value>Align Right</value>
+    <value>Nach rechts ausrichten</value>
   </data>
   <data name="AlignBottom" xml:space="preserve">
-    <value>Align Bottom</value>
+    <value>Nach unten ausrichten</value>
   </data>
   <data name="AlignLeft" xml:space="preserve">
-    <value>Align Left</value>
+    <value>Nach links ausrichten</value>
   </data>
   <data name="Create" xml:space="preserve">
-    <value>Create</value>
+    <value>Flyer erstellen</value>
   </data>
   <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
+    <value>Flyer auf Standard Werte zurücksetzen</value>
   </data>
   <data name="ExternalPreview" xml:space="preserve">
-    <value>External Preview</value>
+    <value>Vorschau in einem zweiten Fenster öffnen</value>
   </data>
   <data name="AddTextField" xml:space="preserve">
     <value>Textfeld hinzufügen</value>
   </data>
   <data name="FontName" xml:space="preserve">
-    <value>FontName</value>
+    <value>Schriftart</value>
   </data>
   <data name="DeleteSelectedElements" xml:space="preserve">
-    <value>Delete selected elements</value>
+    <value>Selektierte Elemente löschen</value>
   </data>
   <data name="Elements" xml:space="preserve">
     <value>Elemente</value>
@@ -204,8 +204,19 @@
   <data name="ShowBackSide" xml:space="preserve">
     <value>Rückseite anzeigen</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="flyer_sample" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\adminview\flyer_sample.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MaxLength" xml:space="preserve">
+    <value>Max. Zeilenlänge</value>
+  </data>
+  <data name="MaxRows" xml:space="preserve">
+    <value>Max Anzahl Zeilen</value>
+  </data>
+  <data name="CreateMaterial" xml:space="preserve">
+    <value>Material anlegen</value>
+  </data>
+  <data name="SelectLogoFileTitle" xml:space="preserve">
+    <value>Logo-Datei auswählen</value>
+  </data>
+  <data name="EmptyMaterial" xml:space="preserve">
+    <value>Leeres Material (*)</value>
   </data>
 </root>

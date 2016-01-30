@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Automation;
 using FMA.Contracts;
-using FMA.TestData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestStack.White;
 using TestStack.White.Factory;
@@ -16,7 +11,7 @@ using TestStack.White.UIItems.ListBoxItems;
 using TestStack.White.UIItems.WindowItems;
 using TestStack.White.UIItems.WPFUIItems;
 
-namespace FMA.UnitTests.CodedUITests
+namespace FMA.UnitTests.UITests
 {
     [TestClass]
     public class TestBase

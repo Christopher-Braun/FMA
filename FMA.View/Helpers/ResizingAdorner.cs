@@ -35,7 +35,6 @@ namespace FMA.View.Helpers
             topRight = CreateAdornerCorner(Cursors.SizeNESW);
             bottomLeft = CreateAdornerCorner(Cursors.SizeNESW);
             bottomRight = CreateAdornerCorner(Cursors.SizeNWSE);
-            // TODO  bottomRight.SetValue(AutomationProperties.AutomationIdProperty, "AdornerBottomRight");
 
             left = CreateAdornerCorner(Cursors.SizeWE);
             right = CreateAdornerCorner(Cursors.SizeWE);

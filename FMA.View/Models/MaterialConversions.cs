@@ -1,9 +1,5 @@
-﻿using System.Globalization;
-using System.Linq;
-using System.Windows.Markup;
-using System.Windows.Media;
+﻿using System.Linq;
 using FMA.Contracts;
-using FMA.View.Helpers;
 
 namespace FMA.View.Models
 {
@@ -36,7 +32,7 @@ namespace FMA.View.Models
 
         public static MaterialModel Clone(this MaterialModel material)
         {
-            if(material == null) return null;
+            if (material == null) return null;
             return new MaterialModel(material.Id, material.Title, material.Description, material.MaterialFields.Select(f => f.Clone()), material.FlyerFrontSide, material.FlyerBackside, material.DefaultFont);
         }
 

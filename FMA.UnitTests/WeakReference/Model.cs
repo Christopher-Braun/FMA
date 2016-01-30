@@ -1,6 +1,6 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using FMA.UnitTests.Annotations;
+using FMA.UnitTests.Properties;
 
 namespace FMA.UnitTests.WeakReference
 {

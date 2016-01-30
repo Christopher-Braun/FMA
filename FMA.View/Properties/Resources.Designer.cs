@@ -61,7 +61,7 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add Logo.
+        ///   Looks up a localized string similar to Logo hinzufügen.
         /// </summary>
         public static string AddLogo {
             get {
@@ -79,7 +79,7 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Align Bottom.
+        ///   Looks up a localized string similar to Nach unten ausrichten.
         /// </summary>
         public static string AlignBottom {
             get {
@@ -88,7 +88,7 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Align Left.
+        ///   Looks up a localized string similar to Nach links ausrichten.
         /// </summary>
         public static string AlignLeft {
             get {
@@ -97,7 +97,7 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Align Right.
+        ///   Looks up a localized string similar to Nach rechts ausrichten.
         /// </summary>
         public static string AlignRight {
             get {
@@ -106,7 +106,7 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Align Top.
+        ///   Looks up a localized string similar to Nach oben ausrichten.
         /// </summary>
         public static string AlignTop {
             get {
@@ -115,11 +115,20 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create.
+        ///   Looks up a localized string similar to Flyer erstellen.
         /// </summary>
         public static string Create {
             get {
                 return ResourceManager.GetString("Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Material anlegen.
+        /// </summary>
+        public static string CreateMaterial {
+            get {
+                return ResourceManager.GetString("CreateMaterial", resourceCulture);
             }
         }
         
@@ -142,7 +151,7 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete selected elements.
+        ///   Looks up a localized string similar to Selektierte Elemente löschen.
         /// </summary>
         public static string DeleteSelectedElements {
             get {
@@ -169,7 +178,16 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to External Edit.
+        ///   Looks up a localized string similar to Leeres Material (*).
+        /// </summary>
+        public static string EmptyMaterial {
+            get {
+                return ResourceManager.GetString("EmptyMaterial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Editor in einem zweiten Fenster öffnen.
         /// </summary>
         public static string ExternalEdit {
             get {
@@ -178,7 +196,7 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to External Preview.
+        ///   Looks up a localized string similar to Vorschau in einem zweiten Fenster öffnen.
         /// </summary>
         public static string ExternalPreview {
             get {
@@ -187,7 +205,7 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FieldName.
+        ///   Looks up a localized string similar to Feldname.
         /// </summary>
         public static string FieldName {
             get {
@@ -196,17 +214,7 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap flyer_sample {
-            get {
-                object obj = ResourceManager.GetObject("flyer_sample", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to FontName.
+        ///   Looks up a localized string similar to Schriftart.
         /// </summary>
         public static string FontName {
             get {
@@ -215,7 +223,7 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FontSize.
+        ///   Looks up a localized string similar to Schriftgröße.
         /// </summary>
         public static string FontSize {
             get {
@@ -224,7 +232,7 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FontStyle.
+        ///   Looks up a localized string similar to Schriftstil.
         /// </summary>
         public static string FontStyle {
             get {
@@ -242,7 +250,7 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Layout Mode.
+        ///   Looks up a localized string similar to Layout Modus.
         /// </summary>
         public static string LayoutMode {
             get {
@@ -260,7 +268,25 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Position (Top/Left).
+        ///   Looks up a localized string similar to Max. Zeilenlänge.
+        /// </summary>
+        public static string MaxLength {
+            get {
+                return ResourceManager.GetString("MaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Anzahl Zeilen.
+        /// </summary>
+        public static string MaxRows {
+            get {
+                return ResourceManager.GetString("MaxRows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position (Oben/Links).
         /// </summary>
         public static string Position {
             get {
@@ -269,11 +295,20 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reset.
+        ///   Looks up a localized string similar to Flyer auf Standard Werte zurücksetzen.
         /// </summary>
         public static string Reset {
             get {
                 return ResourceManager.GetString("Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logo-Datei auswählen.
+        /// </summary>
+        public static string SelectLogoFileTitle {
+            get {
+                return ResourceManager.GetString("SelectLogoFileTitle", resourceCulture);
             }
         }
         
@@ -287,7 +322,7 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Size (Width/Height).
+        ///   Looks up a localized string similar to Größe (Breite/Höhe).
         /// </summary>
         public static string Size {
             get {
@@ -314,7 +349,7 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Toogle Views.
+        ///   Looks up a localized string similar to Ansicht umschalten.
         /// </summary>
         public static string ToggleViews {
             get {
