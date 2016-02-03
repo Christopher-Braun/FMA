@@ -205,7 +205,16 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vorschau in einem zweiten Fenster öffnen.
+        ///   Looks up a localized string similar to Externer editor.
+        /// </summary>
+        public static string ExternalEditorTitle {
+            get {
+                return ResourceManager.GetString("ExternalEditorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vorschau in einem zweiten Fenster öffnen (kann per Doppelklick geschlossen werden).
         /// </summary>
         public static string ExternalPreview {
             get {

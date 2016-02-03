@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Christopher Braun 2016
+
+using System;
 using System.Windows;
 using System.Windows.Input;
 using FMA.View.Helpers;
@@ -6,27 +8,33 @@ using FMA.View.Helpers;
 namespace FMA.View.ExternalView
 {
     /// <summary>
-    /// Interaction logic for ExternalPreviewView.xaml
+    ///     Interaction logic for ExternalPreviewView.xaml
     /// </summary>
     public partial class ExternalPreviewView : Window
     {
+        private readonly SizeHelper sizeHelper;
+
         public ExternalPreviewView()
         {
             InitializeComponent();
-
-            const int margin = 40;
-            this.Top = margin;
-            this.Height = SystemParameters.PrimaryScreenHeight - 2 * margin;
+            sizeHelper = new SizeHelper(this);
         }
 
         private void FlyerPreviewView_OnSourceInitialized(object sender, EventArgs e)
         {
-            WindowAspectRatio.Register((Window)sender);
+            WindowAspectRatio.Register((Window) sender);
+            sizeHelper.SetSize();
         }
 
         private void ExternalPreviewView_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();
+            e.Handled = true;
+        }
+
+        private void ExternalPreviewView_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Close();
             e.Handled = true;
         }
     }

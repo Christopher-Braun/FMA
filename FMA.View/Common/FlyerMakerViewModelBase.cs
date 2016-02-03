@@ -62,6 +62,8 @@ namespace FMA.View.Common
                 {
                     windowService.CloseExternalPreviewWindow();
                 }
+
+                OnPropertyChanged();
             }
         }
 
@@ -80,6 +82,8 @@ namespace FMA.View.Common
                 {
                     windowService.CloseExternalEditWindow();
                 }
+
+                OnPropertyChanged();
             }
         }
 
@@ -126,6 +130,8 @@ namespace FMA.View.Common
             set
             {
                 SelectedMaterialProvider.MaterialModel = value.Clone();
+                ExternalEditVisible = false;
+                ExternalPreviewVisible = false;
                 OnPropertyChanged();
             }
         }

@@ -47,7 +47,8 @@ namespace FMA.View.Models
 
         public LogoModel LogoModel { get; }
 
-        public FontFamilyWithName DefaultFont { get; }
+        //Set muss public sein für Admin-Mode
+        public FontFamilyWithName DefaultFont { get; set; }
 
         public BitmapImage FlyerFrontSideImage
         {

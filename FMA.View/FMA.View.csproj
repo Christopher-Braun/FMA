@@ -58,6 +58,7 @@
       <DependentUpon>ExternalPreviewView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ExternalView\ExternalViewModel.cs" />
+    <Compile Include="ExternalView\SizeHelper.cs" />
     <Compile Include="Helpers\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Helpers\InverseNullToVisibleConverter.cs" />
     <Compile Include="Helpers\IWindowService.cs" />

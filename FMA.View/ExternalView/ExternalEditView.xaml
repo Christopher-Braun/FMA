@@ -2,15 +2,12 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:layoutView="clr-namespace:FMA.View.LayoutView"
-        xmlns:view="clr-namespace:FMA.View"
-        Height="800"
+        xmlns:properties="clr-namespace:FMA.View.Properties"
         SizeToContent="Width"
+        MinWidth="400"
+        MinHeight="300"
+        Title="{x:Static properties:Resources.ExternalEditorTitle}"
         SourceInitialized="FlyerPreviewView_OnSourceInitialized"
         WindowStartupLocation="CenterScreen">
-
-    <Viewbox HorizontalAlignment="Stretch"
-             VerticalAlignment="Stretch"
-             Stretch="Uniform">
-        <layoutView:GraphicalLayout />
-    </Viewbox>
+    <layoutView:GraphicalLayout />
 </Window>

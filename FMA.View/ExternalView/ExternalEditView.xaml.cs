@@ -9,18 +9,18 @@ namespace FMA.View.ExternalView
     /// </summary>
     public partial class ExternalEditView : Window
     {
+        private readonly SizeHelper sizeHelper;
+
         public ExternalEditView()
         {
             InitializeComponent();
-
-            const int margin = 40;
-            this.Top = margin;
-            this.Height = SystemParameters.PrimaryScreenHeight - 2 * margin;
+            sizeHelper = new SizeHelper(this);
         }
 
         private void FlyerPreviewView_OnSourceInitialized(object sender, EventArgs e)
         {
-            WindowAspectRatio.Register((Window)sender);
+         //   WindowAspectRatio.Register((Window)sender);
+            sizeHelper.SetSize();
         }
     }
 }

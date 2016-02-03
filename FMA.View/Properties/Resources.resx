@@ -187,7 +187,7 @@
     <value>Flyer auf Standard Werte zurücksetzen</value>
   </data>
   <data name="ExternalPreview" xml:space="preserve">
-    <value>Vorschau in einem zweiten Fenster öffnen</value>
+    <value>Vorschau in einem zweiten Fenster öffnen (kann per Doppelklick geschlossen werden)</value>
   </data>
   <data name="AddTextField" xml:space="preserve">
     <value>Textfeld hinzufügen</value>
@@ -236,5 +236,8 @@
   </data>
   <data name="MaxLinesHint" xml:space="preserve">
     <value>Der Text darf maximal '{0}' Zeilen enthalten</value>
+  </data>
+  <data name="ExternalEditorTitle" xml:space="preserve">
+    <value>Externer editor</value>
   </data>
 </root>
