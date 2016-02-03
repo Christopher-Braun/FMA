@@ -21,7 +21,20 @@ namespace FMA.TestData
             };
 
             var material1 = new Material(1, "Gef‰hrlicher Glaube", "ZumThema Gef‰hrlicher Glaube (Islamische Welt)",
-                material1Fields, Helper.GetBackground(1), Helper.GetBackground(1, false),"Courir");
+                material1Fields, Helper.GetBackground(1), Helper.GetBackground(1, false),"Courier");
+
+            var material5Fields = new List<MaterialField>
+            {
+                new MaterialField("Veranstalter", "Arial", 12, false, false, true, 50, 3, 280, 305, "FeG Hanau","Blue"),
+                new MaterialField("Titel", "Arial", 30, true, false, true, 50, 2, 280, 350, "ShockWave"),
+                new MaterialField("Untertitel", "Times New Roman", 16, true, false, true, 80, 3, 280, 430, "Verfolgt, weil sie \ran Jesus Glauben"),
+                new MaterialField("Datum", "Times New Roman", 22, true, false, true, 80, 3, 280, 500, "FR 11.07.2014 / 20:00 "),
+                new MaterialField("Untertitel 2", "Times New Roman", 16, false, true, false, 80, 3, 280, 530, "Mach mit"),
+                new MaterialField("Referent", "Arial", 12, false, false, false, 80, 4, 280, 600, "Freie evangelische Gemeinde Hanau\rWeimarer Straﬂe 35\r63454 Hanau-Weststadt "),
+            };
+
+            var material5 = new Material(5, "Shockwave", "Shockwave Info",
+                material5Fields, Helper.GetBackground(5), Helper.GetBackground(5, false), "Courier");
 
             var material2Fields = new List<MaterialField>
             {
@@ -35,6 +48,7 @@ namespace FMA.TestData
 
             materials.Add(material1);
             materials.Add(material2);
+            materials.Add(material5);
 
             return materials;
         }
@@ -62,9 +76,6 @@ namespace FMA.TestData
             return GetDummyMaterials().First(m => m.Id.Equals(DefaultSelectedMaterialId) == false);
         }
 
-        public static int DefaultSelectedMaterialId
-        {
-            get { return 2; }
-        }
+        public static int DefaultSelectedMaterialId => 5;
     }
 }

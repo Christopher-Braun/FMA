@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Christopher Braun 2016
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -19,58 +21,51 @@ namespace FMA.View.Common
             IsStartingSelection,
             IsDraggingSelectionRect,
             IsStartingDragging,
-            IsDragging,
+            IsDragging
         }
 
         private State state = State.None;
 
-        private AdornerLayer AdornerLayer
-        {
-            get
-            {
-                return AdornerLayer.GetAdornerLayer(this);
-            }
-        }
+        private AdornerLayer AdornerLayer => AdornerLayer.GetAdornerLayer(this);
         private Border dragSelectionBorder;
 
         private Point origMouseDownPoint;
 
-        private readonly ObservableCollection<SelectedChild> selectedChilds = new ObservableCollection<SelectedChild>();
-
         static LayoutCanvas()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(LayoutCanvas), new FrameworkPropertyMetadata(typeof(LayoutCanvas)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof (LayoutCanvas),
+                new FrameworkPropertyMetadata(typeof (LayoutCanvas)));
         }
 
         public LayoutCanvas()
         {
-            this.ClipToBounds = true;
-            this.Focusable = true;
-            this.Focus();
+            ClipToBounds = true;
+            Focusable = true;
+            Focus();
         }
 
         public void AlignLeft()
         {
-            var position = this.SelectedChilds.Select(e => GetLeft(e.Element)).Min();
-            this.SelectedChilds.ToList().ForEach(e => SetLeft(e.Element, position));
+            var position = SelectedChilds.Select(e => GetLeft(e.Element)).Min();
+            SelectedChilds.ToList().ForEach(e => SetLeft(e.Element, position));
         }
 
         public void AlignRight()
         {
-            var position = this.SelectedChilds.Select(e => GetLeft(e.Element) + e.Element.ActualWidth).Max();
-            this.SelectedChilds.ToList().ForEach(e => SetLeft(e.Element, position - e.Element.ActualWidth));
+            var position = SelectedChilds.Select(e => GetLeft(e.Element) + e.Element.ActualWidth).Max();
+            SelectedChilds.ToList().ForEach(e => SetLeft(e.Element, position - e.Element.ActualWidth));
         }
 
         public void AlignTop()
         {
-            var position = this.SelectedChilds.Select(e => GetTop(e.Element)).Min();
-            this.SelectedChilds.ToList().ForEach(e => SetTop(e.Element, position));
+            var position = SelectedChilds.Select(e => GetTop(e.Element)).Min();
+            SelectedChilds.ToList().ForEach(e => SetTop(e.Element, position));
         }
 
         public void AlignBottom()
         {
-            var position = this.SelectedChilds.Select(e => GetTop(e.Element) + e.Element.ActualHeight).Max();
-            this.SelectedChilds.ToList().ForEach(e => SetTop(e.Element, position - e.Element.ActualHeight));
+            var position = SelectedChilds.Select(e => GetTop(e.Element) + e.Element.ActualHeight).Max();
+            SelectedChilds.ToList().ForEach(e => SetTop(e.Element, position - e.Element.ActualHeight));
         }
 
         protected override void OnInitialized(EventArgs e)
@@ -92,7 +87,7 @@ namespace FMA.View.Common
                 Opacity = 0.6
             };
 
-            this.Children.Add(dragSelectionBorder);
+            Children.Add(dragSelectionBorder);
         }
 
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
@@ -108,7 +103,7 @@ namespace FMA.View.Common
             }
 
             origMouseDownPoint = e.GetPosition(this);
-            var hitTest = this.InputHitTest(origMouseDownPoint) as FrameworkElement;
+            var hitTest = InputHitTest(origMouseDownPoint) as FrameworkElement;
             if (hitTest == null)
             {
                 //Außerhalb des Bereiches oder falsches Element
@@ -119,8 +114,8 @@ namespace FMA.View.Common
             {
                 //Klick auf Hintergrund - Beginne Selection
                 state = State.IsStartingSelection;
-                this.UnSelectAllElements();
-                this.CaptureMouse();
+                UnSelectAllElements();
+                CaptureMouse();
                 e.Handled = true;
             }
             else if (CanManipulateElement(hitTest))
@@ -145,7 +140,7 @@ namespace FMA.View.Common
                     //Selektiere Element bzw füge zur Selektion hinzu
                     if (Keyboard.Modifiers != ModifierKeys.Control)
                     {
-                        this.UnSelectAllElements();
+                        UnSelectAllElements();
                     }
 
                     AddSelectedElement(hitTest);
@@ -195,11 +190,10 @@ namespace FMA.View.Common
                 {
                     var mouseDiff = mousePosition - origMouseDownPoint;
 
-                    Canvas.SetTop(selectedElement.Element, selectedElement.OriginalTop + mouseDiff.Y);
-                    Canvas.SetLeft(selectedElement.Element, selectedElement.OriginalLeft + mouseDiff.X);
+                    SetTop(selectedElement.Element, selectedElement.OriginalTop + mouseDiff.Y);
+                    SetLeft(selectedElement.Element, selectedElement.OriginalLeft + mouseDiff.X);
                 }
             }
-
         }
 
         private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
@@ -217,12 +211,12 @@ namespace FMA.View.Common
             switch (state)
             {
                 case State.IsDraggingSelectionRect:
-                    this.ReleaseMouseCapture();
+                    ReleaseMouseCapture();
                     ApplyDragSelectionRect();
                     e.Handled = true;
                     break;
                 case State.IsStartingSelection:
-                    this.ReleaseMouseCapture();
+                    ReleaseMouseCapture();
                     e.Handled = true;
                     break;
                 case State.IsStartingDragging:
@@ -243,17 +237,17 @@ namespace FMA.View.Common
         private void ApplyDragSelectionRect()
         {
             dragSelectionBorder.Visibility = Visibility.Collapsed;
-            var x = Canvas.GetLeft(dragSelectionBorder);
-            var y = Canvas.GetTop(dragSelectionBorder);
+            var x = GetLeft(dragSelectionBorder);
+            var y = GetTop(dragSelectionBorder);
             var width = dragSelectionBorder.Width;
             var height = dragSelectionBorder.Height;
             var dragRect = new Rect(x, y, width, height);
 
-            dragRect.Inflate(width / 10, height / 10);
+            dragRect.Inflate(width/10, height/10);
             UnSelectAllElements();
-            foreach (var child in this.Children.OfType<FrameworkElement>().Where(CanManipulateElement))
+            foreach (var child in Children.OfType<FrameworkElement>().Where(CanManipulateElement))
             {
-                var itemRect = new Rect(Canvas.GetLeft(child), Canvas.GetTop(child), child.ActualWidth, child.ActualHeight);
+                var itemRect = new Rect(GetLeft(child), GetTop(child), child.ActualWidth, child.ActualHeight);
                 if (!dragRect.Contains(itemRect))
                 {
                     continue;
@@ -291,12 +285,11 @@ namespace FMA.View.Common
                 y = pt1.Y;
                 height = pt2.Y - pt1.Y;
             }
-            Canvas.SetLeft(dragSelectionBorder, x);
-            Canvas.SetTop(dragSelectionBorder, y);
+            SetLeft(dragSelectionBorder, x);
+            SetTop(dragSelectionBorder, y);
 
             dragSelectionBorder.Width = width;
             dragSelectionBorder.Height = height;
-
         }
 
         protected void AddSelectedElement(FrameworkElement child, bool focus = false)
@@ -320,7 +313,6 @@ namespace FMA.View.Common
 
             AdornerLayer.ClipToBounds = false;
             AdornerLayer.Add(CreateAdornerForElement(child));
-          
         }
 
         protected void UnSelectAllElements()
@@ -331,7 +323,7 @@ namespace FMA.View.Common
 
         protected void UnSelectElement(FrameworkElement child)
         {
-            var selectedChild = this.selectedChilds.FirstOrDefault(s => ReferenceEquals(s.Element, child));
+            var selectedChild = SelectedChilds.FirstOrDefault(s => ReferenceEquals(s.Element, child));
             if (selectedChild == null)
             {
                 return;
@@ -347,19 +339,17 @@ namespace FMA.View.Common
 
         private void RemoveAdorner(SelectedChild selectedChild)
         {
-            if (AdornerLayer == null) { return; }
-
-            var adorners = AdornerLayer.GetAdorners(selectedChild.Element);
+            var adorners = AdornerLayer?.GetAdorners(selectedChild.Element);
             if (adorners != null) AdornerLayer.Remove(adorners[0]);
         }
 
         protected void ClearChildren()
         {
-            this.Children.Clear();
-            if (this.SelectedChilds.Any())
+            Children.Clear();
+            if (SelectedChilds.Any())
             {
                 //If.. damit kein Event fliegt
-                this.SelectedChilds.Clear();
+                SelectedChilds.Clear();
             }
         }
 
@@ -370,31 +360,23 @@ namespace FMA.View.Common
 
         protected virtual bool CanManipulateElement(UIElement child)
         {
-            return this.Children.Contains(child) && !ReferenceEquals(child, dragSelectionBorder);
+            return Children.Contains(child) && !ReferenceEquals(child, dragSelectionBorder);
         }
 
-        protected virtual bool CanManipulateElements
-        {
-            get
-            {
-                return true;
-            }
-        }
+        protected virtual bool CanManipulateElements => true;
 
         protected IEnumerable<FrameworkElement> SelectedElements
         {
             get { return SelectedChilds.Select(s => s.Element); }
         }
 
-        protected ObservableCollection<SelectedChild> SelectedChilds
-        {
-            get { return selectedChilds; }
-        }
+        protected ObservableCollection<SelectedChild> SelectedChilds { get; } =
+            new ObservableCollection<SelectedChild>();
 
 
         protected virtual bool IsBackground(UIElement source)
         {
-            return this.Children.Contains(source) == false;
+            return Children.Contains(source) == false;
         }
 
         protected class SelectedChild
@@ -405,17 +387,16 @@ namespace FMA.View.Common
                 UpdateOrignalPosition();
             }
 
-            public FrameworkElement Element { get; private set; }
+            public FrameworkElement Element { get; }
 
             public double OriginalTop { get; private set; }
             public double OriginalLeft { get; private set; }
 
             public void UpdateOrignalPosition()
             {
-                OriginalLeft = Canvas.GetLeft(Element);
-                OriginalTop = Canvas.GetTop(Element);
+                OriginalLeft = GetLeft(Element);
+                OriginalTop = GetTop(Element);
             }
         }
-
     }
 }

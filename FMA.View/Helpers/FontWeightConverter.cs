@@ -1,3 +1,5 @@
+// Christopher Braun 2016
+
 using System;
 using System.Globalization;
 using System.Windows;

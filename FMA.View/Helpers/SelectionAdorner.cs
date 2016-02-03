@@ -1,3 +1,5 @@
+// Christopher Braun 2016
+
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -14,6 +16,7 @@ namespace FMA.View.Helpers
         public SelectionAdorner(UIElement adornedElement)
             : base(adornedElement)
         {
+            IsClipEnabled = true;
             visualChildren = new VisualCollection(this);
             BuildAdornerCorner();
         }
@@ -23,8 +26,8 @@ namespace FMA.View.Helpers
             var desiredWidth = AdornedElement.DesiredSize.Width;
             var desiredHeight = AdornedElement.DesiredSize.Height;
 
-            selectionBorder.Width = desiredWidth + 2 * Offset;
-            selectionBorder.Height = desiredHeight + 2 * Offset;
+            selectionBorder.Width = desiredWidth + 2*Offset;
+            selectionBorder.Height = desiredHeight + 2*Offset;
 
             selectionBorder.Arrange(new Rect(-Offset, -Offset, selectionBorder.Width, selectionBorder.Height));
 
@@ -43,10 +46,7 @@ namespace FMA.View.Helpers
             visualChildren.Add(selectionBorder);
         }
 
-        protected override int VisualChildrenCount
-        {
-            get { return visualChildren.Count; }
-        }
+        protected override int VisualChildrenCount => visualChildren.Count;
 
         protected override Visual GetVisualChild(int index)
         {

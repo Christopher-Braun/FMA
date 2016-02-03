@@ -1,3 +1,5 @@
+// Christopher Braun 2016
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,17 +10,15 @@ using FMA.View.DefaultView;
 using FMA.View.Helpers;
 using FMA.View.LayoutView;
 using FMA.View.Models;
-using FMA.View.Properties;
 
 namespace FMA.View.Common
 {
-    public abstract class FlyerMakerViewModelBase : INotifyPropertyChanged
+    public abstract class FlyerMakerViewModelBase : NotifyPropertyChangedBase
     {
         private List<MaterialModel> materials;
         private bool externalPreviewVisible;
         private bool externalEditVisible;
         private bool layoutMode;
-
         private readonly IWindowService windowService;
         private readonly IFontService fontService;
         private FlyerViewModelBase flyerViewModel;
@@ -33,19 +33,19 @@ namespace FMA.View.Common
             }
         }
 
-        protected FlyerMakerViewModelBase(List<Material> materials, Func<string, FontInfo> getFont, IFontService fontService, IWindowService windowService)
+        protected FlyerMakerViewModelBase(List<Material> materials, Func<string, FontInfo> getFont,
+            IFontService fontService, IWindowService windowService)
         {
             this.fontService = fontService;
             FontHelper.UpdateFonts(materials, getFont, this.fontService);
 
             this.windowService = windowService;
 
-            this.SelectedMaterialProvider = new SelectedMaterialProvider();
-            this.SelectedMaterialProvider.PropertyChanged += (s, e) => OnPropertyChanged("CanCreate");
-
+            SelectedMaterialProvider = new SelectedMaterialProvider();
+            SelectedMaterialProvider.PropertyChanged += (s, e) => OnPropertyChanged("CanCreate");
         }
 
-        public SelectedMaterialProvider SelectedMaterialProvider { get; private set; }
+        public SelectedMaterialProvider SelectedMaterialProvider { get; }
 
         public bool ExternalPreviewVisible
         {
@@ -56,7 +56,7 @@ namespace FMA.View.Common
 
                 if (value)
                 {
-                    windowService.OpenExternalPreviewWindow(this.SelectedMaterialProvider, this.fontService);
+                    windowService.OpenExternalPreviewWindow(SelectedMaterialProvider, fontService);
                 }
                 else
                 {
@@ -74,7 +74,7 @@ namespace FMA.View.Common
 
                 if (value)
                 {
-                    windowService.OpenExternalEditWindow(this.SelectedMaterialProvider, this.fontService);
+                    windowService.OpenExternalEditWindow(SelectedMaterialProvider, fontService);
                 }
                 else
                 {
@@ -95,16 +95,15 @@ namespace FMA.View.Common
                 if (FlyerViewModel != null)
                 {
                     viewState = FlyerViewModel.ViewState;
-
                 }
 
                 if (layoutMode)
                 {
-                    this.FlyerViewModel = new LayoutViewModel(this.SelectedMaterialProvider, fontService, viewState);
+                    FlyerViewModel = new LayoutViewModel(SelectedMaterialProvider, fontService, viewState);
                 }
                 else
                 {
-                    this.FlyerViewModel = new DefaultViewModel(this.SelectedMaterialProvider, fontService, viewState);
+                    FlyerViewModel = new DefaultViewModel(SelectedMaterialProvider, fontService, viewState);
                 }
 
                 OnPropertyChanged("CanCreate");
@@ -126,35 +125,16 @@ namespace FMA.View.Common
             get { return SelectedMaterialProvider.MaterialModel; }
             set
             {
-                this.SelectedMaterialProvider.MaterialModel = value.Clone();
+                SelectedMaterialProvider.MaterialModel = value.Clone();
                 OnPropertyChanged();
             }
         }
 
-        public bool CanCreate
-        {
-            get
-            {
-                if (this.FlyerViewModel == null)
-                {
-                    return false;
-                }
-                return this.FlyerViewModel.CanCreate;
-            }
-        }
+        public bool CanCreate => FlyerViewModel != null && FlyerViewModel.CanCreate;
 
         public void Reset()
         {
-            this.SelectedMaterial = this.Materials.Single(m => m.Id.Equals(this.SelectedMaterial.Id));
-        }
-
-        public virtual event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            SelectedMaterial = Materials.Single(m => m.Id.Equals(SelectedMaterial.Id));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿// Christopher Braun 2016
+
 using System.Linq;
 using FMA.Contracts;
 using FMA.View.Common;
@@ -8,28 +9,21 @@ namespace FMA.View.LayoutView
 {
     public class LayoutViewModel : FlyerViewModelBase
     {
-        public LayoutViewModel(SelectedMaterialProvider selectedMaterialProvider, IFontService fontService, ViewStates viewState)
+        public LayoutViewModel(SelectedMaterialProvider selectedMaterialProvider, IFontService fontService,
+            ViewStates viewState)
             : base(selectedMaterialProvider, fontService, viewState)
         {
-         
         }
 
-     
 
-        public override bool CanCreate
-        {
-            get { return true; }
-        }
+        public override bool CanCreate => true;
 
-        private MaterialModel MaterialModel
-        {
-            get { return this.SelectedMaterialProvider.MaterialModel; }
-        }
+        private MaterialModel MaterialModel => SelectedMaterialProvider.MaterialModel;
 
         public void AddField()
         {
             MaterialModel.AddNewMaterialField();
-            this.SelectedMaterialProvider.SetSelectedChilds(MaterialModel.MaterialFields.Last());
+            SelectedMaterialProvider.SetSelectedChilds(MaterialModel.MaterialFields.Last());
         }
 
         public void DeleteSelectedChild()
@@ -47,11 +41,16 @@ namespace FMA.View.LayoutView
                 {
                     var selectedFieldModel = selectedChild as MaterialFieldModel;
 
-                    index = materialFieldModels.IndexOf(selectedFieldModel);
-
-                    if (index == -1)
+                    
+                    var currentIndex = materialFieldModels.IndexOf(selectedFieldModel);
+                    if (currentIndex == -1)
                     {
                         return;
+                    }
+
+                    if (currentIndex < index)
+                    {
+                        index = currentIndex;
                     }
 
                     materialFieldModels.Remove(selectedFieldModel);
@@ -60,15 +59,15 @@ namespace FMA.View.LayoutView
 
             if (materialFieldModels.Count > index)
             {
-                this.SelectedMaterialProvider.SetSelectedChilds(materialFieldModels[index]);
+                SelectedMaterialProvider.SetSelectedChilds(materialFieldModels[index]);
             }
             else if (materialFieldModels.Any())
             {
-                this.SelectedMaterialProvider.SetSelectedChilds(materialFieldModels[materialFieldModels.Count - 1]);
+                SelectedMaterialProvider.SetSelectedChilds(materialFieldModels[materialFieldModels.Count - 1]);
             }
             else
             {
-                this.SelectedMaterialProvider.SetSelectedChilds();
+                SelectedMaterialProvider.SetSelectedChilds();
             }
         }
     }

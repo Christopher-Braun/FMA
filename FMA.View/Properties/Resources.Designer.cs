@@ -115,6 +115,15 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alle Dateien.
+        /// </summary>
+        public static string AllFiles {
+            get {
+                return ResourceManager.GetString("AllFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Flyer erstellen.
         /// </summary>
         public static string Create {
@@ -250,6 +259,15 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bild-Dateien.
+        /// </summary>
+        public static string ImageFiles {
+            get {
+                return ResourceManager.GetString("ImageFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Layout.
         /// </summary>
         public static string Layout {
@@ -277,11 +295,29 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Der Text darf maximal &apos;{0}&apos; Zeichen pro Zeile enthalten.
+        /// </summary>
+        public static string MaxLenghtHint {
+            get {
+                return ResourceManager.GetString("MaxLenghtHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max. Zeilenlänge.
         /// </summary>
         public static string MaxLength {
             get {
                 return ResourceManager.GetString("MaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Der Text darf maximal &apos;{0}&apos; Zeilen enthalten.
+        /// </summary>
+        public static string MaxLinesHint {
+            get {
+                return ResourceManager.GetString("MaxLinesHint", resourceCulture);
             }
         }
         

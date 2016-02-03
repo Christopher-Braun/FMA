@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿// Christopher Braun 2016
+
+using System.Windows;
 using FMA.Contracts;
 using FMA.View.Common;
 using FMA.View.ExternalView;
@@ -16,7 +18,8 @@ namespace FMA.View.Helpers
             this.mainWindow = mainWindow;
         }
 
-        public void OpenExternalPreviewWindow(SelectedMaterialProvider selectedMaterialProvider, IFontService fontService)
+        public void OpenExternalPreviewWindow(SelectedMaterialProvider selectedMaterialProvider,
+            IFontService fontService)
         {
             if (externalPreviewView != null)
             {

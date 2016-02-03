@@ -1,6 +1,7 @@
-﻿using System;
+﻿// Christopher Braun 2016
+
+using System;
 using System.Windows;
-using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
@@ -98,36 +99,36 @@ namespace FMA.View.Helpers
 
         private void HandleRight(Thumb hitThumb, DragDeltaEventArgs args)
         {
-            var newWidth = Math.Max(Adorned.Width + args.HorizontalChange, hitThumb.DesiredSize.Width);
-            Adorned.Width = newWidth;
+            var newWidth = Math.Max(AdornedFrameworkElement.Width + args.HorizontalChange, hitThumb.DesiredSize.Width);
+            AdornedFrameworkElement.Width = newWidth;
         }
 
         private void HandleBottom(Thumb hitThumb, DragDeltaEventArgs args)
         {
-            var newHeight = Math.Max(Adorned.Height + args.VerticalChange, hitThumb.DesiredSize.Width);
-            Adorned.Height = newHeight;
+            var newHeight = Math.Max(AdornedFrameworkElement.Height + args.VerticalChange, hitThumb.DesiredSize.Width);
+            AdornedFrameworkElement.Height = newHeight;
         }
 
         private void HandleLeft(Thumb hitThumb, DragDeltaEventArgs args)
         {
-            var widthOld = Adorned.Width;
-            var leftOld = Canvas.GetLeft(Adorned);
+            var widthOld = AdornedFrameworkElement.Width;
+            var leftOld = Canvas.GetLeft(AdornedFrameworkElement);
 
-            var newWidth = Math.Max(Adorned.Width - args.HorizontalChange, hitThumb.DesiredSize.Width);
-            Adorned.Width = newWidth;
+            var newWidth = Math.Max(AdornedFrameworkElement.Width - args.HorizontalChange, hitThumb.DesiredSize.Width);
+            AdornedFrameworkElement.Width = newWidth;
 
-            Canvas.SetLeft(Adorned, leftOld - (Adorned.Width - widthOld));
+            Canvas.SetLeft(AdornedFrameworkElement, leftOld - (AdornedFrameworkElement.Width - widthOld));
         }
 
         private void HandleTop(Thumb hitThumb, DragDeltaEventArgs args)
         {
-            var heightOld = Adorned.Height;
-            var topOld = Canvas.GetTop(Adorned);
+            var heightOld = AdornedFrameworkElement.Height;
+            var topOld = Canvas.GetTop(AdornedFrameworkElement);
 
-            var newHeight = Math.Max(Adorned.Height - args.VerticalChange, hitThumb.DesiredSize.Width);
-            Adorned.Height = newHeight;
+            var newHeight = Math.Max(AdornedFrameworkElement.Height - args.VerticalChange, hitThumb.DesiredSize.Width);
+            AdornedFrameworkElement.Height = newHeight;
 
-            Canvas.SetTop(Adorned, topOld - (Adorned.Height - heightOld));
+            Canvas.SetTop(AdornedFrameworkElement, topOld - (AdornedFrameworkElement.Height - heightOld));
         }
 
         private void HandleBottomRight(Thumb hitThumb, DragDeltaEventArgs args)
@@ -137,61 +138,59 @@ namespace FMA.View.Helpers
 
         private void HandleTopRight(Thumb hitThumb, DragDeltaEventArgs args)
         {
-            var heightOld = Adorned.Height;
-            var topOld = Canvas.GetTop(Adorned);
+            var heightOld = AdornedFrameworkElement.Height;
+            var topOld = Canvas.GetTop(AdornedFrameworkElement);
 
             ApplySizeChange(new Point(args.HorizontalChange, -args.VerticalChange), hitThumb);
 
-            Canvas.SetTop(Adorned, topOld - (Adorned.Height - heightOld));
+            Canvas.SetTop(AdornedFrameworkElement, topOld - (AdornedFrameworkElement.Height - heightOld));
         }
 
         private void HandleTopLeft(Thumb hitThumb, DragDeltaEventArgs args)
         {
-            var widthOld = Adorned.Width;
-            var leftOld = Canvas.GetLeft(Adorned);
+            var widthOld = AdornedFrameworkElement.Width;
+            var leftOld = Canvas.GetLeft(AdornedFrameworkElement);
 
-            var heightOld = Adorned.Height;
-            var topOld = Canvas.GetTop(Adorned);
+            var heightOld = AdornedFrameworkElement.Height;
+            var topOld = Canvas.GetTop(AdornedFrameworkElement);
 
             ApplySizeChange(new Point(-args.HorizontalChange, -args.VerticalChange), hitThumb);
 
-            Canvas.SetLeft(Adorned, leftOld - (Adorned.Width - widthOld));
-            Canvas.SetTop(Adorned, topOld - (Adorned.Height - heightOld));
+            Canvas.SetLeft(AdornedFrameworkElement, leftOld - (AdornedFrameworkElement.Width - widthOld));
+            Canvas.SetTop(AdornedFrameworkElement, topOld - (AdornedFrameworkElement.Height - heightOld));
         }
 
         private void HandleBottomLeft(Thumb hitThumb, DragDeltaEventArgs args)
         {
-            var widthOld = Adorned.Width;
-            var leftOld = Canvas.GetLeft(Adorned);
+            var widthOld = AdornedFrameworkElement.Width;
+            var leftOld = Canvas.GetLeft(AdornedFrameworkElement);
 
             ApplySizeChange(new Point(-args.HorizontalChange, args.VerticalChange), hitThumb);
 
-            Canvas.SetLeft(Adorned, leftOld - (Adorned.Width - widthOld));
+            Canvas.SetLeft(AdornedFrameworkElement, leftOld - (AdornedFrameworkElement.Width - widthOld));
         }
 
         private void ApplySizeChange(Point change, Thumb hitThumb)
         {
-            var newHeight = Math.Max(Adorned.Height + change.Y, hitThumb.DesiredSize.Height);
-            var newWidth = Math.Max(Adorned.Width + change.X, hitThumb.DesiredSize.Width);
+            var newHeight = Math.Max(AdornedFrameworkElement.Height + change.Y, hitThumb.DesiredSize.Height);
+            var newWidth = Math.Max(AdornedFrameworkElement.Width + change.X, hitThumb.DesiredSize.Width);
 
             if (Keyboard.Modifiers == ModifierKeys.Shift)
             {
-                var scaleFactor = Math.Max(newWidth / Adorned.Width, newHeight / Adorned.Height);
+                var scaleFactor = Math.Max(newWidth/AdornedFrameworkElement.Width,
+                    newHeight/AdornedFrameworkElement.Height);
 
-                Adorned.Height *= scaleFactor;
-                Adorned.Width *= scaleFactor;
+                AdornedFrameworkElement.Height *= scaleFactor;
+                AdornedFrameworkElement.Width *= scaleFactor;
             }
             else
             {
-                Adorned.Height = newHeight;
-                Adorned.Width = newWidth;
+                AdornedFrameworkElement.Height = newHeight;
+                AdornedFrameworkElement.Width = newWidth;
             }
         }
 
-        private FrameworkElement Adorned
-        {
-            get { return AdornedElement as FrameworkElement; }
-        }
+        private FrameworkElement AdornedFrameworkElement => AdornedElement as FrameworkElement;
 
         // Arrange the Adorners.
         protected override Size ArrangeOverride(Size finalSize)
@@ -204,15 +203,16 @@ namespace FMA.View.Helpers
             var adornerWidth = DesiredSize.Width;
             var adornerHeight = DesiredSize.Height;
 
-            topLeft.Arrange(new Rect(-adornerWidth / 2, -adornerHeight / 2, adornerWidth, adornerHeight));
-            topRight.Arrange(new Rect(desiredWidth - adornerWidth / 2, -adornerHeight / 2, adornerWidth, adornerHeight));
-            bottomLeft.Arrange(new Rect(-adornerWidth / 2, desiredHeight - adornerHeight / 2, adornerWidth, adornerHeight));
-            bottomRight.Arrange(new Rect(desiredWidth - adornerWidth / 2, desiredHeight - adornerHeight / 2, adornerWidth, adornerHeight));
+            topLeft.Arrange(new Rect(-adornerWidth/2, -adornerHeight/2, adornerWidth, adornerHeight));
+            topRight.Arrange(new Rect(desiredWidth - adornerWidth/2, -adornerHeight/2, adornerWidth, adornerHeight));
+            bottomLeft.Arrange(new Rect(-adornerWidth/2, desiredHeight - adornerHeight/2, adornerWidth, adornerHeight));
+            bottomRight.Arrange(new Rect(desiredWidth - adornerWidth/2, desiredHeight - adornerHeight/2, adornerWidth,
+                adornerHeight));
 
-            left.Arrange(new Rect(-adornerWidth / 2, 0, adornerWidth, adornerHeight));
-            right.Arrange(new Rect(desiredWidth - adornerWidth / 2, 0, adornerWidth, adornerHeight));
-            bottom.Arrange(new Rect(0, desiredHeight - adornerHeight / 2, adornerWidth, adornerHeight));
-            top.Arrange(new Rect(0, -adornerHeight / 2, adornerWidth, adornerHeight));
+            left.Arrange(new Rect(-adornerWidth/2, 0, adornerWidth, adornerHeight));
+            right.Arrange(new Rect(desiredWidth - adornerWidth/2, 0, adornerWidth, adornerHeight));
+            bottom.Arrange(new Rect(0, desiredHeight - adornerHeight/2, adornerWidth, adornerHeight));
+            top.Arrange(new Rect(0, -adornerHeight/2, adornerWidth, adornerHeight));
 
             // Return the final size.
             return finalSize;
@@ -242,24 +242,20 @@ namespace FMA.View.Helpers
         // need to be set first.  It also sets the maximum size of the adorned element.
         private void EnforceSize()
         {
-            if (Adorned.Width.Equals(double.NaN))
-                Adorned.Width = Adorned.DesiredSize.Width;
-            if (Adorned.Height.Equals(double.NaN))
-                Adorned.Height = Adorned.DesiredSize.Height;
+            if (AdornedFrameworkElement.Width.Equals(double.NaN))
+                AdornedFrameworkElement.Width = AdornedFrameworkElement.DesiredSize.Width;
+            if (AdornedFrameworkElement.Height.Equals(double.NaN))
+                AdornedFrameworkElement.Height = AdornedFrameworkElement.DesiredSize.Height;
 
-            var parent = Adorned.Parent as FrameworkElement;
+            var parent = AdornedFrameworkElement.Parent as FrameworkElement;
             if (parent != null)
             {
-                Adorned.MaxHeight = parent.ActualHeight;
-                Adorned.MaxWidth = parent.ActualWidth;
+                AdornedFrameworkElement.MaxHeight = parent.ActualHeight;
+                AdornedFrameworkElement.MaxWidth = parent.ActualWidth;
             }
         }
 
-        protected override int VisualChildrenCount
-        {
-            get { return visualChildren.Count; }
-        }
-
+        protected override int VisualChildrenCount => visualChildren.Count;
 
         protected override Visual GetVisualChild(int index)
         {

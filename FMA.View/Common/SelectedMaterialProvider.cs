@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿// Christopher Braun 2016
+
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using FMA.View.Models;
 
@@ -16,7 +19,7 @@ namespace FMA.View.Common
             MaterialChilds = new ObservableCollection<MaterialChildModel>();
         }
 
-        public ObservableCollection<MaterialChildModel> MaterialChilds { get; private set; }
+        public ObservableCollection<MaterialChildModel> MaterialChilds { get; }
 
         public MaterialModel MaterialModel
         {
@@ -25,7 +28,7 @@ namespace FMA.View.Common
             {
                 materialModel = value;
                 OnPropertyChanged();
-                this.MaterialChilds.Clear();
+                MaterialChilds.Clear();
 
                 if (materialModel == null) return;
                 materialModel.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
@@ -49,22 +52,22 @@ namespace FMA.View.Common
                 switch (e.Action)
                 {
                     case NotifyCollectionChangedAction.Add:
+                    {
+                        foreach (var newItem in e.NewItems.OfType<MaterialChildModel>())
                         {
-                            foreach (var newItem in e.NewItems.OfType<MaterialChildModel>())
-                            {
-                                //Vor das Logo
-                                AddChildToMaterialChilds(newItem);
-                            }
-                            break;
+                            //Vor das Logo
+                            AddChildToMaterialChilds(newItem);
                         }
+                        break;
+                    }
                     case NotifyCollectionChangedAction.Remove:
+                    {
+                        foreach (var oldItem in e.OldItems.OfType<MaterialChildModel>())
                         {
-                            foreach (var oldItem in e.OldItems.OfType<MaterialChildModel>())
-                            {
-                                RemoveChildFromMaterialChilds(oldItem);
-                            }
-                            break;
+                            RemoveChildFromMaterialChilds(oldItem);
                         }
+                        break;
+                    }
                 }
             };
         }
@@ -94,20 +97,20 @@ namespace FMA.View.Common
         private void AddChildToMaterialChilds(MaterialChildModel materialChild)
         {
             materialChild.PropertyChanged += materialChild_PropertyChanged;
-            this.MaterialChilds.Insert(this.MaterialChilds.Count - this.MaterialChilds.OfType<LogoModel>().Count(), materialChild);
+            MaterialChilds.Insert(MaterialChilds.Count - MaterialChilds.OfType<LogoModel>().Count(), materialChild);
         }
 
         private void RemoveChildFromMaterialChilds(MaterialChildModel materialChild)
         {
             materialChild.PropertyChanged -= materialChild_PropertyChanged;
-            this.MaterialChilds.Remove(materialChild);
+            MaterialChilds.Remove(materialChild);
         }
 
-        void materialChild_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void materialChild_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "IsSelected")
+            if (e.PropertyName == nameof(MaterialChildModel.IsSelected))
             {
-                OnPropertyChanged("SelectedMaterialChilds");
+                OnPropertyChanged(nameof(SelectedMaterialChilds));
             }
         }
 
@@ -119,13 +122,7 @@ namespace FMA.View.Common
             }
         }
 
-        public List<MaterialChildModel> SelectedMaterialChilds
-        {
-            get
-            {
-                return this.MaterialChilds.Where(s => s.IsSelected).ToList();
-            }
-        }
+        public List<MaterialChildModel> SelectedMaterialChilds => MaterialChilds.Where(s => s.IsSelected).ToList();
 
         public bool ShowBackSide
         {

@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿// Christopher Braun 2016
+
+using System.Linq;
 using FMA.Contracts;
 using FMA.View.Common;
 
@@ -6,8 +8,9 @@ namespace FMA.View.DefaultView
 {
     public class DefaultViewModel : FlyerViewModelBase
     {
-        public DefaultViewModel(SelectedMaterialProvider selectedMaterialProvider, IFontService fontService, ViewStates viewState)
-            : base(selectedMaterialProvider,fontService, viewState)
+        public DefaultViewModel(SelectedMaterialProvider selectedMaterialProvider, IFontService fontService,
+            ViewStates viewState)
+            : base(selectedMaterialProvider, fontService, viewState)
         {
         }
 
@@ -15,14 +18,9 @@ namespace FMA.View.DefaultView
         {
             get
             {
-                if (this.SelectedMaterialProvider.MaterialModel == null)
-                {
-                    return false;
-                }
-
-                return SelectedMaterialProvider.MaterialModel.MaterialFields.All(f => string.IsNullOrEmpty(f.Error));
+                var materialModel = SelectedMaterialProvider.MaterialModel;
+                return materialModel != null && materialModel.MaterialFields.All(f => string.IsNullOrEmpty(f.Error));
             }
         }
-
     }
 }

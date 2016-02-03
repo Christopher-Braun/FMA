@@ -225,4 +225,16 @@
   <data name="TextColorToolTip" xml:space="preserve">
     <value>Farben in Form von WPF-Farben eingeben. z.B. "Red","Pink","LightBlue" oder als HexWert z.B. "#FF0000"</value>
   </data>
+  <data name="AllFiles" xml:space="preserve">
+    <value>Alle Dateien</value>
+  </data>
+  <data name="ImageFiles" xml:space="preserve">
+    <value>Bild-Dateien</value>
+  </data>
+  <data name="MaxLenghtHint" xml:space="preserve">
+    <value>Der Text darf maximal '{0}' Zeichen pro Zeile enthalten</value>
+  </data>
+  <data name="MaxLinesHint" xml:space="preserve">
+    <value>Der Text darf maximal '{0}' Zeilen enthalten</value>
+  </data>
 </root>

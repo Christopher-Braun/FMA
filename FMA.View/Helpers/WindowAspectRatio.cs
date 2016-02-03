@@ -25,37 +25,36 @@ namespace FMA.View.Helpers
             WINDOWPOSCHANGING = 0x0046,
         }
 
-        [Flags()]
+        [Flags]
         public enum SWP
         {
             NoMove = 0x2,
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        internal struct WINDOWPOS
+        internal struct WindowPosition
         {
             public IntPtr hwnd;
             public IntPtr hwndInsertAfter;
             public int x;
             public int y;
-            public int cx;
+            public int cx;  
             public int cy;
             public int flags;
         }
 
         private IntPtr DragHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handeled)
         {
-            if ((WM)msg == WM.WINDOWPOSCHANGING)
-            {
-                var position = (WINDOWPOS)Marshal.PtrToStructure(lParam, typeof(WINDOWPOS));
+            if ((WM) msg != WM.WINDOWPOSCHANGING) return IntPtr.Zero;
 
-                if ((position.flags & (int)SWP.NoMove) != 0 || HwndSource.FromHwnd(hwnd).RootVisual == null) return IntPtr.Zero;
+            var position = (WindowPosition)Marshal.PtrToStructure(lParam, typeof(WindowPosition));
 
-                position.cx = (int)(position.cy * ratio);
+            if ((position.flags & (int)SWP.NoMove) != 0 || HwndSource.FromHwnd(hwnd).RootVisual == null) return IntPtr.Zero;
 
-                Marshal.StructureToPtr(position, lParam, true);
-                handeled = true;
-            }
+            position.cx = (int)(position.cy * ratio);
+
+            Marshal.StructureToPtr(position, lParam, true);
+            handeled = true;
 
             return IntPtr.Zero;
         }

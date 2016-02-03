@@ -22,5 +22,29 @@ namespace FMA.Core.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int JpgQuality {
+            get {
+                return ((int)(this["JpgQuality"]));
+            }
+            set {
+                this["JpgQuality"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("96")]
+        public int ImageDPI {
+            get {
+                return ((int)(this["ImageDPI"]));
+            }
+            set {
+                this["ImageDPI"] = value;
+            }
+        }
     }
 }

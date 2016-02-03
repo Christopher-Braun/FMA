@@ -4,22 +4,28 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:layoutView="clr-namespace:FMA.View.LayoutView"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:defaultView="clr-namespace:FMA.View.DefaultView"
+             xmlns:helpers="clr-namespace:FMA.View.Helpers"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Common/Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <helpers:SubstractionConverter x:Key="SubstractionConverter"></helpers:SubstractionConverter>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid x:Name="InputAndPreview">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <layoutView:GraphicalLayout Margin="8">
+        <layoutView:GraphicalLayout Margin="8" MaxWidth="{Binding ActualWidth,
+            RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type layoutView:LayoutView}},
+            Converter={StaticResource SubstractionConverter}, ConverterParameter=450 }" VerticalAlignment="Top">
             <layoutView:GraphicalLayout.Style>
                 <Style TargetType="FrameworkElement">
                     <Style.Triggers>

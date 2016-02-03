@@ -1,18 +1,18 @@
+// Christopher Braun 2016
+
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using FMA.Contracts;
 using FMA.View.Models;
-using FMA.View.Properties;
 
 namespace FMA.View.Common
 {
-    public abstract class FlyerViewModelBase : INotifyPropertyChanged
+    public abstract class FlyerViewModelBase : NotifyPropertyChangedBase
     {
         private ViewStates viewState;
         private bool canAddLogo;
 
-        protected FlyerViewModelBase(SelectedMaterialProvider selectedMaterialProvider, IFontService fontService, ViewStates viewState)
+        protected FlyerViewModelBase(SelectedMaterialProvider selectedMaterialProvider, IFontService fontService,
+            ViewStates viewState)
         {
             this.viewState = viewState;
             SelectedMaterialProvider = selectedMaterialProvider;
@@ -20,13 +20,13 @@ namespace FMA.View.Common
             CanAddLogo = true;
         }
 
-        public SelectedMaterialProvider SelectedMaterialProvider { get; private set; }
+        public SelectedMaterialProvider SelectedMaterialProvider { get; }
 
-        public IFontService FontService { get; private set; }
+        public IFontService FontService { get; }
 
         public abstract bool CanCreate { get; }
 
-        public Boolean CanAddLogo
+        public bool CanAddLogo
         {
             get { return canAddLogo; }
             set
@@ -38,15 +38,22 @@ namespace FMA.View.Common
 
         public void AddLogo()
         {
+            if (CanAddLogo == false)
+            {
+                throw new InvalidOperationException(nameof(AddLogo));
+            }
+
             SelectedMaterialProvider.MaterialModel.AddLogo();
-            //TODO Only in override
-            //      SelectedMaterialProvider.SetSelectedChilds(SelectedMaterialProvider.MaterialModel.LogoModel);
         }
 
         public void DeleteLogo()
         {
+            if (CanAddLogo == false)
+            {
+                throw new InvalidOperationException(nameof(DeleteLogo));
+            }
+
             SelectedMaterialProvider.MaterialModel.LogoModel.DeleteLogo();
-            //   SelectedMaterialProvider.SetSelectedChilds(SelectedMaterialProvider.MaterialModel.MaterialFields.Last());
         }
 
         public void ToggleViews()
@@ -67,7 +74,6 @@ namespace FMA.View.Common
             }
         }
 
-
         public ViewStates ViewState
         {
             get { return viewState; }
@@ -78,21 +84,11 @@ namespace FMA.View.Common
             }
         }
 
-
-        public virtual event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         public enum ViewStates
         {
             Both,
             OnlyInput,
-            OnlyPreview,
+            OnlyPreview
         }
     }
 }

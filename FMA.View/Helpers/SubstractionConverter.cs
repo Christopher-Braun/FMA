@@ -1,18 +1,25 @@
-﻿// Christopher Braun 2016
-
-using System;
+﻿using System;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
 
 namespace FMA.View.Helpers
 {
-    public class TextPropertiesCaptionsVisibilityConverter : IValueConverter
+    public class SubstractionConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var count = (int) value;
-            return count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            try
+            {
+                var intValue = int.Parse(value.ToString());
+                var minus = int.Parse(parameter.ToString());
+
+                return intValue - minus;
+
+            }
+            catch (Exception e)
+            {
+                return value;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

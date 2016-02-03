@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using FMA.Contracts;
+using FMA.Core.Properties;
 
 namespace FMA.Core
 {
@@ -61,12 +62,13 @@ namespace FMA.Core
 
             image.Arrange(new Rect(0, 0, drawingImage.Width, drawingImage.Height));
 
-            var renderTargetBitmap = new RenderTargetBitmap((int)drawingImage.Width, (int)drawingImage.Height, 96, 96, PixelFormats.Default);
+            var settings = Settings.Default;
+            var renderTargetBitmap = new RenderTargetBitmap((int)drawingImage.Width, (int)drawingImage.Height, settings.ImageDPI, settings.ImageDPI, PixelFormats.Default);
             renderTargetBitmap.Render(image);
 
             var encoder = new JpegBitmapEncoder
             {
-                QualityLevel = 100
+                QualityLevel = settings.JpgQuality
             };
 
             encoder.Frames.Add(BitmapFrame.Create(renderTargetBitmap));

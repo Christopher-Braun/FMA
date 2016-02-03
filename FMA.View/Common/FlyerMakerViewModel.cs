@@ -1,6 +1,7 @@
-﻿using System;
+﻿// Christopher Braun 2016
+
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using FMA.Contracts;
@@ -13,24 +14,26 @@ namespace FMA.View.Common
     {
         public event Action<CustomMaterial> FlyerCreated = m => { };
 
-        public FlyerMakerViewModel(List<Material> materials, int selectedMateriaId, Func<string, FontInfo> getFont, IFontService fontService, IWindowService windowService)
+        public FlyerMakerViewModel(List<Material> materials, int selectedMateriaId, Func<string, FontInfo> getFont,
+            IFontService fontService, IWindowService windowService)
             : base(materials, getFont, fontService, windowService)
         {
-            this.SetMaterials(materials, selectedMateriaId, fontService);
-            this.LayoutMode = false;
+            SetMaterials(materials, selectedMateriaId, fontService);
+            LayoutMode = false;
         }
 
         private void SetMaterials(IEnumerable<Material> materials, int selectedMateriaId, IFontService fontService)
         {
-            this.Materials = materials.Select(m => m.ToMaterialModel(fontService)).ToList();
+            Materials = materials.Select(m => m.ToMaterialModel(fontService)).ToList();
             if (selectedMateriaId != -1)
             {
-                this.SelectedMaterial = this.Materials.Single(m => m.Id.Equals(selectedMateriaId));
+                SelectedMaterial = Materials.Single(m => m.Id.Equals(selectedMateriaId));
             }
         }
 
 
         private bool layoutButtonsVisible;
+
         public bool LayoutButtonsVisible
         {
             get { return layoutButtonsVisible; }

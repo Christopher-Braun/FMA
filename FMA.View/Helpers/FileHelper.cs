@@ -1,3 +1,5 @@
+// Christopher Braun 2016
+
 using System;
 using System.IO;
 using FMA.View.Properties;
@@ -13,7 +15,7 @@ namespace FMA.View.Helpers
             {
                 Title = Resources.SelectLogoFileTitle,
                 InitialDirectory = Settings.Default.LastLogoPath,
-                Filter = "Image files | *.jpg; *.jpeg; *.bmp; *.png; *.gif | All Files | *.*"
+                Filter = $"{Resources.ImageFiles} | *.jpg; *.jpeg; *.bmp; *.png; *.gif | {Resources.AllFiles} | *.*"
             };
 
             var result = dialog.ShowDialog();
@@ -36,25 +38,25 @@ namespace FMA.View.Helpers
 
             try
             {
-                if (File.Exists(logoFile) == false)
+                if (File.Exists(logoFile))
                 {
-                    return logoData;
-                }
-
-                using (var fileStream = new FileStream(logoFile, FileMode.Open))
-                {
-                    using (var ms = new MemoryStream())
+                    using (var fileStream = new FileStream(logoFile, FileMode.Open))
                     {
-                        fileStream.CopyTo(ms);
-                        logoData = ms.ToArray();
+                        using (var ms = new MemoryStream())
+                        {
+                            fileStream.CopyTo(ms);
+                            logoData = ms.ToArray();
+                        }
                     }
                 }
-                return logoData;
+
             }
             catch (Exception e)
             {
-                return logoData;
+               //TODO Log
             }
+
+            return logoData;
         }
     }
 }

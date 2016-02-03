@@ -1,3 +1,5 @@
+// Christopher Braun 2016
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,16 +10,13 @@ namespace FMA.View.Common
 {
     public class FontHelper
     {
-        public static void UpdateFonts(IEnumerable<Material> materials, Func<string, FontInfo> getFont, IFontService fontService)
+        public static void UpdateFonts(IEnumerable<Material> materials, Func<string, FontInfo> getFont,
+            IFontService fontService)
         {
             var requiredFonts = materials.SelectMany(m => m.MaterialFields).Select(f => f.FontName);
 
-            foreach (var requiredFontName in requiredFonts)
+            foreach (var requiredFontName in requiredFonts.Where(f => fontService.IsFontAvailable(f) == false))
             {
-                if (fontService.IsFontAvailable(requiredFontName))
-                {
-                    continue;
-                }
                 var fontInfo = getFont(requiredFontName);
                 if (fontInfo != null)
                 {

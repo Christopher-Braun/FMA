@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Christopher Braun 2016
+
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -6,6 +8,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using FMA.Contracts;
+using FMA.View.Properties;
 
 namespace FMA.View.Models
 {
@@ -23,17 +26,18 @@ namespace FMA.View.Models
         private bool bold;
         private int fontSize = 12;
         private FontFamilyWithName fontFamilyWithName;
-        private string textColor;
+        private string textColor = "Black";
 
         public MaterialFieldModel(string fieldName, string value, FontFamilyWithName fontFamilyWithName)
         {
-            this.FieldName = fieldName;
+            FieldName = fieldName;
             this.value = value;
-
-            this.FontFamilyWithName = fontFamilyWithName;
+            FontFamilyWithName = fontFamilyWithName;
         }
 
-        public MaterialFieldModel(string fieldName, string value, FontFamilyWithName fontFamilyWithName, int fontSize, bool bold, bool italic, bool uppper, int maxLength, int maxRows, int leftMargin, int topMargin, string textColor="black")
+        public MaterialFieldModel(string fieldName, string value, FontFamilyWithName fontFamilyWithName, int fontSize,
+            bool bold, bool italic, bool uppper, int maxLength, int maxRows, int leftMargin, int topMargin,
+            string textColor = "Black")
             : this(fieldName, value, fontFamilyWithName)
         {
             TextColor = textColor;
@@ -47,14 +51,8 @@ namespace FMA.View.Models
             TopMargin = topMargin;
         }
 
-        public double Width
-        {
-            get { return Math.Round(GetFormattedText().Width); }
-        }
-        public double Height
-        {
-            get { return Math.Round(GetFormattedText().Height); }
-        }
+        public double Width => Math.Round(GetFormattedText().Width);
+        public double Height => Math.Round(GetFormattedText().Height);
 
         private FormattedText GetFormattedText()
         {
@@ -63,32 +61,31 @@ namespace FMA.View.Models
 
             var typeface = new Typeface(FontFamilyWithName.FontFamily, fontStyle, fontWeight, FontStretches.Normal);
 
-            var formattedText = new FormattedText(DisplayValue, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, FontSize, Brushes.Black);
+            var formattedText = new FormattedText(DisplayValue, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
+                typeface, FontSize, Brushes.Black);
 
             return formattedText;
         }
-
-
 
         public FontFamilyWithName FontFamilyWithName
         {
             get { return fontFamilyWithName; }
             set
             {
-                if (Equals(value, FontFamilyWithName)) { return; }
+                if (Equals(value, FontFamilyWithName))
+                {
+                    return;
+                }
 
                 if (value == null)
                 {
-                    //TODO Hack weil das Binding an die ComboBox beim switchen der View da null reinsetzt
+                    //Hack weil das Binding an die ComboBox beim switchen der View da null reinsetzt
                     return;
-                    // throw new ArgumentNullException("fontFamilyWithName");
                 }
 
                 fontFamilyWithName = value;
                 OnPropertyChanged();
-                OnPropertyChanged("FontFamily");
-                OnPropertyChanged("Width");
-                OnPropertyChanged("Height");
+                NotifyWidhtAndHeightChanged();
             }
         }
 
@@ -97,11 +94,13 @@ namespace FMA.View.Models
             get { return fontSize; }
             set
             {
-                if (value == FontSize) { return; }
+                if (value == FontSize)
+                {
+                    return;
+                }
                 fontSize = value;
                 OnPropertyChanged();
-                OnPropertyChanged("Width");
-                OnPropertyChanged("Height");
+                NotifyWidhtAndHeightChanged();
             }
         }
 
@@ -112,8 +111,7 @@ namespace FMA.View.Models
             {
                 bold = value;
                 OnPropertyChanged();
-                OnPropertyChanged("Width");
-                OnPropertyChanged("Height");
+                NotifyWidhtAndHeightChanged();
             }
         }
 
@@ -124,8 +122,7 @@ namespace FMA.View.Models
             {
                 italic = value;
                 OnPropertyChanged();
-                OnPropertyChanged("Width");
-                OnPropertyChanged("Height");
+                NotifyWidhtAndHeightChanged();
             }
         }
 
@@ -137,9 +134,14 @@ namespace FMA.View.Models
                 uppper = value;
                 OnPropertyChanged();
                 OnPropertyChanged("DisplayValue");
-                OnPropertyChanged("Width");
-                OnPropertyChanged("Height");
+                NotifyWidhtAndHeightChanged();
             }
+        }
+
+        private void NotifyWidhtAndHeightChanged()
+        {
+            OnPropertyChanged(nameof(Width));
+            OnPropertyChanged(nameof(Height));
         }
 
         public string TextColor
@@ -151,7 +153,6 @@ namespace FMA.View.Models
                 OnPropertyChanged();
             }
         }
-
 
         public int MaxLength
         {
@@ -193,7 +194,6 @@ namespace FMA.View.Models
             }
         }
 
-
         public string Value
         {
             get { return value; }
@@ -201,20 +201,12 @@ namespace FMA.View.Models
             {
                 this.value = value;
                 OnPropertyChanged();
-                OnPropertyChanged("DisplayValue");
-                OnPropertyChanged("Width");
-                OnPropertyChanged("Height");
+                OnPropertyChanged(nameof(DisplayValue));
+                NotifyWidhtAndHeightChanged();
             }
         }
 
-        public string DisplayValue
-        {
-            get
-            {
-                return Uppper ? this.Value.ToUpper() : this.Value;
-            }
-        }
-
+        public string DisplayValue => Uppper ? Value.ToUpper() : Value;
 
 
         public string this[string columnName]
@@ -223,9 +215,9 @@ namespace FMA.View.Models
             {
                 var errorText = string.Empty;
 
-                if (columnName == "Value")
+                if (columnName == nameof(Value))
                 {
-                    var newLine = new[] { "\r\n" };
+                    var newLine = new[] {"\r\n"};
                     var lines = Value.Split(newLine, StringSplitOptions.None);
 
                     //if (lines.Aggregate((s1, s2) => s1 + s2).Length > MaxLength)
@@ -234,16 +226,15 @@ namespace FMA.View.Models
                     //} 
                     if (lines.Any(t => t.Length > MaxLength))
                     {
-                        errorText = string.Format("Der Text darf maximal '{0}' Zeichen pro Zeile enthalten", MaxLength);
+                        errorText = string.Format(Resources.MaxLenghtHint, MaxLength);
                     }
-                    else if (lines.Length > this.MaxRows)
+                    else if (lines.Length > MaxRows)
                     {
-                        errorText = string.Format("Der Text darf maximal '{0}' Zeilen enthalten", MaxRows);
+                        errorText = string.Format(Resources.MaxLinesHint, MaxRows);
                     }
-
                 }
 
-                this.Error = errorText;
+                Error = errorText;
 
                 return errorText;
             }
@@ -260,7 +251,6 @@ namespace FMA.View.Models
                 }
                 error = value;
                 OnPropertyChanged();
-
             }
         }
     }

@@ -7,6 +7,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:FMA.View.Models"
              xmlns:properties="clr-namespace:FMA.View.Properties"
+             xmlns:helpers="clr-namespace:FMA.View.Helpers"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
@@ -15,22 +16,25 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Common/Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <helpers:SubstractionConverter x:Key="SubstractionConverter"></helpers:SubstractionConverter>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid x:Name="InputAndPreview">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Viewbox Margin="4"
-                 HorizontalAlignment="Stretch"
-                 VerticalAlignment="Stretch"
-                 Stretch="Uniform">
+        <Viewbox Margin="4" Stretch="Uniform"  MaxWidth="{Binding ActualWidth,
+            RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type defaultView:DefaultView}},
+            Converter={StaticResource SubstractionConverter}, ConverterParameter=350 }"
+                 VerticalAlignment="Top">
             <common:MaterialCanvas Margin="8"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Top"
+                                   CanManipulateLogos="{Binding CanAddLogo}"
                                    FontService="{Binding FontService}"
                                    MaterialModel="{Binding SelectedMaterialProvider.MaterialModel}"
                                    ShowBackSide="{Binding SelectedMaterialProvider.ShowBackSide}"

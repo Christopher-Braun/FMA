@@ -1,8 +1,9 @@
-﻿using System;
+﻿// Christopher Braun 2016
+
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Media;
 
 namespace FMA.View.Helpers
 {
@@ -10,7 +11,7 @@ namespace FMA.View.Helpers
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is bool && (bool)value)
+            if (value is bool && (bool) value)
             {
                 return FontStyles.Italic;
             }
@@ -23,24 +24,5 @@ namespace FMA.View.Helpers
             return null;
         }
     }
-
-    public class FontSColorConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is bool && (bool)value)
-            {
-                return FontStyles.Italic;
-            }
-
-           // return Color.
-
-            return FontStyles.Normal;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return null;
-        }
-    }
+   
 }

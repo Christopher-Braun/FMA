@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Christopher Braun 2016
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -14,7 +16,9 @@ namespace FMA.View.Helpers
         {
             var selectedMaterialChilds = value as IEnumerable<MaterialChildModel>;
 
-            return selectedMaterialChilds != null && selectedMaterialChilds.OfType<MaterialFieldModel>().Any() ? Visibility.Visible : Visibility.Collapsed;
+            return selectedMaterialChilds != null && selectedMaterialChilds.OfType<MaterialFieldModel>().Any()
+                ? Visibility.Visible
+                : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -1,3 +1,5 @@
+// Christopher Braun 2016
+
 namespace FMA.View.Helpers
 {
     public class FontInfo
@@ -8,7 +10,7 @@ namespace FMA.View.Helpers
             Buffer = buffer;
         }
 
-        public string FileName { get; set; }
-        public byte[] Buffer { get; set; }
+        public string FileName { get;  }
+        public byte[] Buffer { get; }
     }
 }
