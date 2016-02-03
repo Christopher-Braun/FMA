@@ -214,6 +214,15 @@ namespace FMA.View.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Schriftfarbe.
+        /// </summary>
+        public static string FontColor {
+            get {
+                return ResourceManager.GetString("FontColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Schriftart.
         /// </summary>
         public static string FontName {
@@ -336,6 +345,15 @@ namespace FMA.View.Properties {
         public static string Text {
             get {
                 return ResourceManager.GetString("Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Farben in Form von WPF-Farben eingeben. z.B. &quot;Red&quot;,&quot;Pink&quot;,&quot;LightBlue&quot; oder als HexWert z.B. &quot;#FF0000&quot;.
+        /// </summary>
+        public static string TextColorToolTip {
+            get {
+                return ResourceManager.GetString("TextColorToolTip", resourceCulture);
             }
         }
         

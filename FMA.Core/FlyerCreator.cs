@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -34,7 +35,7 @@ namespace FMA.Core
 
                 drawingContext.DrawImage(bitmapSourceBackground, new Rect(0, 0, bitmapSourceBackground.Width, bitmapSourceBackground.Height));
 
-                foreach (var textField in materialToTextFieldConverter.CreateTextFields(material))
+                foreach (var textField in material.MaterialFields.Select(materialToTextFieldConverter.CreateTextField))
                 {
                     drawingContext.DrawText(textField.FormattedText, textField.Origin);
                 }
@@ -63,7 +64,10 @@ namespace FMA.Core
             var renderTargetBitmap = new RenderTargetBitmap((int)drawingImage.Width, (int)drawingImage.Height, 96, 96, PixelFormats.Default);
             renderTargetBitmap.Render(image);
 
-            var encoder = new JpegBitmapEncoder();
+            var encoder = new JpegBitmapEncoder
+            {
+                QualityLevel = 100
+            };
 
             encoder.Frames.Add(BitmapFrame.Create(renderTargetBitmap));
 

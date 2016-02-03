@@ -12,7 +12,7 @@ namespace FMA.TestData
 
             var material1Fields = new List<MaterialField>
             {
-                new MaterialField("Veranstalter", "Arial", 12, false, false, true, 50, 3, 24, 305, "FeG Hanau"),
+                new MaterialField("Veranstalter", "Arial", 12, false, false, true, 50, 3, 24, 305, "FeG Hanau","Red"),
                 new MaterialField("Titel", "Arial", 30, true, false, true, 50, 2, 24, 350, "Verfolgt, weil sie \ran Jesus Glauben"),
                 new MaterialField("Untertitel", "Times New Roman", 16, true, false, true, 80, 3, 24, 430, "Einladung zum Bibelabend Vitamin B3 "),
                 new MaterialField("Datum", "Times New Roman", 22, true, false, true, 80, 3, 24, 500, "FR 11.07.2014 / 20:00 "),
@@ -21,11 +21,11 @@ namespace FMA.TestData
             };
 
             var material1 = new Material(1, "Gefährlicher Glaube", "ZumThema Gefährlicher Glaube (Islamische Welt)",
-                material1Fields, Helper.GetBackground(1), Helper.GetBackground(1, false));
+                material1Fields, Helper.GetBackground(1), Helper.GetBackground(1, false),"Courir");
 
             var material2Fields = new List<MaterialField>
             {
-                new MaterialField("Referent", "Signarita Anne", 120, false, false, false, 50, 1, 40, 600, "Petrus"),
+                new MaterialField("Referent", "Signarita Anne", 120, false, false, false, 50, 1, 40, 600, "Petrus", "#FF5500"),
                 new MaterialField("Titel", "Arial", 21, true, false, true, 50, 3, 7, 320, "Nordkorea - Gestern und Heute"),
                 new MaterialField("Untertitel", "Times New Roman", 12, true, false, true, 80, 3, 27, 350,"Untertitel Nordkorea"),
                 new MaterialField("Ort", "Bakery", 46, false, true, false, 80, 3, 60, 520, "Hamburg")

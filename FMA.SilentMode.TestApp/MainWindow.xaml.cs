@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Windows;
 using FMA.Core;
 using FMA.TestData;
+using System.Diagnostics;
 
 namespace FMA.SilentMode.TestApp
 {
@@ -18,7 +19,7 @@ namespace FMA.SilentMode.TestApp
             var material = DummyData.GetCustomMaterial();
 
             var exeDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            var customFontsDir = string.Format(@"{0}\CustomFonts\", exeDir);
+            var customFontsDir = $@"{exeDir}\CustomFonts\";
 
             var flyer = new FlyerCreator(customFontsDir).CreateFlyer(material);
 
@@ -27,6 +28,7 @@ namespace FMA.SilentMode.TestApp
                 flyer.WriteTo(fileStream);
             }
 
+            Process.Start("SilentFlyer.jpg");
         }
     }
 }

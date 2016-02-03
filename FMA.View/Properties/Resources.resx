@@ -219,4 +219,10 @@
   <data name="EmptyMaterial" xml:space="preserve">
     <value>Leeres Material (*)</value>
   </data>
+  <data name="FontColor" xml:space="preserve">
+    <value>Schriftfarbe</value>
+  </data>
+  <data name="TextColorToolTip" xml:space="preserve">
+    <value>Farben in Form von WPF-Farben eingeben. z.B. "Red","Pink","LightBlue" oder als HexWert z.B. "#FF0000"</value>
+  </data>
 </root>

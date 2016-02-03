@@ -6,7 +6,7 @@ namespace FMA.UnitTests.Helpers
     {
         public static string GetDisplayText(this MaterialField field)
         {
-            return field.Uppper ? field.DefaultValue.ToUpper() : field.DefaultValue;
+            return field.Uppper ? field.Value.ToUpper() : field.Value;
         }
     }
 }

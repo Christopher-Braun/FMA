@@ -15,5 +15,5 @@
         </DataTemplate>
     </Window.Resources>
 
-    <ContentControl Content="{Binding FlyerMakerViewModel}" />
+    <ContentControl Content="{Binding FlyerMakerViewModel}" Focusable="False" />
 </Window>

@@ -81,6 +81,7 @@ namespace FMA.View.Common
 
         public MaterialCanvas()
         {
+            Focusable = false;
             Drop += (sender, e) => DropLogo(e);
             SelectedChilds.CollectionChanged += SelectedElements_CollectionChanged;
         }
@@ -154,10 +155,7 @@ namespace FMA.View.Common
             CreateFlyerFrontSide();
             CreateFlyerBackSide();
 
-
             logoImage = CreateLogoImage(MaterialModel.LogoModel);
-            Children.Add(logoImage);
-
             if (MaterialModel.LogoModel.IsSelected && CanManipulateLogos)
             {
                 AddSelectedElement(logoImage);
@@ -166,7 +164,6 @@ namespace FMA.View.Common
             foreach (var materialField in MaterialModel.MaterialFields)
             {
                 var textBlock = CreateTextBlock(materialField);
-                Children.Add(textBlock);
                 if (materialField.IsSelected && CanManipulateTexts)
                 {
                     AddSelectedElement(textBlock);
@@ -179,7 +176,7 @@ namespace FMA.View.Common
         private void CreateFlyerFrontSide()
         {
             flyerFrontSideImage = new Image { Cursor = Cursors.Arrow, DataContext = MaterialModel };
-            var sourceBinding = new Binding("FlyerFrontSideImage") { Mode = BindingMode.OneWay };
+            var sourceBinding = new Binding( nameof(MaterialModel.FlyerFrontSideImage)) { Mode = BindingMode.OneWay };
             flyerFrontSideImage.SetBinding(Image.SourceProperty, sourceBinding);
             Children.Add(flyerFrontSideImage);
         }
@@ -191,17 +188,19 @@ namespace FMA.View.Common
                 Cursor = Cursors.Arrow,
                 DataContext = this
             };
-            var sourceBinding = new Binding("MaterialModel.FlyerBackSideImage") { Mode = BindingMode.OneWay };
+
+            var sourceBinding = new Binding($"{nameof(MaterialModel)}.{nameof(MaterialModel.FlyerBackSideImage)}") { Mode = BindingMode.OneWay };
             flyerBackSideImage.SetBinding(Image.SourceProperty, sourceBinding);
 
-            SetZIndex(flyerBackSideImage, Int32.MaxValue);
-            flyerBackSideImage.SetValue(AutomationProperties.AutomationIdProperty, "CanvasBackSideImage");
-            var visibilityBinding = new Binding("ShowBackSide")
+            var visibilityBinding = new Binding(nameof(ShowBackSide))
             {
                 Mode = BindingMode.OneWay,
                 Converter = new BooleanToVisibilityConverter()
             };
             flyerBackSideImage.SetBinding(VisibilityProperty, visibilityBinding);
+
+            SetZIndex(flyerBackSideImage, int.MaxValue);
+            flyerBackSideImage.SetValue(AutomationProperties.AutomationIdProperty, "CanvasBackSideImage");
             Children.Add(flyerBackSideImage);
         }
 
@@ -212,10 +211,8 @@ namespace FMA.View.Common
                 Tag = materialField,
                 DataContext = materialField,
                 Margin = new Thickness(0),
-                Focusable = true
+                Focusable = CanManipulateTexts
             };
-
-            textBlock.SetValue(AutomationProperties.AutomationIdProperty, "CanvasTextBlock");
 
             if (CanManipulateTexts)
             {
@@ -223,30 +220,32 @@ namespace FMA.View.Common
                 textBlock.PreviewKeyUp += element_PreviewKeyUp;
             }
 
-            var fontFamilyBinding = new Binding("FontFamilyWithName.FontFamily") { Mode = BindingMode.OneWay };
+            var fontFamilyBinding = new Binding($"{nameof(materialField.FontFamilyWithName)}.{nameof(materialField.FontFamilyWithName.FontFamily)}") { Mode = BindingMode.OneWay };
             textBlock.SetBinding(TextBlock.FontFamilyProperty, fontFamilyBinding);
 
-            var fontStyleBinding = new Binding("Italic") { Mode = BindingMode.OneWay, Converter = new FontStyleConverter() };
+            var textColorBinding = new Binding(nameof(materialField.TextColor)) { Mode = BindingMode.OneWay };
+            textBlock.SetBinding(TextBlock.ForegroundProperty, textColorBinding);
+
+            var fontStyleBinding = new Binding(nameof(materialField.Italic)) { Mode = BindingMode.OneWay, Converter = new FontStyleConverter() };
             textBlock.SetBinding(TextBlock.FontStyleProperty, fontStyleBinding);
 
-            var fontWeightBinding = new Binding("Bold") { Mode = BindingMode.OneWay, Converter = new FontWeightConverter() };
+            var fontWeightBinding = new Binding(nameof(materialField.Bold)) { Mode = BindingMode.OneWay, Converter = new FontWeightConverter() };
             textBlock.SetBinding(TextBlock.FontWeightProperty, fontWeightBinding);
 
-            var fontSizeBinding = new Binding("FontSize") { Mode = BindingMode.OneWay };
+            var fontSizeBinding = new Binding(nameof(materialField.FontSize)) { Mode = BindingMode.OneWay };
             textBlock.SetBinding(TextBlock.FontSizeProperty, fontSizeBinding);
 
-            var textBinding = new Binding("DisplayValue") { Mode = BindingMode.OneWay };
+            var textBinding = new Binding(nameof(materialField.DisplayValue)) { Mode = BindingMode.OneWay };
             textBlock.SetBinding(TextBlock.TextProperty, textBinding);
 
-            var topBinding = new Binding("TopMargin") { Mode = BindingMode.TwoWay };
+            var topBinding = new Binding(nameof(materialField.TopMargin)) { Mode = BindingMode.TwoWay };
             textBlock.SetBinding(TopProperty, topBinding);
 
-            var leftBinding = new Binding("LeftMargin") { Mode = BindingMode.TwoWay };
+            var leftBinding = new Binding(nameof(materialField.LeftMargin)) { Mode = BindingMode.TwoWay };
             textBlock.SetBinding(LeftProperty, leftBinding);
 
-            //   textBlock.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
-            //   textBlock.LineHeight = 60;
-
+            textBlock.SetValue(AutomationProperties.AutomationIdProperty, "CanvasTextBlock");
+            Children.Add(textBlock);
             return textBlock;
         }
 
@@ -256,12 +255,10 @@ namespace FMA.View.Common
             {
                 DataContext = logoModel,
                 Stretch = Stretch.Fill,
-                Focusable = true,
+                Focusable = CanManipulateLogos,
                 Tag = logoModel,
 
             };
-
-            createdLogoImage.SetValue(AutomationProperties.AutomationIdProperty, "CanvasLogoImage");
 
             if (CanManipulateLogos)
             {
@@ -269,21 +266,23 @@ namespace FMA.View.Common
                 createdLogoImage.PreviewKeyUp += element_PreviewKeyUp;
             }
 
-            var sourceBinding = new Binding("LogoImage") { Mode = BindingMode.OneWay };
+            var sourceBinding = new Binding( nameof(LogoModel.LogoImage)) { Mode = BindingMode.OneWay };
             createdLogoImage.SetBinding(Image.SourceProperty, sourceBinding);
 
-            var heightBinding = new Binding("Height") { Mode = BindingMode.TwoWay };
+            var heightBinding = new Binding(nameof(LogoModel.Height)) { Mode = BindingMode.TwoWay };
             createdLogoImage.SetBinding(HeightProperty, heightBinding);
 
-            var widthBinding = new Binding("Width") { Mode = BindingMode.TwoWay };
+            var widthBinding = new Binding(nameof(LogoModel.Width)) { Mode = BindingMode.TwoWay };
             createdLogoImage.SetBinding(WidthProperty, widthBinding);
 
-            var topBinding = new Binding("TopMargin") { Mode = BindingMode.TwoWay };
+            var topBinding = new Binding(nameof(LogoModel.TopMargin)) { Mode = BindingMode.TwoWay };
             createdLogoImage.SetBinding(TopProperty, topBinding);
 
-            var leftBinding = new Binding("LeftMargin") { Mode = BindingMode.TwoWay };
+            var leftBinding = new Binding(nameof(LogoModel.LeftMargin)) { Mode = BindingMode.TwoWay };
             createdLogoImage.SetBinding(LeftProperty, leftBinding);
 
+            createdLogoImage.SetValue(AutomationProperties.AutomationIdProperty, "CanvasLogoImage");
+            Children.Add(createdLogoImage);
             return createdLogoImage;
         }
 
@@ -377,7 +376,7 @@ namespace FMA.View.Common
             }
 
             var children = Children.OfType<TextBlock>().Where(CanManipulateElement).ToList();
-            children.ForEach(c => c.Foreground = Brushes.Black);
+            children.ForEach(c => c.Background = Brushes.Transparent);
 
             var childrenWithRects = children.Select(c => new Tuple<TextBlock, Rect>(c, GetRectFromElement(c))).ToArray();
             var childrenWithRectsToCompare = childrenWithRects.ToList();
@@ -392,15 +391,15 @@ namespace FMA.View.Common
                 {
                     if (childRect.IntersectsWith(otherChild.Item2))
                     {
-                        childItem.Foreground = Brushes.Red;
-                        otherChild.Item1.Foreground = Brushes.Red;
+                        childItem.Background = Brushes.Red;
+                        otherChild.Item1.Background = Brushes.Red;
                     }
                 }
 
                 if (childRect.Top < 0 || childRect.Left < 0 || childRect.Right > ActualWidth ||
                     childRect.Bottom > ActualHeight)
                 {
-                    childItem.Foreground = Brushes.Red;
+                    childItem.Background = Brushes.Red;
                 }
             }
         }
@@ -456,10 +455,7 @@ namespace FMA.View.Common
             return new Size(image.Width, image.Height);
         }
 
-        protected override bool CanManipulateElements
-        {
-            get { return CanManipulateLogos || CanManipulateTexts; }
-        }
+        protected override bool CanManipulateElements => CanManipulateLogos || CanManipulateTexts;
 
         protected override bool CanManipulateElement(UIElement source)
         {

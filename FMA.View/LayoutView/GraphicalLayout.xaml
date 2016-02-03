@@ -7,6 +7,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:properties="clr-namespace:FMA.View.Properties"
+             Focusable="False"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
@@ -36,8 +37,8 @@
                                    Margin="0"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Top"
-                                   CanManipulateTexts="True"
                                    CanManipulateLogos="{Binding CanAddLogo}"
+                                   CanManipulateTexts="True"
                                    FontService="{Binding FontService}"
                                    MaterialModel="{Binding SelectedMaterialProvider.MaterialModel}"
                                    ShowBackSide="{Binding SelectedMaterialProvider.ShowBackSide}"

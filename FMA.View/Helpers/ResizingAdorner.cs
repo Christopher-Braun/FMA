@@ -28,6 +28,9 @@ namespace FMA.View.Helpers
         public ResizingAdorner(UIElement adornedElement)
             : base(adornedElement)
         {
+            IsClipEnabled = true;
+            ClipToBounds = true;
+
             visualChildren = new VisualCollection(this);
 
             topLeft = CreateAdornerCorner(Cursors.SizeNWSE);

@@ -40,20 +40,20 @@ namespace FMA.View.Models
         {
             var fontFamilyWithName = new FontFamilyWithName(fontService.GetFontFamily(field.FontName));
 
-            return new MaterialFieldModel(field.FieldName, field.DefaultValue, fontFamilyWithName, field.FontSize, field.Bold, field.Italic, field.Uppper, field.MaxLength, field.MaxRows, field.LeftMargin, field.TopMargin);
+            return new MaterialFieldModel(field.FieldName, field.Value, fontFamilyWithName, field.FontSize, field.Bold, field.Italic, field.Uppper, field.MaxLength, field.MaxRows, field.LeftMargin, field.TopMargin, field.TextColor);
         }
 
-        public static MaterialField ToMaterialField(this MaterialFieldModel fieldModel)
+        public static MaterialField ToMaterialField(this MaterialFieldModel model)
         {
-            var fontName = fieldModel.FontFamilyWithName.Name;
-            return new MaterialField(fieldModel.FieldName, fontName, fieldModel.FontSize, fieldModel.Bold,
-                fieldModel.Italic, fieldModel.Uppper, fieldModel.MaxLength, fieldModel.MaxRows, fieldModel.LeftMargin,
-                fieldModel.TopMargin, fieldModel.Value);
+            var fontName = model.FontFamilyWithName.Name;
+            return new MaterialField(model.FieldName, fontName, model.FontSize, model.Bold,
+                model.Italic, model.Uppper, model.MaxLength, model.MaxRows, model.LeftMargin,
+                model.TopMargin, model.Value, model.TextColor);
         }
 
         public static MaterialFieldModel Clone(this MaterialFieldModel field)
         {
-            return new MaterialFieldModel(field.FieldName, field.Value, field.FontFamilyWithName, field.FontSize, field.Bold, field.Italic, field.Uppper, field.MaxLength, field.MaxRows, field.LeftMargin, field.TopMargin);
+            return new MaterialFieldModel(field.FieldName, field.Value, field.FontFamilyWithName, field.FontSize, field.Bold, field.Italic, field.Uppper, field.MaxLength, field.MaxRows, field.LeftMargin, field.TopMargin, field.TextColor);
         }
     }
 }

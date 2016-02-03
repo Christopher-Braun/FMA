@@ -18,7 +18,7 @@ namespace FMA.UnitTests.UITests
             var textBoxes = mainWindow.GetMultiple(SearchCriteria.ByAutomationId("MaterialFieldValue")).OfType<TextBox>().ToList();
             var materialFields = DummyData.GetDefaultSelectedMaterial().MaterialFields;
 
-            var materialTexts = materialFields.Select(f => f.DefaultValue).OrderBy(x => x);
+            var materialTexts = materialFields.Select(f => f.Value).OrderBy(x => x);
             var textBoxTexts = textBoxes.Select(t => t.Text).OrderBy(x => x);
 
             Assert.IsTrue(materialTexts.SequenceEqual(textBoxTexts));
@@ -56,7 +56,7 @@ namespace FMA.UnitTests.UITests
             base.ChangeMaterial(materialToSelect);
 
             var materialFields = materialToSelect.MaterialFields;
-            var materialTexts = materialFields.Select(f => f.DefaultValue).OrderBy(x => x);
+            var materialTexts = materialFields.Select(f => f.Value).OrderBy(x => x);
 
             var textBoxes = mainWindow.GetMultiple(SearchCriteria.ByAutomationId("MaterialFieldValue")).OfType<TextBox>().ToList();
             var textBoxTexts = textBoxes.Select(t => t.Text).OrderBy(x => x);
@@ -100,7 +100,7 @@ namespace FMA.UnitTests.UITests
                 var matchingMaterialField =
                     DummyData.GetDummyMaterials()
                         .Single(m => m.Id.Equals(DummyData.DefaultSelectedMaterialId))
-                        .MaterialFields.Single(f => f.DefaultValue.Equals(textBox.Text));
+                        .MaterialFields.Single(f => f.Value.Equals(textBox.Text));
 
 
                 var expected = matchingMaterialField.Uppper ? textBox.Text.ToUpper() : textBox.Text;
@@ -128,7 +128,7 @@ namespace FMA.UnitTests.UITests
                 var matchingMaterialField =
                     DummyData.GetDummyMaterials()
                         .Single(m => m.Id.Equals(DummyData.DefaultSelectedMaterialId))
-                        .MaterialFields.Single(f => f.DefaultValue.Equals(textBox.Text));
+                        .MaterialFields.Single(f => f.Value.Equals(textBox.Text));
 
 
                 var newText = new string('X', matchingMaterialField.MaxLength);
@@ -161,7 +161,7 @@ namespace FMA.UnitTests.UITests
             var matchingMaterialField =
                 DummyData.GetDummyMaterials()
                     .Single(m => m.Id.Equals(DummyData.DefaultSelectedMaterialId))
-                    .MaterialFields.Single(f => f.DefaultValue.Equals(textBox.Text));
+                    .MaterialFields.Single(f => f.Value.Equals(textBox.Text));
 
 
             var newText = new string('X', matchingMaterialField.MaxLength + 1);
@@ -189,7 +189,7 @@ namespace FMA.UnitTests.UITests
             var matchingMaterialField =
                 DummyData.GetDummyMaterials()
                     .Single(m => m.Id.Equals(DummyData.DefaultSelectedMaterialId))
-                    .MaterialFields.Single(f => f.DefaultValue.Equals(textBox.Text));
+                    .MaterialFields.Single(f => f.Value.Equals(textBox.Text));
 
 
             var newText = new string('X', matchingMaterialField.MaxLength + 1);
@@ -217,7 +217,7 @@ namespace FMA.UnitTests.UITests
                 var matchingMaterialField =
                     DummyData.GetDummyMaterials()
                         .Single(m => m.Id.Equals(DummyData.DefaultSelectedMaterialId))
-                        .MaterialFields.Single(f => f.DefaultValue.Equals(textBox.Text));
+                        .MaterialFields.Single(f => f.Value.Equals(textBox.Text));
 
 
                 var newText = "S";

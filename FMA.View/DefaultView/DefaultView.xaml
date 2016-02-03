@@ -4,8 +4,6 @@
              xmlns:common="clr-namespace:FMA.View.Common"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:defaultView="clr-namespace:FMA.View.DefaultView"
-             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:FMA.View.Models"
              xmlns:properties="clr-namespace:FMA.View.Properties"
@@ -57,7 +55,8 @@
         <GridSplitter Grid.Column="1"
                       Width="4"
                       HorizontalAlignment="Stretch"
-                      Background="Transparent" />
+                      Background="Transparent"
+                      Focusable="False" />
 
         <Grid Grid.Column="2" Margin="4,0">
             <Grid.Style>
@@ -78,14 +77,15 @@
                 <StackPanel>
                     <TextBlock FontWeight="Bold" Text="{x:Static properties:Resources.TextFields}" />
                     <ItemsControl Margin="8"
+                                  Focusable="False"
                                   Grid.IsSharedSizeScope="True"
                                   ItemsSource="{Binding SelectedMaterialProvider.MaterialModel.MaterialFields}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="models:MaterialFieldModel">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" SharedSizeGroup="A" />
-                                        <ColumnDefinition Width="*" SharedSizeGroup="B" />
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="A" />
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="B" />
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Margin="4"
                                                VerticalAlignment="Center"
@@ -97,13 +97,7 @@
                                              Text="{Binding Value,
                                                             UpdateSourceTrigger=PropertyChanged,
                                                             NotifyOnValidationError=True,
-                                                            ValidatesOnDataErrors=True}">
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="MouseDoubleClick">
-                                                <ei:CallMethodAction MethodName="MouseDoubleClick" TargetObject="{Binding}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </TextBox>
+                                                            ValidatesOnDataErrors=True}" />
                                 </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

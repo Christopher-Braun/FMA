@@ -8,9 +8,9 @@ namespace FMA.Contracts
     {
         public static BitmapImage GetBitmapImage(this byte[] bytes)
         {
+            var imageSource = new BitmapImage();
             try
             {
-                var imageSource = new BitmapImage();
                 if (bytes == null || bytes.Length == 0)
                 {
                     return imageSource;
@@ -24,13 +24,13 @@ namespace FMA.Contracts
                     imageSource.CacheOption = BitmapCacheOption.OnLoad;
                     imageSource.EndInit();
                 }
-
-                return imageSource;
             }
             catch (Exception)
             {
-                return null;
+                //Log
             }
+
+            return imageSource;
         }
 
 

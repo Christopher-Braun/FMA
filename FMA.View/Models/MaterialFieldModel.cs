@@ -23,6 +23,7 @@ namespace FMA.View.Models
         private bool bold;
         private int fontSize = 12;
         private FontFamilyWithName fontFamilyWithName;
+        private string textColor;
 
         public MaterialFieldModel(string fieldName, string value, FontFamilyWithName fontFamilyWithName)
         {
@@ -32,9 +33,10 @@ namespace FMA.View.Models
             this.FontFamilyWithName = fontFamilyWithName;
         }
 
-        public MaterialFieldModel(string fieldName, string value, FontFamilyWithName fontFamilyWithName, int fontSize, bool bold, bool italic, bool uppper, int maxLength, int maxRows, int leftMargin, int topMargin)
+        public MaterialFieldModel(string fieldName, string value, FontFamilyWithName fontFamilyWithName, int fontSize, bool bold, bool italic, bool uppper, int maxLength, int maxRows, int leftMargin, int topMargin, string textColor="black")
             : this(fieldName, value, fontFamilyWithName)
         {
+            TextColor = textColor;
             FontSize = fontSize;
             Bold = bold;
             Italic = italic;
@@ -139,6 +141,17 @@ namespace FMA.View.Models
                 OnPropertyChanged("Height");
             }
         }
+
+        public string TextColor
+        {
+            get { return textColor; }
+            set
+            {
+                textColor = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         public int MaxLength
         {

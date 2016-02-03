@@ -159,6 +159,7 @@
                         <RowDefinition Height="Auto" SharedSizeGroup="H" />
                         <RowDefinition Height="Auto" SharedSizeGroup="I" />
                         <RowDefinition Height="Auto" SharedSizeGroup="J" />
+                        <RowDefinition Height="Auto" SharedSizeGroup="K" />
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0"
@@ -190,14 +191,22 @@
                                Text="{x:Static properties:Resources.FontStyle}"
                                Visibility="{Binding Path=SelectedMaterialProvider.SelectedMaterialChilds,
                                                     Converter={StaticResource TextPropertiesCaptionVisibilityConverter}}" />
+
                     <TextBlock Grid.Row="7"
+                               Grid.Column="0"
+                               Text="{x:Static properties:Resources.FontColor}"
+                               ToolTip="{x:Static properties:Resources.TextColorToolTip}"
+                               Visibility="{Binding Path=SelectedMaterialProvider.SelectedMaterialChilds,
+                                                    Converter={StaticResource TextPropertiesCaptionVisibilityConverter}}" />
+
+                    <TextBlock Grid.Row="8"
                                Grid.Column="0"
                                Text="{x:Static properties:Resources.MaxLength}"
                                Visibility="{Binding Path=SelectedMaterialProvider.SelectedMaterialChilds,
                                                     Converter={StaticResource TextPropertiesCaptionVisibilityConverter}}" />
-                    <TextBlock Grid.Row="8"
+                    <TextBlock Grid.Row="9"
                                Grid.Column="0"
-                               Text="{x:Static properties:Resources.MaxLength}"
+                               Text="{x:Static properties:Resources.MaxRows}"
                                Visibility="{Binding Path=SelectedMaterialProvider.SelectedMaterialChilds,
                                                     Converter={StaticResource TextPropertiesCaptionVisibilityConverter}}" />
 
@@ -230,6 +239,7 @@
                                     <RowDefinition Height="Auto" SharedSizeGroup="H" />
                                     <RowDefinition Height="Auto" SharedSizeGroup="I" />
                                     <RowDefinition Height="Auto" SharedSizeGroup="J" />
+                                    <RowDefinition Height="Auto" SharedSizeGroup="K" />
                                 </Grid.RowDefinitions>
                                 <Grid.Resources>
                                     <Style TargetType="Path">
@@ -327,13 +337,22 @@
                                     </ToggleButton>
                                 </StackPanel>
 
-                                <common:NumericUpDown Grid.Row="7"
+                                <TextBox Grid.Row="7"
+                                         Grid.Column="0"
+                                         Grid.ColumnSpan="2"
+                                         Margin="4"
+                                         AcceptsReturn="True"
+                                         Text="{Binding TextColor,
+                                                        UpdateSourceTrigger=PropertyChanged}"
+                                         ToolTip="{x:Static properties:Resources.TextColorToolTip}" />
+
+                                <common:NumericUpDown Grid.Row="8"
                                                       Grid.Column="0"
                                                       Grid.ColumnSpan="2"
                                                       Margin="4"
                                                       Value="{Binding MaxLength}" />
 
-                                <common:NumericUpDown Grid.Row="8"
+                                <common:NumericUpDown Grid.Row="9"
                                                       Grid.Column="0"
                                                       Grid.ColumnSpan="2"
                                                       Margin="4"

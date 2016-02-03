@@ -318,7 +318,9 @@ namespace FMA.View.Common
 
             SelectedChilds.Add(new SelectedChild(child));
 
+            AdornerLayer.ClipToBounds = false;
             AdornerLayer.Add(CreateAdornerForElement(child));
+          
         }
 
         protected void UnSelectAllElements()
@@ -364,7 +366,6 @@ namespace FMA.View.Common
         protected virtual Adorner CreateAdornerForElement(UIElement child)
         {
             return new ResizingAdorner(child);
-
         }
 
         protected virtual bool CanManipulateElement(UIElement child)

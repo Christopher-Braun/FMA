@@ -15,12 +15,9 @@ namespace FMA.Contracts
             FontFamily = fontFamily;
         }
 
-        public FontFamily FontFamily { get; private set; }
+        public FontFamily FontFamily { get; }
 
-        public string Name
-        {
-            get { return FontService.GetFamilyName(FontFamily); }
-        }
+        public string Name => FontService.GetFamilyName(FontFamily);
 
         protected bool Equals(FontFamilyWithName other)
         {
@@ -37,7 +34,7 @@ namespace FMA.Contracts
 
         public override int GetHashCode()
         {
-            return FontFamily != null ? FontFamily.GetHashCode() : 0;
+            return FontFamily?.GetHashCode() ?? 0;
         }
     }
 }

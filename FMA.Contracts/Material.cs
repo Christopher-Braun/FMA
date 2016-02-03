@@ -8,7 +8,7 @@ namespace FMA.Contracts
     [DebuggerDisplay("Title: {Title}")]
     public class Material
     {
-        public Material(int id, string title, string description, IEnumerable<MaterialField> materialFields, byte[] flyerFrontSide, byte[] flyerBackside, string defaultFont = "")
+        public Material(int id, string title, string description, IEnumerable<MaterialField> materialFields, byte[] flyerFrontSide, byte[] flyerBackside, string defaultFont)
         {
             Id = id;
             Title = title;
@@ -19,27 +19,28 @@ namespace FMA.Contracts
             FlyerFrontSide = flyerFrontSide;
             FlyerBackside = flyerBackside;
 
-            if (String.IsNullOrEmpty(defaultFont) && this.MaterialFields.Any())
+            if (string.IsNullOrEmpty(defaultFont) && MaterialFields.Any())
             {
-                DefaultFont = this.MaterialFields.First().FontName;
+                DefaultFont = MaterialFields.First().FontName;
             }
             else
             {
-                DefaultFont = defaultFont;
+                DefaultFont = "Arial";
             }
         }
 
-        public int Id { get; private set; }
+        public int Id { get; }
 
-        public string Title { get; private set; }
+        public string Title { get; }
 
-        public string Description { get; private set; }
+        public string Description { get;  }
 
-        public List<MaterialField> MaterialFields { get; private set; }
+        public List<MaterialField> MaterialFields { get; }
 
-        public byte[] FlyerFrontSide { get; private set; }
+        public byte[] FlyerFrontSide { get;  }
 
-        public byte[] FlyerBackside { get; private set; }
-        public string DefaultFont { get; set; }
+        public byte[] FlyerBackside { get; }
+
+        public string DefaultFont { get;  }
     }
 }

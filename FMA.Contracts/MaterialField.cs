@@ -2,10 +2,10 @@
 
 namespace FMA.Contracts
 {
-    [DebuggerDisplay("Name: {FieldName} Value: {DefaultValue}")]
+    [DebuggerDisplay("Name: {FieldName} Value: {Value}")]
     public class MaterialField
     {
-        public MaterialField(string fieldName, string fontName, int fontSize, bool bold, bool italic, bool uppper, int maxLength, int maxRows, int leftMargin, int topMargin, string defaultValue)
+        public MaterialField(string fieldName, string fontName, int fontSize, bool bold, bool italic, bool uppper, int maxLength, int maxRows, int leftMargin, int topMargin, string value, string textColor = "Black")
         {
             FieldName = fieldName;
             FontName = fontName;
@@ -17,7 +17,8 @@ namespace FMA.Contracts
             MaxRows = maxRows;
             LeftMargin = leftMargin;
             TopMargin = topMargin;
-            DefaultValue = defaultValue;
+            Value = value;
+            TextColor = textColor;
         }
 
         public string FieldName { get; set; }
@@ -30,9 +31,7 @@ namespace FMA.Contracts
         public int MaxRows { get; set; }
         public int LeftMargin { get; set; }
         public int TopMargin { get; set; }
-
-        public string DefaultValue { get; set; }
-
-       
+        public string Value { get; set; }
+        public string TextColor { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMA.View", "FMA.View\FMA.View.csproj", "{ACB5A086-ECE7-4373-9FD8-0BF400A29E21}"
 EndProject
@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMA.TestApp", "FMA.TestApp\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMA.Contracts", "FMA.Contracts\FMA.Contracts.csproj", "{3EEE4F9D-E4BB-48BB-85DF-87F57935C843}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMA.SilentMode.TestApp", "FMA.SilentMode.TestApp\FMA.SilentMode.TestApp.csproj", "{957CDCCA-DD4D-4C30-B4C5-365E067B78A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMA.SilentModeTestApp", "FMA.SilentMode.TestApp\FMA.SilentModeTestApp.csproj", "{957CDCCA-DD4D-4C30-B4C5-365E067B78A9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMA.Core", "FMA.Core\FMA.Core.csproj", "{06E4F4DC-2035-487C-9206-80A11A8CBD89}"
 EndProject
@@ -24,7 +24,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "FMA.UnitTests\UnitTests.csproj", "{EFA5A35E-B5AC-4DA6-AF2E-5761EA5A501D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMA.View.AdminView", "AdminView\FMA.View.AdminView.csproj", "{1434FBFA-48E0-4061-91D3-1908382F2724}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMA.AdminView", "AdminView\FMA.AdminView.csproj", "{1434FBFA-48E0-4061-91D3-1908382F2724}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DemoApps", "DemoApps", "{201314CE-BA8C-4B6B-B6CD-3D86557F5900}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,5 +69,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F239B9F6-B87B-4675-B8B4-7D8085478201} = {201314CE-BA8C-4B6B-B6CD-3D86557F5900}
+		{957CDCCA-DD4D-4C30-B4C5-365E067B78A9} = {201314CE-BA8C-4B6B-B6CD-3D86557F5900}
+		{71A6B3C3-228D-41D0-BA24-AB8E31547263} = {201314CE-BA8C-4B6B-B6CD-3D86557F5900}
 	EndGlobalSection
 EndGlobal

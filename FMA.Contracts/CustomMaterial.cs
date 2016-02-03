@@ -11,12 +11,12 @@ namespace FMA.Contracts
             Title = title;
             Description = description;
 
-            this.MaterialFields = materialFields.ToList();
+            MaterialFields = materialFields.ToList();
 
             FlyerFrontSide = flyerFrontSide;
             FlyerBackside = flyerBackside;
 
-            this.CustomLogo = customLogo;
+            CustomLogo = customLogo;
         }
 
         public int Id { get; private set; }

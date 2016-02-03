@@ -16,10 +16,7 @@ namespace FMA.Contracts
             LogoHeight = logoHeight;
         }
 
-        public bool HasLogo
-        {
-            get { return Logo != null && Logo.Length > 0; }
-        }
+        public bool HasLogo => Logo != null && Logo.Length > 0;
 
         public byte[] Logo { get; set; }
         public double LogoLeftMargin { get; set; }
