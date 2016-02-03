@@ -4,7 +4,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:layoutView="clr-namespace:FMA.View.LayoutView"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:helpers="clr-namespace:FMA.View.Helpers"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -12,19 +11,16 @@
                 <ResourceDictionary Source="../Common/Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <helpers:SubstractionConverter x:Key="SubstractionConverter"></helpers:SubstractionConverter>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid x:Name="InputAndPreview">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <layoutView:GraphicalLayout Margin="8" MaxWidth="{Binding ActualWidth,
-            RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type layoutView:LayoutView}},
-            Converter={StaticResource SubstractionConverter}, ConverterParameter=450 }" VerticalAlignment="Top">
+        <layoutView:GraphicalLayout Grid.Column="2" Margin="8"  VerticalAlignment="Top">
             <layoutView:GraphicalLayout.Style>
                 <Style TargetType="FrameworkElement">
                     <Style.Triggers>
@@ -43,11 +39,13 @@
         </layoutView:GraphicalLayout>
 
         <GridSplitter Grid.Column="1"
-                      Width="8"
+                      Width="2"
+                      Padding="4"
+                      Margin="0,8,0,12"
                       HorizontalAlignment="Stretch"
-                      Background="Transparent" />
+                      Background="CadetBlue" />
 
-        <ScrollViewer Grid.Column="2"
+        <ScrollViewer Grid.Column="0"
                       Margin="4"
                       HorizontalScrollBarVisibility="Auto"
                       VerticalScrollBarVisibility="Auto">

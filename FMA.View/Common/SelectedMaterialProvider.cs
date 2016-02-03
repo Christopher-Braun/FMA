@@ -37,7 +37,10 @@ namespace FMA.View.Common
                 var materialFields = materialModel.MaterialFields;
                 InitMaterialFields(materialFields);
 
-                //   SetSelectedChilds(MaterialChilds.First());
+                if (MaterialChilds.Any())
+                {
+                    SetSelectedChilds(MaterialChilds.First());
+                }
             }
         }
 

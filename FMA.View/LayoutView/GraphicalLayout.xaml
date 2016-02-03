@@ -29,7 +29,7 @@
                  Width="{Binding Width,
                                  ElementName=LayoutCanvas}"
                  Margin="0,0,0,0"
-                 HorizontalAlignment="Stretch"
+                 HorizontalAlignment="Left"
                  VerticalAlignment="Stretch"
                  Focusable="False"
                  Stretch="Uniform">
@@ -59,7 +59,7 @@
                     <Setter Property="Data" Value="M0,57.655001L67.002998,57.655001 67.002998,64.000002 0,64.000002z M0,42.505001L38.098999,42.505001 38.098999,48.85 0,48.85z M0,28.294L67.002998,28.294 67.002998,34.639 0,34.639z M0,14.143001L38.098999,14.143001 38.098999,20.488001 0,20.488001z M0,0L67.002998,0 67.002998,6.3460007 0,6.3460007z" />
                 </Style>
             </StackPanel.Resources>
-            <Button Style="{StaticResource ImageButton}" ToolTip="{x:Static properties:Resources.AlignLeft}">
+            <Button Style="{StaticResource ImageButton}" Margin="0,4,4,4" ToolTip="{x:Static properties:Resources.AlignLeft}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <ei:CallMethodAction MethodName="AlignLeft" TargetObject="{Binding ElementName=LayoutCanvas}" />
