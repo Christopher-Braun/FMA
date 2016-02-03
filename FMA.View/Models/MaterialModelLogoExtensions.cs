@@ -1,3 +1,5 @@
+// Christopher Braun 2016
+
 using System;
 using System.Windows;
 using FMA.Contracts;
@@ -5,8 +7,10 @@ using FMA.View.Helpers;
 
 namespace FMA.View.Models
 {
-    public static class LogoExtensions
+    public static class MaterialModelLogoExtensions
     {
+        private static int initialLogoScaleDownFactor;
+
         public static void AddLogo(this MaterialModel materialModel)
         {
             var fileName = FileHelper.ShowFileOpenDialogForImages();
@@ -17,12 +21,9 @@ namespace FMA.View.Models
             materialModel.SetLogo(fileName, new Point(25, 75));
         }
 
-
-
         public static void SetLogo(this MaterialModel materialModel, string logoFile, Point position)
         {
             var logoData = FileHelper.GetByteArrayFromFile(logoFile);
-
 
             var image = logoData.GetBitmapImage();
             if (image == null)
@@ -36,8 +37,9 @@ namespace FMA.View.Models
             var logoWidth = logoModel.LogoImage.PixelWidth;
             var logoHeight = logoModel.LogoImage.PixelHeight;
 
-            var widthRatio = (materialModel.FlyerFrontSideImage.Width / 2) / logoWidth;
-            var heigthRatio = (materialModel.FlyerFrontSideImage.Height / 2) / logoHeight;
+            initialLogoScaleDownFactor = 2;
+            var widthRatio = (materialModel.FlyerFrontSideImage.Width/initialLogoScaleDownFactor)/logoWidth;
+            var heigthRatio = (materialModel.FlyerFrontSideImage.Height/initialLogoScaleDownFactor)/logoHeight;
 
             var minRatio = Math.Min(widthRatio, heigthRatio);
 
@@ -46,12 +48,12 @@ namespace FMA.View.Models
                 minRatio = 1; //Only want to scale down
             }
 
-            logoModel.Width = logoWidth * minRatio;
-            logoModel.Height = logoHeight * minRatio;
+            logoModel.Width = logoWidth*minRatio;
+            logoModel.Height = logoHeight*minRatio;
 
 
-            logoModel.LeftMargin = (int)position.X;
-            logoModel.TopMargin = (int)position.Y;
+            logoModel.LeftMargin = (int) position.X;
+            logoModel.TopMargin = (int) position.Y;
         }
     }
 }

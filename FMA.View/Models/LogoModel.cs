@@ -1,4 +1,5 @@
-using System;
+// Christopher Braun 2016
+
 using System.Windows.Media.Imaging;
 using FMA.Contracts;
 
@@ -15,13 +16,10 @@ namespace FMA.View.Models
 
         public LogoModel()
         {
-            this.FieldName = "Logo";
+            FieldName = "Logo";
         }
 
-        public bool HasLogo
-        {
-            get { return Logo != null && Logo.Length > 0; }
-        }
+        public bool HasLogo => Logo != null && Logo.Length > 0;
 
         public BitmapImage LogoImage
         {
@@ -39,9 +37,9 @@ namespace FMA.View.Models
             set
             {
                 logo = value;
-                this.LogoImage = this.Logo.GetBitmapImage();
+                LogoImage = Logo.GetBitmapImage();
                 OnPropertyChanged();
-                OnPropertyChanged("HasLogo");
+                OnPropertyChanged(nameof(HasLogo));
             }
         }
 
@@ -74,6 +72,7 @@ namespace FMA.View.Models
                 OnPropertyChanged();
             }
         }
+
         public double Height
         {
             get { return height; }

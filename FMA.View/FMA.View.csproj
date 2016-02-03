@@ -87,7 +87,7 @@
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Models\MaterialChildModel.cs" />
     <Compile Include="Common\SelectedMaterialProvider.cs" />
-    <Compile Include="Models\LogoExtensions.cs" />
+    <Compile Include="Models\MaterialModelLogoExtensions.cs" />
     <Compile Include="Models\NotifyPropertyChangedBase.cs" />
     <Compile Include="Helpers\SelectionAdorner.cs" />
     <Compile Include="Helpers\WindowAspectRatio.cs" />

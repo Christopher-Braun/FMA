@@ -85,7 +85,7 @@ namespace FMA.View.Models
 
                 fontFamilyWithName = value;
                 OnPropertyChanged();
-                NotifyWidhtAndHeightChanged();
+                NotifyWidthAndHeightChanged();
             }
         }
 
@@ -100,7 +100,7 @@ namespace FMA.View.Models
                 }
                 fontSize = value;
                 OnPropertyChanged();
-                NotifyWidhtAndHeightChanged();
+                NotifyWidthAndHeightChanged();
             }
         }
 
@@ -111,7 +111,7 @@ namespace FMA.View.Models
             {
                 bold = value;
                 OnPropertyChanged();
-                NotifyWidhtAndHeightChanged();
+                NotifyWidthAndHeightChanged();
             }
         }
 
@@ -122,7 +122,7 @@ namespace FMA.View.Models
             {
                 italic = value;
                 OnPropertyChanged();
-                NotifyWidhtAndHeightChanged();
+                NotifyWidthAndHeightChanged();
             }
         }
 
@@ -133,12 +133,12 @@ namespace FMA.View.Models
             {
                 uppper = value;
                 OnPropertyChanged();
-                OnPropertyChanged("DisplayValue");
-                NotifyWidhtAndHeightChanged();
+                OnPropertyChanged(nameof(DisplayValue));
+                NotifyWidthAndHeightChanged();
             }
         }
 
-        private void NotifyWidhtAndHeightChanged()
+        private void NotifyWidthAndHeightChanged()
         {
             OnPropertyChanged(nameof(Width));
             OnPropertyChanged(nameof(Height));
@@ -202,7 +202,7 @@ namespace FMA.View.Models
                 this.value = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(DisplayValue));
-                NotifyWidhtAndHeightChanged();
+                NotifyWidthAndHeightChanged();
             }
         }
 

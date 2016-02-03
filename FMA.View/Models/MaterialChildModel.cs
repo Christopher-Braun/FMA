@@ -1,4 +1,6 @@
-﻿namespace FMA.View.Models
+﻿// Christopher Braun 2016
+
+namespace FMA.View.Models
 {
     public class MaterialChildModel : NotifyPropertyChangedBase
     {
