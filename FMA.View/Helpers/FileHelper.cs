@@ -51,9 +51,9 @@ namespace FMA.View.Helpers
                 }
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
-               //TODO Log
+               //Log
             }
 
             return logoData;

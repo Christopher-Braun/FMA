@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Christopher Braun 2016
+
+using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
@@ -8,29 +10,29 @@ using System.Windows.Media;
 
 namespace FMA.View.Common
 {
-    public partial class NumericUpDown : UserControl, INotifyPropertyChanged
+    public partial class NumericUpDown : INotifyPropertyChanged
     {
-
-
         public static readonly DependencyProperty MaximumProperty =
-            DependencyProperty.Register("Maximum", typeof(int), typeof(NumericUpDown), new PropertyMetadata(10000));
+            DependencyProperty.Register("Maximum", typeof (int), typeof (NumericUpDown), new PropertyMetadata(10000));
 
         public static readonly DependencyProperty MinimumProperty =
-            DependencyProperty.Register("Minimum", typeof(int), typeof(NumericUpDown), new PropertyMetadata(-10000));
+            DependencyProperty.Register("Minimum", typeof (int), typeof (NumericUpDown), new PropertyMetadata(-10000));
 
         public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register("Value", typeof(int), typeof(NumericUpDown), new FrameworkPropertyMetadata(0, ValueChanged) { BindsTwoWayByDefault = true });
+            DependencyProperty.Register("Value", typeof (int), typeof (NumericUpDown),
+                new FrameworkPropertyMetadata(0, ValueChanged) {BindsTwoWayByDefault = true});
 
-        public static readonly DependencyProperty PressedBrushProperty = DependencyProperty.Register("PressedBrush", typeof(Brush), typeof(NumericUpDown),
+        public static readonly DependencyProperty PressedBrushProperty = DependencyProperty.Register("PressedBrush",
+            typeof (Brush), typeof (NumericUpDown),
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        public static readonly DependencyProperty HoverBrushProperty = DependencyProperty.Register("HoverBrush", typeof(Brush), typeof(NumericUpDown),
+        public static readonly DependencyProperty HoverBrushProperty = DependencyProperty.Register("HoverBrush",
+            typeof (Brush), typeof (NumericUpDown),
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        public static readonly DependencyProperty DefaultBrushProperty = DependencyProperty.Register("DefaultBrushProperty", typeof(Brush), typeof(NumericUpDown),
-             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
-
-        public event PropertyChangedEventHandler PropertyChanged;
+        public static readonly DependencyProperty DefaultBrushProperty =
+            DependencyProperty.Register("DefaultBrushProperty", typeof (Brush), typeof (NumericUpDown),
+                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
 
         private string lastValue = string.Empty;
 
@@ -38,68 +40,49 @@ namespace FMA.View.Common
         {
             InitializeComponent();
 
-            this.MinWidth = 52;
+            MinWidth = 52;
 
-            this.PressedBrush = Brushes.Black;
-            this.HoverBrush = new SolidColorBrush(SystemColors.HighlightColor);
-            this.DefaultBrush = new SolidColorBrush(SystemColors.ControlColor);
+            PressedBrush = Brushes.Black;
+            HoverBrush = new SolidColorBrush(SystemColors.HighlightColor);
+            DefaultBrush = new SolidColorBrush(SystemColors.ControlColor);
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string name)
         {
             var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(name));
-            }
+            handler?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            SetStaticBrushColor("PressedBrush", this.PressedBrush);
-            SetStaticBrushColor("StandardBrush", this.DefaultBrush);
-            SetStaticBrushColor("MouseOverBrush", this.HoverBrush);
+            SetStaticBrushColor("PressedBrush", PressedBrush);
+            SetStaticBrushColor("StandardBrush", DefaultBrush);
+            SetStaticBrushColor("MouseOverBrush", HoverBrush);
         }
 
-        private void SetStaticBrushColor(String resourceKey, Brush sourceBrush)
+        private void SetStaticBrushColor(string resourceKey, Brush sourceBrush)
         {
-            this.Resources[resourceKey] = sourceBrush.Clone();
+            Resources[resourceKey] = sourceBrush.Clone();
         }
 
         public Brush PressedBrush
         {
-            get
-            {
-                return (Brush)GetValue(PressedBrushProperty);
-            }
-            set
-            {
-                SetValue(PressedBrushProperty, value);
-            }
+            get { return (Brush) GetValue(PressedBrushProperty); }
+            set { SetValue(PressedBrushProperty, value); }
         }
 
         public Brush HoverBrush
         {
-            get
-            {
-                return (Brush)GetValue(HoverBrushProperty);
-            }
-            set
-            {
-                SetValue(HoverBrushProperty, value);
-            }
+            get { return (Brush) GetValue(HoverBrushProperty); }
+            set { SetValue(HoverBrushProperty, value); }
         }
 
         public Brush DefaultBrush
         {
-            get
-            {
-                return (Brush)GetValue(DefaultBrushProperty);
-            }
-            set
-            {
-                SetValue(DefaultBrushProperty, value);
-            }
+            get { return (Brush) GetValue(DefaultBrushProperty); }
+            set { SetValue(DefaultBrushProperty, value); }
         }
 
         private static void ValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -108,7 +91,7 @@ namespace FMA.View.Common
 
             if (control != null && e.NewValue is int)
             {
-                control.SetValue((int)e.NewValue);
+                control.SetValue((int) e.NewValue);
             }
         }
 
@@ -136,38 +119,20 @@ namespace FMA.View.Common
 
         public int Maximum
         {
-            get
-            {
-                return (int)GetValue(MaximumProperty);
-            }
-            set
-            {
-                SetValue(MaximumProperty, value);
-            }
+            get { return (int) GetValue(MaximumProperty); }
+            set { SetValue(MaximumProperty, value); }
         }
 
         public int Minimum
         {
-            get
-            {
-                return (int)GetValue(MinimumProperty);
-            }
-            set
-            {
-                SetValue(MinimumProperty, value);
-            }
+            get { return (int) GetValue(MinimumProperty); }
+            set { SetValue(MinimumProperty, value); }
         }
 
         public int Value
         {
-            get
-            {
-                return (int)GetValue(ValueProperty);
-            }
-            set
-            {
-                SetValue(ValueProperty, value);
-            }
+            get { return (int) GetValue(ValueProperty); }
+            set { SetValue(ValueProperty, value); }
         }
 
         private void textBox1_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -186,7 +151,7 @@ namespace FMA.View.Common
                 return;
             }
 
-            textBox.SelectedText = String.Empty;
+            textBox.SelectedText = string.Empty;
 
             var text = textBox.Text;
 
@@ -216,6 +181,7 @@ namespace FMA.View.Common
                     e.Handled = true;
                     return;
                 default:
+                    // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
                     textBox.Text.Insert(textBox.CaretIndex, e.Text);
                     break;
             }
@@ -237,7 +203,6 @@ namespace FMA.View.Common
 
         private void textBox1_TextChanged(object sender, TextChangedEventArgs e)
         {
-
             var textBox = sender as TextBox;
             if (textBox == null)
             {
@@ -246,12 +211,12 @@ namespace FMA.View.Common
 
             try
             {
-                if (this.lastValue == textBox.Text)
+                if (lastValue == textBox.Text)
                 {
                     return;
                 }
 
-                this.lastValue = textBox.Text;
+                lastValue = textBox.Text;
 
                 if (textBox.Text.Contains(","))
                 {
@@ -315,20 +280,20 @@ namespace FMA.View.Common
                         SetValue(value);
                     }
 
-                    this.Value = value;
+                    Value = value;
                     OnPropertyChanged("Value");
                 }
 
-                this.lastValue = textBox.Text;
+                lastValue = textBox.Text;
             }
             catch (Exception)
             {
-                this.lastValue = "0";
+                lastValue = "0";
                 textBox.Text = "0";
             }
         }
 
-        private static bool TryParseint(String text, out int value)
+        private static bool TryParseint(string text, out int value)
         {
             return int.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out value);
         }
@@ -345,17 +310,17 @@ namespace FMA.View.Common
             }
         }
 
-        private static Boolean ContainsSeperator(String text)
+        private static bool ContainsSeperator(string text)
         {
             return text.Contains(".") || text.Contains(",");
         }
 
-        private static Boolean ContainsSign(String text)
+        private static bool ContainsSign(string text)
         {
             return text.Contains("-");
         }
 
-        private static Boolean IsValidInput(String input)
+        private static bool IsValidInput(string input)
         {
             var firstLetter = input[0];
 
@@ -371,7 +336,7 @@ namespace FMA.View.Common
             {
                 return true;
             }
-            if (Char.IsNumber(firstLetter))
+            if (char.IsNumber(firstLetter))
             {
                 return true;
             }
@@ -389,7 +354,10 @@ namespace FMA.View.Common
 
             int value;
 
-            if (!TryParseint(textBox.Text, out value)) { return; }
+            if (!TryParseint(textBox.Text, out value))
+            {
+                return;
+            }
             var index = textBox.CaretIndex;
             value += delta;
             SetValue(value);

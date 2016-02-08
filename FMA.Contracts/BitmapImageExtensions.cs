@@ -6,7 +6,7 @@ namespace FMA.Contracts
 {
     public static class BitmapImageExtensions
     {
-        public static BitmapImage GetBitmapImage(this byte[] bytes)
+        public static BitmapImage ToBitmapImage(this byte[] bytes)
         {
             var imageSource = new BitmapImage();
             try

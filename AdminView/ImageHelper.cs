@@ -1,4 +1,7 @@
+// Christopher Braun 2016
+
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 
 namespace FMA.AdminView
@@ -15,7 +18,7 @@ namespace FMA.AdminView
             byte[] byteArray;
             using (var stream = new MemoryStream())
             {
-                image.Save(stream, System.Drawing.Imaging.ImageFormat.Jpeg);
+                image.Save(stream, ImageFormat.Jpeg);
                 stream.Close();
                 byteArray = stream.ToArray();
             }

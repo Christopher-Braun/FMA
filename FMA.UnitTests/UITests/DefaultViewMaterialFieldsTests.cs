@@ -15,7 +15,7 @@ namespace FMA.UnitTests.UITests
         [TestMethod]
         public void PerDefault_InTextInput_MaterialFieldValuesAreCorrect()
         {
-            var textBoxes = mainWindow.GetMultiple(SearchCriteria.ByAutomationId("MaterialFieldValue")).OfType<TextBox>().ToList();
+            var textBoxes = MainWindow.GetMultiple(SearchCriteria.ByAutomationId("MaterialFieldValue")).OfType<TextBox>().ToList();
             var materialFields = DummyData.GetDefaultSelectedMaterial().MaterialFields;
 
             var materialTexts = materialFields.Select(f => f.Value).OrderBy(x => x);
@@ -27,7 +27,7 @@ namespace FMA.UnitTests.UITests
         [TestMethod]
         public void PerDefault_InPreview_MaterialFieldValuesAreCorrect()
         {
-            var textBoxesInPreview = mainWindow.GetMultiple(SearchCriteria.ByAutomationId("CanvasTextBlock")).OfType<WPFLabel>().ToList();
+            var textBoxesInPreview = MainWindow.GetMultiple(SearchCriteria.ByAutomationId("CanvasTextBlock")).OfType<WPFLabel>().ToList();
             var materialFields = DummyData.GetDefaultSelectedMaterial().MaterialFields;
 
             var materialTexts = materialFields.Select(f => f.GetDisplayText()).OrderBy(x => x);
@@ -53,12 +53,12 @@ namespace FMA.UnitTests.UITests
         public void SelectAnotherMaterial_InTextInput_MaterialFieldValuesAreCorrect()
         {
             var materialToSelect = DummyData.GetNotDefaultSelectedMaterial();
-            base.ChangeMaterial(materialToSelect);
+            ChangeMaterial(materialToSelect);
 
             var materialFields = materialToSelect.MaterialFields;
             var materialTexts = materialFields.Select(f => f.Value).OrderBy(x => x);
 
-            var textBoxes = mainWindow.GetMultiple(SearchCriteria.ByAutomationId("MaterialFieldValue")).OfType<TextBox>().ToList();
+            var textBoxes = MainWindow.GetMultiple(SearchCriteria.ByAutomationId("MaterialFieldValue")).OfType<TextBox>().ToList();
             var textBoxTexts = textBoxes.Select(t => t.Text).OrderBy(x => x);
             Assert.IsTrue(materialTexts.SequenceEqual(textBoxTexts));
         }
@@ -67,12 +67,12 @@ namespace FMA.UnitTests.UITests
         public void SelectAnotherMaterial_InPreview_AndExternalPreview_MaterialFieldValuesAreCorrect()
         {
             var materialToSelect = DummyData.GetNotDefaultSelectedMaterial();
-            base.ChangeMaterial(materialToSelect);
+            ChangeMaterial(materialToSelect);
 
             var materialFields = materialToSelect.MaterialFields;
             var materialTexts = materialFields.Select(f => f.GetDisplayText()).OrderBy(x => x);
 
-            var textBoxesInPreview = mainWindow.GetMultiple(SearchCriteria.ByAutomationId("CanvasTextBlock")).OfType<WPFLabel>().ToList();
+            var textBoxesInPreview = MainWindow.GetMultiple(SearchCriteria.ByAutomationId("CanvasTextBlock")).OfType<WPFLabel>().ToList();
             var textBoxesInPreviewTexts = textBoxesInPreview.Select(t => t.Text).OrderBy(x => x);
             Assert.IsTrue(materialTexts.SequenceEqual(textBoxesInPreviewTexts));
 
@@ -85,9 +85,9 @@ namespace FMA.UnitTests.UITests
         [TestMethod]
         public void ChangeMaterialFieldValue_ViaTextBox_ChangesTextInPreview()
         {
-            var textBoxes = mainWindow.GetMultiple(SearchCriteria.ByAutomationId("MaterialFieldValue")).OfType<TextBox>();
+            var textBoxes = MainWindow.GetMultiple(SearchCriteria.ByAutomationId("MaterialFieldValue")).OfType<TextBox>();
 
-            var textsInPreview = mainWindow.GetMultiple(SearchCriteria.ByAutomationId("CanvasTextBlock")).OfType<WPFLabel>().ToList();
+            var textsInPreview = MainWindow.GetMultiple(SearchCriteria.ByAutomationId("CanvasTextBlock")).OfType<WPFLabel>().ToList();
 
             var externalPreview = OpenExternalPreview();
             var textsInExternalPreview = externalPreview.GetMultiple(SearchCriteria.ByAutomationId("CanvasTextBlock")).OfType<WPFLabel>().ToList();
@@ -118,10 +118,10 @@ namespace FMA.UnitTests.UITests
         [TestMethod]
         public void ChangeMaterialFieldValue_ViaTextBoxWithTooLongText_DisablesCanCreate()
         {
-            var createButton = mainWindow.Get<Button>("Create");
+            var createButton = MainWindow.Get<Button>("Create");
             Assert.IsTrue(createButton.Enabled);
 
-            var textBoxes = mainWindow.GetMultiple(SearchCriteria.ByAutomationId("MaterialFieldValue")).OfType<TextBox>();
+            var textBoxes = MainWindow.GetMultiple(SearchCriteria.ByAutomationId("MaterialFieldValue")).OfType<TextBox>();
 
             foreach (var textBox in textBoxes)
             {
@@ -150,11 +150,11 @@ namespace FMA.UnitTests.UITests
         [TestMethod]
         public void Reset_ResetsCanCreateState()
         {
-            var createButton = mainWindow.Get<Button>("Create");
+            var createButton = MainWindow.Get<Button>("Create");
             Assert.IsTrue(createButton.Enabled);
 
             var textBox =
-                mainWindow.GetMultiple(SearchCriteria.ByAutomationId("MaterialFieldValue"))
+                MainWindow.GetMultiple(SearchCriteria.ByAutomationId("MaterialFieldValue"))
                 .OfType<TextBox>()
                 .First();
 
@@ -178,11 +178,11 @@ namespace FMA.UnitTests.UITests
         [TestMethod]
         public void ChangeMaterial_ResetsCanCreateState()
         {
-            var createButton = mainWindow.Get<Button>("Create");
+            var createButton = MainWindow.Get<Button>("Create");
             Assert.IsTrue(createButton.Enabled);
 
             var textBox =
-                mainWindow.GetMultiple(SearchCriteria.ByAutomationId("MaterialFieldValue"))
+                MainWindow.GetMultiple(SearchCriteria.ByAutomationId("MaterialFieldValue"))
                 .OfType<TextBox>()
                 .First();
 
@@ -207,10 +207,10 @@ namespace FMA.UnitTests.UITests
         [TestMethod]
         public void ChangeMaterialFieldValue_ViaTextBoxWithTextWithTooManyLines_DisablesCanCreate()
         {
-            var createButton = mainWindow.Get<Button>("Create");
+            var createButton = MainWindow.Get<Button>("Create");
             Assert.IsTrue(createButton.Enabled);
 
-            var textBoxes = mainWindow.GetMultiple(SearchCriteria.ByAutomationId("MaterialFieldValue")).OfType<TextBox>();
+            var textBoxes = MainWindow.GetMultiple(SearchCriteria.ByAutomationId("MaterialFieldValue")).OfType<TextBox>();
 
             foreach (var textBox in textBoxes)
             {

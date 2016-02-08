@@ -19,7 +19,7 @@ namespace FMA.UnitTests.UITests
                 File.Delete(FlyerTestAppSettings.TestappflyerJpg);
             }
 
-            var create = mainWindow.Get<Button>(SearchCriteria.ByAutomationId("Create"));
+            var create = MainWindow.Get<Button>(SearchCriteria.ByAutomationId("Create"));
             create.Click();
 
             Assert.IsTrue(File.Exists(FlyerTestAppSettings.TestappflyerJpg));
@@ -29,11 +29,11 @@ namespace FMA.UnitTests.UITests
         [TestMethod]
         public void ShowFlyerBackSide_MakesBackSideVisible()
         {
-            var image = mainWindow.Get<Image>(SearchCriteria.ByAutomationId("CanvasBackSideImage"));
+            var image = MainWindow.Get<Image>(SearchCriteria.ByAutomationId("CanvasBackSideImage"));
 
             Assert.IsFalse(image.Visible);
 
-            var showBackSide = mainWindow.Get<Button>(SearchCriteria.ByAutomationId("ShowBackSide"));
+            var showBackSide = MainWindow.Get<Button>(SearchCriteria.ByAutomationId("ShowBackSide"));
             showBackSide.Click();
 
             Assert.IsTrue(image.Visible);
@@ -42,11 +42,11 @@ namespace FMA.UnitTests.UITests
         [TestMethod]
         public void OpenExternalView_OpensExternalView()
         {
-            Assert.AreEqual(1, application.GetWindows().Count);
+            Assert.AreEqual(1, Application.GetWindows().Count);
 
             OpenExternalPreview();
 
-            var windows = application.GetWindows();
+            var windows = Application.GetWindows();
             Assert.AreEqual(2, windows.Count);
 
             var previewWindow = windows.Last();
@@ -63,7 +63,7 @@ namespace FMA.UnitTests.UITests
         [TestMethod]
         public void SelectMaterialComboBox_ContainsCorretValues_AndHasCorrectSelectedItemText()
         {
-            var comboBox = mainWindow.Get<ComboBox>(SearchCriteria.ByAutomationId("MaterialComboBox"));
+            var comboBox = MainWindow.Get<ComboBox>(SearchCriteria.ByAutomationId("MaterialComboBox"));
 
             var itemTexts = comboBox.Items.AsEnumerable().Select(i => i.Text);
             var materialTitles = DummyData.GetDummyMaterials().Select(m => m.Title);

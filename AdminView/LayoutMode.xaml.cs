@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace FMA.AdminView
+﻿namespace FMA.AdminView
 {
     /// <summary>
     /// Interaction logic for LayoutMode.xaml
     /// </summary>
-    public partial class LayoutMode : UserControl
+    public partial class LayoutMode
     {
         public LayoutMode()
         {

@@ -25,7 +25,7 @@ namespace FMA.UnitTests.UITests
 
             AddLogo();
 
-            var create = mainWindow.Get<Button>(SearchCriteria.ByAutomationId("Create"));
+            var create = MainWindow.Get<Button>(SearchCriteria.ByAutomationId("Create"));
 
             create.Click();
 
@@ -43,7 +43,7 @@ namespace FMA.UnitTests.UITests
         {
             AddLogo();
 
-            var logoWidth = mainWindow.Get(SearchCriteria.ByAutomationId("LogoWidth"));
+            var logoWidth = MainWindow.Get(SearchCriteria.ByAutomationId("LogoWidth"));
             Assert.IsTrue(logoWidth.Visible);
 
             var logoWidthValue = GetValueFromNumericUpDown(logoWidth);
@@ -53,7 +53,7 @@ namespace FMA.UnitTests.UITests
         [TestMethod]
         public void PerDefault_LogoImageWidth_IsZero()
         {
-            var logoImage = mainWindow.Get<Image>(SearchCriteria.ByAutomationId("CanvasLogoImage"));
+            var logoImage = MainWindow.Get<Image>(SearchCriteria.ByAutomationId("CanvasLogoImage"));
 
             Assert.IsTrue(logoImage.Bounds.Width < 0);
         }
@@ -63,7 +63,7 @@ namespace FMA.UnitTests.UITests
         {
             AddLogo();
 
-            var logoImage = mainWindow.Get<Image>(SearchCriteria.ByAutomationId("CanvasLogoImage"));
+            var logoImage = MainWindow.Get<Image>(SearchCriteria.ByAutomationId("CanvasLogoImage"));
 
             Assert.IsTrue(logoImage.Bounds.Width > 0);
         }
@@ -73,11 +73,11 @@ namespace FMA.UnitTests.UITests
         {
             AddLogo();
 
-            var logoImage = mainWindow.Get<Image>(SearchCriteria.ByAutomationId("CanvasLogoImage"));
+            var logoImage = MainWindow.Get<Image>(SearchCriteria.ByAutomationId("CanvasLogoImage"));
 
             var oldWidth = logoImage.Bounds.Width;
 
-            var logoWidth = mainWindow.Get(SearchCriteria.ByAutomationId("LogoWidth"));
+            var logoWidth = MainWindow.Get(SearchCriteria.ByAutomationId("LogoWidth"));
 
             var logoWidthValue = GetValueFromNumericUpDown(logoWidth);
             SetValueToNumericUpDown(logoWidth, logoWidthValue + 20);
@@ -91,11 +91,11 @@ namespace FMA.UnitTests.UITests
         {
             AddLogo();
 
-            var logoLeftMargin = mainWindow.Get(SearchCriteria.ByAutomationId("LogoLeftMargin"));
+            var logoLeftMargin = MainWindow.Get(SearchCriteria.ByAutomationId("LogoLeftMargin"));
             Assert.IsTrue(logoLeftMargin.Visible);
             var oldLogoLeftMarginValue = GetValueFromNumericUpDown(logoLeftMargin);
 
-            var logoImage = mainWindow.Get<Image>(SearchCriteria.ByAutomationId("CanvasLogoImage"));
+            var logoImage = MainWindow.Get<Image>(SearchCriteria.ByAutomationId("CanvasLogoImage"));
             logoImage.Click();
             Mouse.Instance.DragHorizontally(logoImage, 20);
 
@@ -109,7 +109,7 @@ namespace FMA.UnitTests.UITests
         {
             AddLogo();
 
-            var logoWidth = mainWindow.Get(SearchCriteria.ByAutomationId("LogoWidth"));
+            var logoWidth = MainWindow.Get(SearchCriteria.ByAutomationId("LogoWidth"));
             Assert.IsTrue(logoWidth.Visible);
 
             var logoWidthValue = GetValueFromNumericUpDown(logoWidth);
@@ -171,7 +171,7 @@ namespace FMA.UnitTests.UITests
 
             ClickButton("AddLogo");
 
-            var lastwindow = application.GetWindows().Last();
+            var lastwindow = Application.GetWindows().Last();
             //    lastwindow  =application.GetWindow(SearchCriteria.All.("Select logo file"), InitializeOption.WithCache);
 
             //nicht schön
@@ -197,13 +197,13 @@ namespace FMA.UnitTests.UITests
 
         private void LogoImage_LogoWidth_AndDeleteLogo_AreVisible(bool visible)
         {
-            var logoWidth = mainWindow.Get(SearchCriteria.ByAutomationId("LogoWidth"));
+            var logoWidth = MainWindow.Get(SearchCriteria.ByAutomationId("LogoWidth"));
             Assert.AreEqual(visible, logoWidth.Visible);
 
-            var deleteLogo = mainWindow.Get<Button>(SearchCriteria.ByAutomationId("DeleteLogo"));
+            var deleteLogo = MainWindow.Get<Button>(SearchCriteria.ByAutomationId("DeleteLogo"));
             Assert.AreEqual(visible, deleteLogo.Visible);
 
-            var logoImage = mainWindow.Get<Image>(SearchCriteria.ByAutomationId("CanvasLogoImage"));
+            var logoImage = MainWindow.Get<Image>(SearchCriteria.ByAutomationId("CanvasLogoImage"));
 
             Assert.AreEqual(visible, logoImage.Bounds.Width > 0);
         }

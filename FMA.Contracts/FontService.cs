@@ -57,6 +57,7 @@ namespace FMA.Contracts
                     return fontFamily.FamilyNames[defaultXmlLanguage];
                 }
 
+                // ReSharper disable once AssignNullToNotNullAttribute
                 var fontName = fontFamily.FamilyNames.Values.FirstOrDefault();
                 if (string.IsNullOrEmpty(fontName))
                 {

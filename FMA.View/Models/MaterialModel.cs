@@ -66,7 +66,7 @@ namespace FMA.View.Models
             set
             {
                 flyerFrontSide = value;
-                FlyerFrontSideImage = FlyerFrontSide.GetBitmapImage();
+                FlyerFrontSideImage = FlyerFrontSide.ToBitmapImage();
                 OnPropertyChanged();
             }
         }
@@ -87,7 +87,7 @@ namespace FMA.View.Models
             set
             {
                 flyerBackside = value;
-                FlyerBackSideImage = FlyerBackside.GetBitmapImage();
+                FlyerBackSideImage = FlyerBackside.ToBitmapImage();
                 OnPropertyChanged();
             }
         }

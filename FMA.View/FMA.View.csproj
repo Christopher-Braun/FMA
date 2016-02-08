@@ -51,6 +51,9 @@
   <ItemGroup>
     <Compile Include="Common\FlyerMakerViewModelBase.cs" />
     <Compile Include="Common\FontHelper.cs" />
+    <Compile Include="DefaultView\LogoLayout.xaml.cs">
+      <DependentUpon>LogoLayout.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ExternalView\ExternalEditView.xaml.cs">
       <DependentUpon>ExternalEditView.xaml</DependentUpon>
     </Compile>
@@ -59,11 +62,8 @@
     </Compile>
     <Compile Include="ExternalView\ExternalViewModel.cs" />
     <Compile Include="ExternalView\SizeHelper.cs" />
-    <Compile Include="Helpers\InverseBooleanToVisibilityConverter.cs" />
-    <Compile Include="Helpers\InverseNullToVisibleConverter.cs" />
     <Compile Include="Helpers\IWindowService.cs" />
     <Compile Include="Helpers\NullToVisibleConverter.cs" />
-    <Compile Include="Helpers\SubstractionConverter.cs" />
     <Compile Include="Helpers\TextPropertiesCaptionVisibilityConverter.cs" />
     <Compile Include="Helpers\TextPropertiesCaptionsVisibilityConverter.cs" />
     <Compile Include="DefaultView\DefaultView.xaml.cs">
@@ -82,9 +82,6 @@
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="LayoutView\LayoutViewModel.cs" />
-    <Compile Include="DefaultView\LogoLayout.xaml.cs">
-      <DependentUpon>LogoLayout.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Models\MaterialChildModel.cs" />
     <Compile Include="Common\SelectedMaterialProvider.cs" />

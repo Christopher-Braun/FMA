@@ -25,7 +25,7 @@ namespace FMA.View.Models
         {
             var logoData = FileHelper.GetByteArrayFromFile(logoFile);
 
-            var image = logoData.GetBitmapImage();
+            var image = logoData.ToBitmapImage();
             if (image == null)
             {
                 return;

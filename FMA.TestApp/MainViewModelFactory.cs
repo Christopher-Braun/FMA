@@ -1,5 +1,6 @@
+// Christopher Braun 2016
+
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -17,19 +18,18 @@ namespace FMA
     {
         public static AdminViewModel CreateAdminViewModel(Window mainWindow)
         {
-            var viewModel = new AdminViewModel(DummyData.GetDummyMaterials(), GetGetFontFunc(), new FontService(CustomFontsDir), new WindowService(mainWindow));
+            var viewModel = new AdminViewModel(DummyData.GetDummyMaterials(), GetGetFontFunc(),
+                new FontService(CustomFontsDir), new WindowService(mainWindow));
 
-            viewModel.MaterialCreated += m =>
-            {
-
-            };
+            viewModel.MaterialCreated += m => { };
 
             return viewModel;
         }
 
         public static FlyerMakerViewModel CreateFlyerViewModel(Window mainWindow)
         {
-            var viewModel = new FlyerMakerViewModel(DummyData.GetDummyMaterials(), DummyData.DefaultSelectedMaterialId, GetGetFontFunc(), new FontService(CustomFontsDir), new WindowService(mainWindow));
+            var viewModel = new FlyerMakerViewModel(DummyData.GetDummyMaterials(), DummyData.DefaultSelectedMaterialId,
+                GetGetFontFunc(), new FontService(CustomFontsDir), new WindowService(mainWindow));
 
             var flyerCreator = new FlyerCreator(CustomFontsDir);
 
@@ -51,7 +51,7 @@ namespace FMA
             get
             {
                 var exeDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-                var customFontsDir = string.Format(@"{0}\CustomFonts\", exeDir);
+                var customFontsDir = $@"{exeDir}\CustomFonts\";
                 return customFontsDir;
             }
         }
@@ -63,7 +63,8 @@ namespace FMA
             {
                 if (name == "Signarita Anne")
                 {
-                    return new FontInfo("SignaritaAnne.ttf", FileHelper.GetByteArrayFromFile("Fonts\\SignaritaAnneDemo.ttf"));
+                    return new FontInfo("SignaritaAnne.ttf",
+                        FileHelper.GetByteArrayFromFile("Fonts\\SignaritaAnneDemo.ttf"));
                 }
                 if (name == "Bakery")
                 {

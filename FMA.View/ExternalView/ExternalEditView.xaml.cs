@@ -1,13 +1,13 @@
-﻿using System;
-using System.Windows;
-using FMA.View.Helpers;
+﻿// Christopher Braun 2016
+
+using System;
 
 namespace FMA.View.ExternalView
 {
     /// <summary>
-    /// Interaction logic for ExternalPreviewView.xaml
+    ///     Interaction logic for ExternalPreviewView.xaml
     /// </summary>
-    public partial class ExternalEditView : Window
+    public partial class ExternalEditView
     {
         private readonly SizeHelper sizeHelper;
 
@@ -19,7 +19,6 @@ namespace FMA.View.ExternalView
 
         private void FlyerPreviewView_OnSourceInitialized(object sender, EventArgs e)
         {
-         //   WindowAspectRatio.Register((Window)sender);
             sizeHelper.SetSize();
         }
     }

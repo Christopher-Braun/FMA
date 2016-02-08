@@ -38,7 +38,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Margin="6,8" Orientation="Horizontal">
+        <StackPanel Margin="4,8" Orientation="Horizontal">
 
             <StackPanel.Resources>
                 <Style TargetType="Path">

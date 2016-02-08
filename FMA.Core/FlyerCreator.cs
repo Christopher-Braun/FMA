@@ -27,7 +27,7 @@ namespace FMA.Core
 
         private ImageSource CreateImage(CustomMaterial material)
         {
-            var bitmapSourceBackground = material.FlyerFrontSide.GetBitmapImage();
+            var bitmapSourceBackground = material.FlyerFrontSide.ToBitmapImage();
 
             var visual = new DrawingVisual();
             using (var drawingContext = visual.RenderOpen())
@@ -43,7 +43,7 @@ namespace FMA.Core
 
                 if (material.CustomLogo.HasLogo)
                 {
-                    var flyerLogo = material.CustomLogo.Logo.GetBitmapImage();
+                    var flyerLogo = material.CustomLogo.Logo.ToBitmapImage();
                     drawingContext.DrawImage(flyerLogo, new Rect(material.CustomLogo.LogoLeftMargin, material.CustomLogo.LogoTopMargin, material.CustomLogo.LogoWidth, material.CustomLogo.LogoHeight));
                 }
             }

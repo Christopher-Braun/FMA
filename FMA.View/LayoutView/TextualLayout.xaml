@@ -300,7 +300,7 @@
                                           HorizontalAlignment="Stretch"
                                           VerticalAlignment="Center"
                                           IsEditable="True"
-                                          ItemsSource="{Binding Path=DataContext.FontService.AllFontFamilies,
+                                          ItemsSource="{Binding Path=DataContext.(common:FlyerViewModelBase.FontService).AllFontFamilies,
                                                                 RelativeSource={RelativeSource AncestorType=layoutView:LayoutView}}"
                                           SelectedItem="{Binding FontFamilyWithName}"
                                           TextSearch.TextPath="Name">

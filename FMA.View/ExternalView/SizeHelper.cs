@@ -6,7 +6,7 @@ namespace FMA.View.ExternalView
     {
         private readonly Window externalWindow;
 
-        private const int margin = 40;
+        private const int Margin = 40;
 
         public SizeHelper(Window externalWindow)
         {
@@ -15,9 +15,9 @@ namespace FMA.View.ExternalView
 
         public void SetSize()
         {
-            externalWindow.Top = margin;
-            externalWindow.Left = margin;
-            externalWindow.Height = SystemParameters.PrimaryScreenHeight - 2*margin;
+            externalWindow.Top = Margin;
+            externalWindow.Left = Margin;
+            externalWindow.Height = SystemParameters.PrimaryScreenHeight - 2*Margin;
             var maxWidth = SystemParameters.PrimaryScreenWidth / 2;
 
             var ratio = maxWidth/externalWindow.ActualWidth;

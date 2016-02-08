@@ -10,7 +10,7 @@ namespace FMA.View.ExternalView
     /// <summary>
     ///     Interaction logic for ExternalPreviewView.xaml
     /// </summary>
-    public partial class ExternalPreviewView : Window
+    public partial class ExternalPreviewView
     {
         private readonly SizeHelper sizeHelper;
 

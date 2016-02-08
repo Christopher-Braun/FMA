@@ -1,24 +1,25 @@
-﻿using System;
+﻿// Christopher Braun 2016
+
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows;
 
 namespace FMA
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : INotifyPropertyChanged
     {
         private object flyerMakerViewModel;
 
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = this;
+            DataContext = this;
             var commandLineStrings = Environment.CommandLine.Split(' ');
-            if (String.Equals(commandLineStrings.Last(), "admin", StringComparison.InvariantCultureIgnoreCase))
+            if (string.Equals(commandLineStrings.Last(), "admin", StringComparison.InvariantCultureIgnoreCase))
             {
                 FlyerMakerViewModel = MainViewModelFactory.CreateAdminViewModel(this);
             }
@@ -44,7 +45,7 @@ namespace FMA
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

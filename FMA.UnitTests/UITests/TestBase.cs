@@ -16,31 +16,31 @@ namespace FMA.UnitTests.UITests
     [TestClass]
     public class TestBase
     {
-        protected Application application;
-        protected Window mainWindow;
+        protected Application Application;
+        protected Window MainWindow;
 
         [TestInitialize]
         public void MyTestInitialize()
         {
-            application = Application.Launch("FMA.exe");
-            mainWindow = application.GetWindow(SearchCriteria.ByControlType(ControlType.Window), InitializeOption.NoCache);
+            Application = Application.Launch("FMA.exe");
+            MainWindow = Application.GetWindow(SearchCriteria.ByControlType(ControlType.Window), InitializeOption.NoCache);
         }
 
         [TestCleanup]
         public void MyTestCleanUp()
         {
-            application.KillAndSaveState();
+            Application.KillAndSaveState();
         }
 
         protected void ClickButton(string automationId)
         {
-            var button = mainWindow.Get<Button>(SearchCriteria.ByAutomationId(automationId));
+            var button = MainWindow.Get<Button>(SearchCriteria.ByAutomationId(automationId));
             button.Click();
         }
 
         protected void ChangeMaterial(Material materialToSelect)
         {
-            var comboBox = mainWindow.Get<ComboBox>(SearchCriteria.ByAutomationId("MaterialComboBox"));
+            var comboBox = MainWindow.Get<ComboBox>(SearchCriteria.ByAutomationId("MaterialComboBox"));
             comboBox.Select(materialToSelect.Title);
         }
 
@@ -58,11 +58,11 @@ namespace FMA.UnitTests.UITests
 
         protected Window OpenExternalPreview()
         {
-            var showExternalPreview = mainWindow.Get<Button>(SearchCriteria.ByAutomationId("ShowExternalPreview"));
+            var showExternalPreview = MainWindow.Get<Button>(SearchCriteria.ByAutomationId("ShowExternalPreview"));
             showExternalPreview.Click();
 
-            var windows = this.application.GetWindows();
-            windows.Remove(mainWindow);
+            var windows = this.Application.GetWindows();
+            windows.Remove(MainWindow);
             return windows.Last();
         }
     }
