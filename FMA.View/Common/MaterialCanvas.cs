@@ -387,7 +387,7 @@ namespace FMA.View.Common
 
             if (materialChild.IsSelected)
             {
-                AddSelectedElement(frameworkElement, true);
+                AddSelectedElement(frameworkElement);
             }
             else
             {

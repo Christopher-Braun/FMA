@@ -143,7 +143,7 @@ namespace FMA.View.Common
                         UnSelectAllElements();
                     }
 
-                    AddSelectedElement(hitTest);
+                    AddSelectedElement(hitTest, true);
                     state = State.IsStartingDragging;
                 }
 
@@ -252,7 +252,7 @@ namespace FMA.View.Common
                 {
                     continue;
                 }
-                AddSelectedElement(child);
+                AddSelectedElement(child, true);
             }
         }
 
