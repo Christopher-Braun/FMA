@@ -175,7 +175,7 @@ namespace FMA.View.Helpers
             var newHeight = Math.Max(AdornedFrameworkElement.Height + change.Y, hitThumb.DesiredSize.Height);
             var newWidth = Math.Max(AdornedFrameworkElement.Width + change.X, hitThumb.DesiredSize.Width);
 
-            if (Keyboard.Modifiers == ModifierKeys.Shift)
+            if (Keyboard.Modifiers != ModifierKeys.Shift)
             {
                 var scaleFactor = Math.Max(newWidth/AdornedFrameworkElement.Width,
                     newHeight/AdornedFrameworkElement.Height);
