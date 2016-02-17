@@ -11,9 +11,9 @@ using System.Windows;
 [assembly: AssemblyTitle("AdminView")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("AdminView")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2016")]
+[assembly: AssemblyCompany("OpenDoors")]
+[assembly: AssemblyProduct("FlyerMaker")]
+[assembly: AssemblyCopyright("Copyright © Open Doors 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

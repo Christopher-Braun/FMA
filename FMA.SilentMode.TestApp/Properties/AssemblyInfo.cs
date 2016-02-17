@@ -8,9 +8,9 @@ using System.Windows;
 [assembly: AssemblyTitle("FMA.SilentMode.TestApp")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("FMA.SilentMode.TestApp")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2015")]
+[assembly: AssemblyCompany("OpenDoors")]
+[assembly: AssemblyProduct("FlyerMaker")]
+[assembly: AssemblyCopyright("Copyright © Open Doors 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -8,9 +8,9 @@ using System.Windows;
 [assembly: AssemblyTitle("WpfControlLibrary1")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("WpfControlLibrary1")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2015")]
+[assembly: AssemblyCompany("OpenDoors")]
+[assembly: AssemblyProduct("FlyerMaker")]
+[assembly: AssemblyCopyright("Copyright © Open Doors 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

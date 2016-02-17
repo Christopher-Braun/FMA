@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -63,8 +64,13 @@ namespace FMA.Core
             image.Arrange(new Rect(0, 0, drawingImage.Width, drawingImage.Height));
 
             var settings = Settings.Default;
+
+            
+
             var renderTargetBitmap = new RenderTargetBitmap((int)drawingImage.Width, (int)drawingImage.Height, settings.ImageDPI, settings.ImageDPI, PixelFormats.Default);
             renderTargetBitmap.Render(image);
+
+            Settings.Default.Save();
 
             var encoder = new JpegBitmapEncoder
             {

@@ -45,7 +45,7 @@
       <Name>FMA.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMA.View\FMA.View.csproj">
-      <Project>{ACB5A086-ECE7-4373-9FD8-0BF400A29E21}</Project>
+      <Project>{acb5a086-ece7-4373-9fd8-0bf400a29e21}</Project>
       <Name>FMA.View</Name>
     </ProjectReference>
   </ItemGroup>
