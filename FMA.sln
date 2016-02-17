@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMA.Contracts", "FMA.Contra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMA.SilentModeTestApp", "FMA.SilentMode.TestApp\FMA.SilentModeTestApp.csproj", "{957CDCCA-DD4D-4C30-B4C5-365E067B78A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMA.Core", "FMA.Core\FMA.Core.csproj", "{06E4F4DC-2035-487C-9206-80A11A8CBD89}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMA.TestData", "FMA.TestData\FMA.TestData.csproj", "{71A6B3C3-228D-41D0-BA24-AB8E31547263}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DDFCFAB9-6B3D-4E62-962B-5128FAE4E089}"
@@ -27,6 +25,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMA.AdminView", "AdminView\FMA.AdminView.csproj", "{1434FBFA-48E0-4061-91D3-1908382F2724}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DemoApps", "DemoApps", "{201314CE-BA8C-4B6B-B6CD-3D86557F5900}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMA.ImageGenerator", "FMA.ImageGenerator\FMA.ImageGenerator.csproj", "{06E4F4DC-2035-487C-9206-80A11A8CBD89}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,10 +50,6 @@ Global
 		{957CDCCA-DD4D-4C30-B4C5-365E067B78A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{957CDCCA-DD4D-4C30-B4C5-365E067B78A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{957CDCCA-DD4D-4C30-B4C5-365E067B78A9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{06E4F4DC-2035-487C-9206-80A11A8CBD89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{06E4F4DC-2035-487C-9206-80A11A8CBD89}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{06E4F4DC-2035-487C-9206-80A11A8CBD89}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{06E4F4DC-2035-487C-9206-80A11A8CBD89}.Release|Any CPU.Build.0 = Release|Any CPU
 		{71A6B3C3-228D-41D0-BA24-AB8E31547263}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{71A6B3C3-228D-41D0-BA24-AB8E31547263}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71A6B3C3-228D-41D0-BA24-AB8E31547263}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -66,6 +62,10 @@ Global
 		{1434FBFA-48E0-4061-91D3-1908382F2724}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1434FBFA-48E0-4061-91D3-1908382F2724}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1434FBFA-48E0-4061-91D3-1908382F2724}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06E4F4DC-2035-487C-9206-80A11A8CBD89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06E4F4DC-2035-487C-9206-80A11A8CBD89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06E4F4DC-2035-487C-9206-80A11A8CBD89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06E4F4DC-2035-487C-9206-80A11A8CBD89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
